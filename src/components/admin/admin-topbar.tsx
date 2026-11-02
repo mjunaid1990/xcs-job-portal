@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAction } from "@/server/actions/auth.actions";
 import { SeedDatabaseButton } from "./seed-database-button";
+import { WorkWaslIcon } from "@/components/ui/workwasl-logo";
 import {
   Menu,
   X,
@@ -127,9 +128,7 @@ export function AdminTopbar({
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-600 text-white">
-                    <ShieldCheck className="h-4 w-4" />
-                  </div>
+                  <WorkWaslIcon size={24} />
                   <span className="font-bold text-white text-base">WorkWasl Admin</span>
                 </div>
                 <button

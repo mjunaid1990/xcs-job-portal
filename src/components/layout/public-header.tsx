@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { WorkWaslLogo } from "@/components/ui/workwasl-logo";
+import { NavLinks, type NavItem } from "@/components/layout/nav-links";
 import { UserNavDropdown } from "@/components/layout/user-nav-dropdown";
-import { ShieldCheck, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 interface PublicHeaderProps {
   user?: {
@@ -23,7 +25,7 @@ export function PublicHeader({ user }: PublicHeaderProps) {
   const isFreelancer = roles.includes("FREELANCER");
   const isAdmin = roles.includes("ADMIN");
 
-  const loggedInNavItems = isFreelancer
+  const loggedInNavItems: NavItem[] = isFreelancer
     ? [
         { label: "Dashboard", href: "/freelancer" },
         { label: "Proposals", href: "/freelancer/proposals" },
@@ -52,7 +54,7 @@ export function PublicHeader({ user }: PublicHeaderProps) {
             { label: "Messages", href: "/messages" },
           ];
 
-  const guestNavItems = [
+  const guestNavItems: NavItem[] = [
     { label: "Marketplace", href: "/jobs" },
     { label: "Talent", href: "/freelancers" },
     { label: "How It Works", href: "/#how-it-works" },
@@ -63,31 +65,14 @@ export function PublicHeader({ user }: PublicHeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/80 bg-white/80 backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/80 transition-all">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand Logo */}
+        {/* Brand Logo & Desktop Navigation */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 text-white shadow-xs group-hover:scale-105 transition-transform dark:bg-zinc-100 dark:text-zinc-900">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                Work<span className="text-indigo-600 dark:text-indigo-400">Wasl</span>
-              </span>
-            </div>
-          </Link>
+          <WorkWaslLogo href="/" />
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 pl-4 border-l border-zinc-200/80 dark:border-zinc-800">
-            {currentNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/70 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60 transition"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          {/* Desktop Navigation Links with Active State */}
+          <div className="hidden md:flex pl-4 border-l border-zinc-200/80 dark:border-zinc-800">
+            <NavLinks items={currentNavItems} />
+          </div>
         </div>
 
         {/* Right CTA Actions */}
@@ -129,7 +114,7 @@ export function PublicHeader({ user }: PublicHeaderProps) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="rounded-xl p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            className="rounded-xl p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800 transition"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -139,17 +124,9 @@ export function PublicHeader({ user }: PublicHeaderProps) {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950 space-y-1">
-          {currentNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block rounded-xl px-3 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <div className="md:hidden border-b border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950 space-y-2 animate-in fade-in slide-in-from-top-2 duration-150">
+          <NavLinks items={currentNavItems} mobile onItemClick={() => setMobileMenuOpen(false)} />
+
           {!user && (
             <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex gap-2">
               <Link

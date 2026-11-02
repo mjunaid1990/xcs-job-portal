@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@/server/lib/auth";
 import { ProfileService } from "@/server/services/profile.service";
+import { PublicHeader } from "@/components/layout/public-header";
 import { Building2, Globe, ShieldCheck, ArrowLeft } from "lucide-react";
 
 interface PublicClientPageProps {
@@ -9,6 +11,7 @@ interface PublicClientPageProps {
 
 export default async function PublicClientPage({ params }: PublicClientPageProps) {
   const { id } = await params;
+  const session = await auth();
 
   let profile;
   try {
@@ -18,8 +21,9 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-4 py-12 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl space-y-8">
+    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <PublicHeader user={session?.user} />
+      <div className="mx-auto max-w-3xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"

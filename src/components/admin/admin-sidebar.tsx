@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAction } from "@/server/actions/auth.actions";
+import { WorkWaslIcon } from "@/components/ui/workwasl-logo";
 import {
   LayoutDashboard,
   Users,
@@ -149,9 +150,7 @@ export function AdminSidebar({
       {/* Brand & Console Header */}
       <div className="flex h-16 items-center justify-between border-b border-zinc-800/80 px-5">
         <Link href="/admin" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20">
-            <ShieldCheck className="h-5 w-5" />
-          </div>
+          <WorkWaslIcon size={26} />
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-white text-base tracking-tight">WorkWasl</span>

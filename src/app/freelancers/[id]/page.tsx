@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/server/lib/auth";
 import { ProfileService } from "@/server/services/profile.service";
 import { MessageFreelancerButton } from "@/components/chat/message-freelancer-button";
+import { PublicHeader } from "@/components/layout/public-header";
 import {
   Star,
   ExternalLink,
@@ -49,8 +50,9 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
   const tags = profile.tags ?? [];
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-4 py-12 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl space-y-8">
+    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <PublicHeader user={session?.user} />
+      <div className="mx-auto max-w-4xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"

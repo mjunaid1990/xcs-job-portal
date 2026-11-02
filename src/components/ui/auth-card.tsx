@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
+import { WorkWaslLogo } from "@/components/ui/workwasl-logo";
 
 interface AuthCardProps {
   title: string;
@@ -15,15 +14,10 @@ export function AuthCard({ title, subtitle, children }: AuthCardProps) {
         <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 blur-3xl" />
       </div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Link href="/" className="group flex items-center justify-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/25 transition group-hover:scale-105">
-            <ShieldCheck className="h-6 w-6" />
-          </div>
-          <span className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-            Work<span className="text-indigo-600 dark:text-indigo-400">Nest</span>
-          </span>
-        </Link>
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <div className="flex justify-center">
+          <WorkWaslLogo href="/" iconSize={32} />
+        </div>
         <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           {title}
         </h2>

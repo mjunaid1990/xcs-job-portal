@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/server/lib/auth";
 import { JobService } from "@/server/services/job.service";
 import { ApplyJobForm } from "@/components/forms/apply-job-form";
+import { PublicHeader } from "@/components/layout/public-header";
 import { ArrowLeft } from "lucide-react";
 
 interface ApplyPageProps {
@@ -25,8 +26,9 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 px-4 py-12 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl space-y-8">
+    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <PublicHeader user={session?.user} />
+      <div className="mx-auto max-w-3xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
         <Link
           href={`/jobs/${job.id}`}
           className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"

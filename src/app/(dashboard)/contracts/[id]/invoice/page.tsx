@@ -6,6 +6,7 @@ import { ContractService } from "@/server/services/contract.service";
 import { adminService } from "@/server/services/admin.service";
 import { PrintButton } from "@/components/ui/print-button";
 import { formatContractRef } from "@/lib/format";
+import { WorkWaslLogo } from "@/components/ui/workwasl-logo";
 import { ShieldCheck, ArrowLeft, CheckCircle2, Lock, Building, User } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -69,18 +70,11 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between border-b border-zinc-200 pb-8 dark:border-zinc-800 gap-6">
             <div className="space-y-2">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-md">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div>
-                  <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                    Work<span className="text-indigo-600">Wasl</span>
-                  </span>
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-emerald-600">
-                    Cryptographic Escrow Protocol
-                  </span>
-                </div>
+              <div className="flex items-center gap-3">
+                <WorkWaslLogo href="/dashboard" iconSize={32} />
+                <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                  Escrow Settlement
+                </span>
               </div>
               <p className="text-xs text-zinc-500 max-w-sm">
                 Official double-entry settlement receipt and milestone release ledger.
