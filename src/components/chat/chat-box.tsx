@@ -191,7 +191,10 @@ export function ChatBox({
       setText("");
     }
 
-    const tempClientMsgId = `cli-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    const tempClientMsgId =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `40000000-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, "0")}`;
 
     // Optimistic UI item
     const optimisticMsg: MessageItem = {

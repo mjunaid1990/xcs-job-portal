@@ -137,7 +137,8 @@ export class MessagingService {
 
     const recipientId = conv.clientId === senderId ? conv.freelancerId : conv.clientId;
     const senderName = conv.clientId === senderId ? conv.client.name : conv.freelancer.name;
-    const msgId = clientMsgId ?? crypto.randomUUID();
+    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const msgId = clientMsgId && UUID_REGEX.test(clientMsgId) ? clientMsgId : crypto.randomUUID();
 
     const message = await prisma.$transaction(async (tx) => {
       const created = await tx.message.create({

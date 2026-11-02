@@ -132,7 +132,7 @@ describe("Real-Time Messaging Service & Chat Bus", () => {
         conversationId: "conv-1",
         senderId: "client-1",
         body: "Hello Bob, please review the milestone.",
-        clientMsgId: "cli-123",
+        clientMsgId: "40000000-0000-0000-0000-000000000123",
         readAt: null,
         createdAt: new Date(),
         sender: { id: "client-1", name: "Client Alice" },
@@ -152,7 +152,7 @@ describe("Real-Time Messaging Service & Chat Bus", () => {
         "client-1",
         "conv-1",
         "Hello Bob, please review the milestone.",
-        "cli-123",
+        "40000000-0000-0000-0000-000000000123",
       );
 
       chatBus.off("message:conv-1", listener);
@@ -186,7 +186,7 @@ describe("Real-Time Messaging Service & Chat Bus", () => {
           conversationId: "conv-1",
           senderId: "freelancer-1",
           body: "Deliverables are submitted",
-          clientMsgId: "c1",
+          clientMsgId: "40000000-0000-0000-0000-000000000001",
           readAt: new Date(),
           createdAt: new Date(),
           sender: { id: "freelancer-1", name: "Bob" },

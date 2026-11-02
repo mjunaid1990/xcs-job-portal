@@ -1151,7 +1151,7 @@ export async function seedDatabase() {
 
   for (let i = 0; i < chatMessages1.length; i++) {
     const item = chatMessages1[i];
-    const clientMsgId = `seed-c1-msg-${i}`;
+    const clientMsgId = `40000000-0000-0000-0001-${String(i + 1).padStart(12, "0")}`;
     await prisma.message.upsert({
       where: {
         conversationId_senderId_clientMsgId: {
@@ -1303,12 +1303,13 @@ export async function seedDatabase() {
     },
   });
 
+  const conv2ClientMsgId = "40000000-0000-0000-0002-000000000001";
   await prisma.message.upsert({
     where: {
       conversationId_senderId_clientMsgId: {
         conversationId: conv2.id,
         senderId: client2.id,
-        clientMsgId: "seed-c2-msg-0",
+        clientMsgId: conv2ClientMsgId,
       },
     },
     update: {},
@@ -1316,7 +1317,7 @@ export async function seedDatabase() {
       conversationId: conv2.id,
       senderId: client2.id,
       body: "Thanks Alex! All components look gorgeous and passed our accessibility audits.",
-      clientMsgId: "seed-c2-msg-0",
+      clientMsgId: conv2ClientMsgId,
       readAt: new Date(Date.now() - 2 * 86400000),
       createdAt: new Date(Date.now() - 2 * 86400000),
     },
