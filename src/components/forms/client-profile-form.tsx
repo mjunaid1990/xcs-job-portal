@@ -14,6 +14,8 @@ import {
   AlertCircle,
   Briefcase,
   Sparkles,
+  FileText,
+  CheckCircle2,
 } from "lucide-react";
 
 function LinkedinIcon({ className = "h-4 w-4" }: { className?: string }) {
@@ -168,29 +170,43 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-7">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Global Alerts */}
       {success && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 p-4 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 animate-in fade-in duration-200">
-          <Check className="h-4 w-4" />
-          <span>Organization profile updated successfully!</span>
+        <div className="flex items-center gap-2 rounded-2xl bg-emerald-500/10 p-4 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 animate-in fade-in duration-200 shadow-xs">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+          <span>
+            Organization profile updated successfully! Changes reflect on all job openings.
+          </span>
         </div>
       )}
 
       {error && (
-        <div className="flex items-center gap-2 rounded-xl bg-red-500/10 p-4 text-xs font-semibold text-red-700 dark:text-red-400 border border-red-500/20">
-          <AlertCircle className="h-4 w-4 shrink-0" />
+        <div className="flex items-center gap-2 rounded-2xl bg-red-500/10 p-4 text-xs font-semibold text-red-700 dark:text-red-400 border border-red-500/20 shadow-xs">
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
           <span>{error}</span>
         </div>
       )}
 
-      {/* SECTION 1: LOGO & BASIC IDENTITY */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-          <Sparkles className="h-3.5 w-3.5 text-blue-500" />
-          <span>Company Brand & Contact</span>
+      {/* BOX 1: BRAND LOGO & CORE CONTACT */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+              <Building2 className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Company Brand & Primary Contact
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Upload your company logo mark and specify the legal organization identity.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Company Logo Uploader Card */}
+        {/* Company Logo Uploader Row */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-950/40">
           <div className="relative group shrink-0">
             {logoPreviewUrl ? (
@@ -226,7 +242,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
 
           <div className="flex-1 space-y-1">
             <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-              Company Logo & Visual Identity
+              Corporate Logo & Visual Mark
             </h4>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Display your brand mark across job postings and contractor offers. High-res SVG or PNG
@@ -254,7 +270,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
           </div>
         </div>
 
-        {/* Row: Primary Contact & Company Name */}
+        {/* Inputs */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <div className="flex items-center justify-between">
@@ -303,11 +319,22 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
         </div>
       </div>
 
-      {/* SECTION 2: INDUSTRY & COMPANY SCALE */}
-      <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-          <Briefcase className="h-3.5 w-3.5 text-indigo-500" />
-          <span>Industry & Organization Scale</span>
+      {/* BOX 2: INDUSTRY & COMPANY SCALE */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+              <Briefcase className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Industry Sector & Company Scale
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Categorize your firm so relevant specialists can evaluate project fit.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -387,12 +414,23 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
         </div>
       </div>
 
-      {/* SECTION 3: ABOUT OVERVIEW */}
-      <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-        <div className="flex items-center justify-between">
-          <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-            About Company & Engineering Culture
-          </label>
+      {/* BOX 3: ABOUT COMPANY & ENGINEERING CULTURE */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+              <FileText className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                About Company & Engineering Culture
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Describe your organization mission and engineering environment for candidate
+                pitches.
+              </p>
+            </div>
+          </div>
           <span
             className={`text-[11px] font-mono ${
               about.length <= 4000 ? "text-zinc-400" : "text-red-500 font-bold"
@@ -401,29 +439,35 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
             {about.length.toLocaleString()} / 4,000 chars
           </span>
         </div>
-        <textarea
-          rows={6}
-          maxLength={4000}
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-          placeholder="Describe your company's mission, engineering products, core tech stack, and what contractors can expect when working with your team..."
-          className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed"
-        />
-        <p className="mt-1 text-[11px] text-zinc-400">
-          Tip: Candidates evaluate company mission, team size, and tech stack before sending
-          detailed proposals.
-        </p>
+
+        <div>
+          <textarea
+            rows={7}
+            maxLength={4000}
+            value={about}
+            onChange={(e) => setAbout(e.target.value)}
+            placeholder="Describe your company's mission, engineering products, core tech stack, and what contractors can expect when collaborating with your teams..."
+            className="w-full rounded-2xl border border-zinc-300 bg-white p-4 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed"
+          />
+          <p className="mt-2 text-[11px] text-zinc-400">
+            Tip: Top-rated contractors evaluate mission, code quality standards, and team velocity
+            before submitting proposals.
+          </p>
+        </div>
       </div>
 
-      {/* SUBMIT BUTTON */}
-      <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-        <p className="text-xs text-zinc-400">
-          Changes will reflect immediately on your job postings and company public view.
-        </p>
+      {/* STICKY BOTTOM SAVE ACTION BAR */}
+      <div className="sticky bottom-4 z-20 rounded-3xl border border-zinc-200/90 bg-white/95 p-4 sm:p-5 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/95 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs text-zinc-500">
+          <Sparkles className="h-4 w-4 text-blue-500 shrink-0" />
+          <span>
+            Updates take effect immediately on your company profile and all active job postings.
+          </span>
+        </div>
         <button
           type="submit"
           disabled={isPending}
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2.5 text-xs font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-60 transition"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-3 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-60 transition"
         >
           {isPending ? (
             <>

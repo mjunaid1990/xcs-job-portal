@@ -5,7 +5,7 @@ import { ProfileService } from "@/server/services/profile.service";
 import { FreelancerProfileForm } from "@/components/forms/freelancer-profile-form";
 import { PortfolioList } from "@/components/forms/portfolio-list";
 import { ProfileCompletenessCard } from "@/components/ui/profile-completeness-card";
-import { Sparkles, FolderGit2, ExternalLink } from "lucide-react";
+import { FolderGit2, ExternalLink } from "lucide-react";
 
 export default async function FreelancerProfilePage() {
   const session = await auth();
@@ -62,20 +62,14 @@ export default async function FreelancerProfilePage() {
       {/* Profile Completeness Score Card */}
       <ProfileCompletenessCard score={score} missingItems={missingItems} role="FREELANCER" />
 
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
-        <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
-          <Sparkles className="h-4 w-4 text-indigo-500" />
-          <span>General Information & Skills</span>
-        </div>
-        <div className="mt-6">
-          <FreelancerProfileForm profile={profile} skills={taxonomy.skills} />
-        </div>
-      </div>
+      {/* Structured Profile Information Forms (Separated Cards) */}
+      <FreelancerProfileForm profile={profile} skills={taxonomy.skills} />
 
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
+      {/* Portfolio Showcase Card */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
         <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
           <FolderGit2 className="h-4 w-4 text-purple-500" />
-          <span>Portfolio Showcase</span>
+          <span>Portfolio & Work Deliverables</span>
         </div>
         <div className="mt-6">
           <PortfolioList items={profile.portfolioItems} />

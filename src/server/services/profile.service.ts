@@ -171,7 +171,7 @@ export class ProfileService {
           data: {
             ...(input.name ? { name: input.name.trim() } : {}),
             ...(input.imageUrl ? { imageUrl: input.imageUrl.trim() } : {}),
-          },
+          } as Prisma.UserUpdateInput,
         });
       }
 
@@ -313,7 +313,7 @@ export class ProfileService {
           data: {
             ...(input.name ? { name: input.name.trim() } : {}),
             ...(input.imageUrl ? { imageUrl: input.imageUrl.trim() } : {}),
-          },
+          } as Prisma.UserUpdateInput,
         });
       }
 
@@ -350,10 +350,10 @@ export class ProfileService {
       data: {
         freelancerId,
         title: input.title.trim(),
-        description: input.description?.trim(),
-        url: input.url?.trim(),
+        description: input.description?.trim() || null,
+        url: input.url?.trim() || null,
         imageUrl: input.imageUrl?.trim() || null,
-      },
+      } as Prisma.PortfolioItemUncheckedCreateInput,
     });
   }
 

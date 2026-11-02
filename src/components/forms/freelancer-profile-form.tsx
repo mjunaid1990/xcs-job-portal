@@ -17,6 +17,9 @@ import {
   Upload,
   AlertCircle,
   Layers,
+  Clock,
+  Languages,
+  CheckCircle2,
 } from "lucide-react";
 
 function GithubIcon({ className = "h-4 w-4" }: { className?: string }) {
@@ -281,28 +284,40 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Global Alerts */}
       {success && (
-        <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 p-4 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 animate-in fade-in duration-200">
-          <Check className="h-4 w-4" />
+        <div className="flex items-center gap-2 rounded-2xl bg-emerald-500/10 p-4 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 animate-in fade-in duration-200 shadow-xs">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
           <span>Profile changes saved successfully! Live marketplace records updated.</span>
         </div>
       )}
 
       {error && (
-        <div className="flex items-center gap-2 rounded-xl bg-red-500/10 p-4 text-xs font-semibold text-red-700 dark:text-red-400 border border-red-500/20">
-          <AlertCircle className="h-4 w-4 shrink-0" />
+        <div className="flex items-center gap-2 rounded-2xl bg-red-500/10 p-4 text-xs font-semibold text-red-700 dark:text-red-400 border border-red-500/20 shadow-xs">
+          <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
           <span>{error}</span>
         </div>
       )}
 
-      {/* SECTION 1: AVATAR & IDENTITY */}
-      <div className="space-y-5">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-          <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-          <span>Profile Photo & Identity</span>
+      {/* BOX 1: IDENTITY & AVATAR CARD */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Profile Identity & Professional Headline
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Manage your public avatar photo, full name, and primary job title.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Avatar Uploader Card */}
+        {/* Avatar Uploader Row */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-950/40">
           <div className="relative group shrink-0">
             {avatarPreviewUrl ? (
@@ -366,6 +381,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
           </div>
         </div>
 
+        {/* Name & Headline Inputs */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <div className="flex items-center justify-between">
@@ -386,6 +402,56 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
           </div>
 
           <div>
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
+                Professional Headline <span className="text-red-500">*</span>
+              </label>
+              <span
+                className={`text-[11px] font-mono ${
+                  headline.trim().length >= 5 && headline.trim().length <= 120
+                    ? "text-zinc-400"
+                    : headline.trim().length > 120
+                      ? "text-red-500 font-bold"
+                      : "text-amber-500"
+                }`}
+              >
+                {headline.length} / 120 chars
+              </span>
+            </div>
+            <input
+              type="text"
+              required
+              minLength={5}
+              maxLength={120}
+              value={headline}
+              onChange={(e) => setHeadline(e.target.value)}
+              placeholder="e.g. Senior Full-Stack Engineer | Next.js 15, TypeScript & Escrow Protocols"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* BOX 2: PRICING, SENIORITY & AVAILABILITY */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+              <DollarSign className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Pricing, Seniority & Contract Availability
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Set your hourly rate in USD, contract availability, and experience level.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div>
             <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
               Hourly Billing Rate (USD) <span className="text-red-500">*</span>
             </label>
@@ -402,9 +468,28 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               />
             </div>
             <p className="mt-1 text-[11px] text-zinc-400">
-              You receive 100% of approved escrow payouts. Platform charges a flat $1 transaction
-              fee.
+              You receive 100% of approved escrow payouts. Platform charges a flat $1 fee on
+              milestone funding.
             </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
+              Current Work Availability
+            </label>
+            <div className="relative mt-1.5">
+              <Clock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+              <select
+                value={availability}
+                onChange={(e) => setAvailability(e.target.value)}
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              >
+                <option value="AVAILABLE">Available for Full-time & Part-time Contracts</option>
+                <option value="PART_TIME">Part-time Only (&lt; 20 hrs/week)</option>
+                <option value="ADVISORY">Advisory / Architectural Consulting Only</option>
+                <option value="NOT_AVAILABLE">Not Looking for New Contracts Currently</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -443,75 +528,45 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
               English Proficiency
             </label>
-            <select
-              value={englishProficiency}
-              onChange={(e) => setEnglishProficiency(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-            >
-              <option value="NATIVE">Native or Bilingual</option>
-              <option value="FLUENT">Full Professional / Fluent</option>
-              <option value="CONVERSATIONAL">Conversational Working</option>
-            </select>
+            <div className="relative mt-1.5">
+              <Languages className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+              <select
+                value={englishProficiency}
+                onChange={(e) => setEnglishProficiency(e.target.value)}
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              >
+                <option value="NATIVE">Native or Bilingual</option>
+                <option value="FLUENT">Full Professional / Fluent</option>
+                <option value="CONVERSATIONAL">Conversational Working</option>
+              </select>
+            </div>
           </div>
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-            Current Work Availability
-          </label>
-          <select
-            value={availability}
-            onChange={(e) => setAvailability(e.target.value)}
-            className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-          >
-            <option value="AVAILABLE">Available for Full-time & Part-time Contracts</option>
-            <option value="PART_TIME">Part-time Only (&lt; 20 hrs/week)</option>
-            <option value="ADVISORY">Advisory / Architectural Consulting Only</option>
-            <option value="NOT_AVAILABLE">Not Looking for New Contracts Currently</option>
-          </select>
         </div>
       </div>
 
-      {/* SECTION 2: HEADLINE & BIO */}
-      <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-          <Award className="h-3.5 w-3.5 text-purple-500" />
-          <span>Professional Pitch & Background</span>
-        </div>
-
-        <div>
-          <div className="flex items-center justify-between">
-            <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-              Professional Headline <span className="text-red-500">*</span>
-            </label>
-            <span
-              className={`text-[11px] font-mono ${
-                headline.trim().length >= 5 && headline.trim().length <= 120
-                  ? "text-zinc-400"
-                  : headline.trim().length > 120
-                    ? "text-red-500 font-bold"
-                    : "text-amber-500"
-              }`}
-            >
-              {headline.length} / 120 chars {headline.trim().length < 5 && "(min 5)"}
-            </span>
+      {/* BOX 3: EXECUTIVE BIO & BACKGROUND */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+              <Award className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Executive Overview & Technical Pitch
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Craft a detailed pitch highlighting past architectures, production outcomes, and
+                core strengths.
+              </p>
+            </div>
           </div>
-          <input
-            type="text"
-            required
-            minLength={5}
-            maxLength={120}
-            value={headline}
-            onChange={(e) => setHeadline(e.target.value)}
-            placeholder="e.g. Senior Full-Stack Engineer | Next.js 15, TypeScript & Distributed Escrow Systems"
-            className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-          />
         </div>
 
         <div>
           <div className="flex items-center justify-between">
             <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-              Biography & Technical Expertise <span className="text-red-500">*</span>
+              Biography & Architecture Expertise <span className="text-red-500">*</span>
             </label>
             <span
               className={`text-[11px] font-mono ${
@@ -526,38 +581,47 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             </span>
           </div>
           <textarea
-            rows={7}
+            rows={8}
             required
             minLength={30}
             maxLength={5000}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder="Describe your architecture experience, past production deliverables, technical strengths, and preferred engagement models. Plaintext format with line breaks, markdown, bullet lists, emojis, and URLs are fully supported..."
-            className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
+            placeholder="Describe your architecture experience, past production deliverables, technical strengths, and preferred engagement models. Line breaks, bullet lists, markdown, and URLs are preserved..."
+            className="mt-1.5 w-full rounded-2xl border border-zinc-300 bg-white p-4 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
           />
-          <p className="mt-1 text-[11px] text-zinc-400">
-            Pro tip: High-converting bios highlight past outcomes (e.g. &quot;Architected system
-            handling $10M+ in volume&quot;) and core technologies.
-          </p>
+          <div className="mt-3 rounded-xl bg-indigo-50/50 p-3 text-[11px] text-zinc-600 dark:bg-indigo-950/20 dark:text-zinc-400 border border-indigo-100 dark:border-indigo-900/30">
+            <span className="font-bold text-indigo-700 dark:text-indigo-300">
+              Pro-Tip for High Conversions:
+            </span>{" "}
+            Clients review your first 3 sentences first. Highlight measurable outcomes (e.g.
+            &ldquo;Scaled transaction system to \$15M/yr with 99.99% uptime&rdquo;) and key
+            frameworks.
+          </div>
         </div>
       </div>
 
-      {/* SECTION 3: SPECIALIZATION TAGS (CUSTOM KEYWORDS) */}
-      <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-            <Tag className="h-3.5 w-3.5 text-emerald-500" />
-            <span>Specialization & Discovery Tags</span>
+      {/* BOX 4: SPECIALIZATION & SEARCH TAGS */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950/60 dark:text-teal-400">
+              <Tag className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Specialization & Search Keywords
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Custom tags that boost your profile visibility when clients search the talent
+                marketplace.
+              </p>
+            </div>
           </div>
-          <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-            {tags.length} Active Tags
+          <span className="rounded-full bg-teal-50 px-2.5 py-1 text-xs font-bold text-teal-700 dark:bg-teal-950/40 dark:text-teal-300">
+            {tags.length} Active
           </span>
         </div>
-
-        <p className="text-xs text-zinc-500">
-          Add custom specialization keywords (e.g. niche frameworks, compliance standards, domain
-          concepts) to help clients find your profile in marketplace searches.
-        </p>
 
         {/* Tag Input */}
         <div className="flex gap-2">
@@ -574,14 +638,14 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 }
               }}
               placeholder="Type tag (e.g. stripe-connect, nextjs15, microservices) and press Enter..."
-              className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
           <button
             type="button"
             onClick={() => handleAddTag()}
             disabled={!tagInput.trim()}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-bold text-white hover:bg-zinc-800 disabled:opacity-40 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white transition"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 disabled:opacity-40 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white transition shadow-xs"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>Add Tag</span>
@@ -594,13 +658,13 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-50/70 px-3 py-1 text-xs font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 animate-in fade-in duration-150"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-teal-500/30 bg-teal-50/70 px-3 py-1.5 text-xs font-bold text-teal-700 dark:bg-teal-950/40 dark:text-teal-300 animate-in fade-in duration-150"
               >
                 <span>#{tag}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="rounded-full p-0.5 hover:bg-emerald-200/50 dark:hover:bg-emerald-900/50 transition"
+                  className="rounded-full p-0.5 hover:bg-teal-200/50 dark:hover:bg-teal-900/50 transition"
                   aria-label={`Remove tag ${tag}`}
                 >
                   <X className="h-3 w-3" />
@@ -611,9 +675,9 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
         )}
 
         {/* Recommended Tag Suggestions */}
-        <div className="space-y-1.5 pt-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-            Suggested Tags (Click to add):
+        <div className="space-y-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+            Suggested Keywords (Click to add):
           </span>
           <div className="flex flex-wrap gap-1.5">
             {RECOMMENDED_TAGS.filter((rt) => !tags.includes(rt)).map((rt) => (
@@ -631,11 +695,22 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
         </div>
       </div>
 
-      {/* SECTION 4: SOCIAL PROOF & PROFESSIONAL REPOSITORIES */}
-      <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-          <Globe className="h-3.5 w-3.5 text-blue-500" />
-          <span>Verified Links & Portfolios</span>
+      {/* BOX 5: VERIFIED LINKS & SOCIAL PROOF */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+              <Globe className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Online Presence & Code Repositories
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Connect your code repositories and professional networks to increase client trust.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -650,7 +725,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 value={githubUrl}
                 onChange={(e) => setGithubUrl(e.target.value)}
                 placeholder="https://github.com/username"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -666,7 +741,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
                 placeholder="https://linkedin.com/in/username"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -682,42 +757,44 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
                 placeholder="https://yourdomain.dev"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* SECTION 5: VERIFIED SKILLS MULTI-PICKER */}
-      <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-            <Layers className="h-3.5 w-3.5 text-indigo-500" />
-            <span>
-              Core Technologies & Skills <span className="text-red-500">*</span>
-            </span>
+      {/* BOX 6: CORE TECHNOLOGIES & SKILLS MULTI-PICKER */}
+      <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+              <Layers className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Core Technologies & Skills <span className="text-red-500">*</span>
+              </h3>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Select technologies you are comfortable architecting and delivering in production.
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+            <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
               {selectedSkills.length} selected
             </span>
             {selectedSkills.length > 0 && (
               <button
                 type="button"
                 onClick={handleClearSkills}
-                className="text-[11px] text-zinc-400 hover:text-red-500 transition"
+                className="text-xs text-zinc-400 hover:text-red-500 transition"
               >
                 Clear all
               </button>
             )}
           </div>
         </div>
-
-        <p className="text-xs text-zinc-500">
-          Select all technologies and methodologies you are comfortable architecting in production
-          environments.
-        </p>
 
         {/* Filter input */}
         <div className="relative">
@@ -727,12 +804,12 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             value={skillFilter}
             onChange={(e) => setSkillFilter(e.target.value)}
             placeholder="Search skills by name (e.g. Next.js, PostgreSQL, Docker)..."
-            className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
           />
         </div>
 
         {/* Skills Pills */}
-        <div className="max-h-60 overflow-y-auto rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/40">
+        <div className="max-h-64 overflow-y-auto rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-950/40">
           <div className="flex flex-wrap gap-2">
             {filteredSkills.map((skill) => {
               const isSelected = selectedSkills.includes(skill.id);
@@ -741,13 +818,13 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                   type="button"
                   key={skill.id}
                   onClick={() => toggleSkill(skill.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
+                  className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition shadow-2xs ${
                     isSelected
                       ? "bg-indigo-600 text-white shadow-xs hover:bg-indigo-700"
                       : "bg-white text-zinc-700 border border-zinc-200/80 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-800 dark:hover:bg-zinc-800"
                   }`}
                 >
-                  {isSelected && <Check className="h-3 w-3" />}
+                  {isSelected && <Check className="h-3.5 w-3.5" />}
                   <span>{skill.name}</span>
                 </button>
               );
@@ -756,20 +833,23 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
         </div>
       </div>
 
-      {/* SUBMIT BUTTON */}
-      <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-        <p className="text-xs text-zinc-400">
-          All changes take effect immediately on your public profile and proposals.
-        </p>
+      {/* STICKY BOTTOM SAVE ACTION BAR */}
+      <div className="sticky bottom-4 z-20 rounded-3xl border border-zinc-200/90 bg-white/95 p-4 sm:p-5 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/95 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs text-zinc-500">
+          <Sparkles className="h-4 w-4 text-indigo-500 shrink-0" />
+          <span>
+            Save changes across all sections to update your public profile and active pitches.
+          </span>
+        </div>
         <button
           type="submit"
           disabled={isPending}
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-7 py-3 text-xs font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-60 transition"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-3 text-xs font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-60 transition"
         >
           {isPending ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Saving Profile...</span>
+              <span>Saving Changes...</span>
             </>
           ) : (
             <>
