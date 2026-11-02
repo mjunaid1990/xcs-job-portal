@@ -924,81 +924,108 @@ export async function seedDatabase() {
   // CONTRACTS
   // Contract 1: Active In-Progress (Ava Client & Noah Freelancer)
   const contract1Id = "20000000-0000-0000-0000-000000000001";
-  const contract1 = await prisma.contract.upsert({
-    where: { proposalId: prop1.id },
-    update: { status: ContractStatus.ACTIVE },
-    create: {
-      id: contract1Id,
-      jobId: job1.id,
-      proposalId: prop1.id,
-      clientId: client1.id,
-      freelancerId: freelancer1.id,
-      totalCents: 150000n,
-      currency: "USD",
-      platformFeeBps: 1000,
-      clientFeeCents: 100n,
-      freelancerFeeCents: 100n,
-      feePolicyVersion: "v1_flat_1_dollar",
-      clientFeeCharged: true,
-      freelancerFeeCharged: false,
-      status: ContractStatus.ACTIVE,
-      startedAt: new Date(Date.now() - 10 * 86400000),
-    },
-  });
-
-  // Milestones for Contract 1
   const m1Id = "30000000-0000-0000-0000-000000000001";
-  const m1 = await prisma.milestone.upsert({
-    where: { id: m1Id },
-    update: { status: MilestoneStatus.RELEASED },
-    create: {
-      id: m1Id,
-      contractId: contract1.id,
-      position: 1,
-      title: "Architecture & Database Schema Design",
-      description:
-        "PostgreSQL schema with row-level locks, audit log triggers, and double-entry ledger constraints.",
-      amountCents: 50000n,
-      status: MilestoneStatus.RELEASED,
-      dueDate: new Date(Date.now() - 5 * 86400000),
-      submittedAt: new Date(Date.now() - 4 * 86400000),
-      approvedAt: new Date(Date.now() - 3 * 86400000),
-      releasedAt: new Date(Date.now() - 3 * 86400000),
-    },
-  });
-
   const m2Id = "30000000-0000-0000-0000-000000000002";
-  await prisma.milestone.upsert({
-    where: { id: m2Id },
-    update: { status: MilestoneStatus.FUNDED },
-    create: {
-      id: m2Id,
-      contractId: contract1.id,
-      position: 2,
-      title: "Real-Time Messaging & Workroom Channels",
-      description:
-        "Server-Sent Events (SSE) stream, optimistic chat composer, and unread counter badges.",
-      amountCents: 50000n,
-      status: MilestoneStatus.FUNDED,
-      dueDate: new Date(Date.now() + 7 * 86400000),
-    },
-  });
-
   const m3Id = "30000000-0000-0000-0000-000000000003";
-  await prisma.milestone.upsert({
-    where: { id: m3Id },
-    update: { status: MilestoneStatus.PENDING },
-    create: {
-      id: m3Id,
-      contractId: contract1.id,
-      position: 3,
-      title: "Double-Entry Ledger & Stripe Settlement",
-      description:
-        "Immutable transaction logs, automated settlement payouts, and financial reconciliation audit.",
-      amountCents: 50000n,
-      status: MilestoneStatus.PENDING,
-      dueDate: new Date(Date.now() + 18 * 86400000),
-    },
+
+  const [contract1, m1] = await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe("SET CONSTRAINTS ALL DEFERRED;").catch(() => {});
+
+    const c1 = await tx.contract.upsert({
+      where: { proposalId: prop1.id },
+      update: {
+        totalCents: 150000n,
+        currency: "USD",
+        status: ContractStatus.ACTIVE,
+      },
+      create: {
+        id: contract1Id,
+        jobId: job1.id,
+        proposalId: prop1.id,
+        clientId: client1.id,
+        freelancerId: freelancer1.id,
+        totalCents: 150000n,
+        currency: "USD",
+        platformFeeBps: 1000,
+        clientFeeCents: 100n,
+        freelancerFeeCents: 100n,
+        feePolicyVersion: "v1_flat_1_dollar",
+        clientFeeCharged: true,
+        freelancerFeeCharged: false,
+        status: ContractStatus.ACTIVE,
+        startedAt: new Date(Date.now() - 10 * 86400000),
+      },
+    });
+
+    // Ensure clean milestone set matching contract total
+    await tx.milestone.deleteMany({
+      where: {
+        contractId: c1.id,
+        id: { notIn: [m1Id, m2Id, m3Id] },
+      },
+    });
+
+    const milestone1 = await tx.milestone.upsert({
+      where: { id: m1Id },
+      update: {
+        status: MilestoneStatus.RELEASED,
+        amountCents: 50000n,
+      },
+      create: {
+        id: m1Id,
+        contractId: c1.id,
+        position: 1,
+        title: "Architecture & Database Schema Design",
+        description:
+          "PostgreSQL schema with row-level locks, audit log triggers, and double-entry ledger constraints.",
+        amountCents: 50000n,
+        status: MilestoneStatus.RELEASED,
+        dueDate: new Date(Date.now() - 5 * 86400000),
+        submittedAt: new Date(Date.now() - 4 * 86400000),
+        approvedAt: new Date(Date.now() - 3 * 86400000),
+        releasedAt: new Date(Date.now() - 3 * 86400000),
+      },
+    });
+
+    await tx.milestone.upsert({
+      where: { id: m2Id },
+      update: {
+        status: MilestoneStatus.FUNDED,
+        amountCents: 50000n,
+      },
+      create: {
+        id: m2Id,
+        contractId: c1.id,
+        position: 2,
+        title: "Real-Time Messaging & Workroom Channels",
+        description:
+          "Server-Sent Events (SSE) stream, optimistic chat composer, and unread counter badges.",
+        amountCents: 50000n,
+        status: MilestoneStatus.FUNDED,
+        dueDate: new Date(Date.now() + 7 * 86400000),
+      },
+    });
+
+    await tx.milestone.upsert({
+      where: { id: m3Id },
+      update: {
+        status: MilestoneStatus.PENDING,
+        amountCents: 50000n,
+      },
+      create: {
+        id: m3Id,
+        contractId: c1.id,
+        position: 3,
+        title: "Double-Entry Ledger & Stripe Settlement",
+        description:
+          "Immutable transaction logs, automated settlement payouts, and financial reconciliation audit.",
+        amountCents: 50000n,
+        status: MilestoneStatus.PENDING,
+        dueDate: new Date(Date.now() + 18 * 86400000),
+      },
+    });
+
+    return [c1, milestone1] as const;
   });
 
   // Ledger Entries for Contract 1
@@ -1147,63 +1174,87 @@ export async function seedDatabase() {
 
   // Contract 2: Completed Contract (Acme Tech & Alex Rivera)
   const contract2Id = "20000000-0000-0000-0000-000000000002";
-  const contract2 = await prisma.contract.upsert({
-    where: { proposalId: prop3.id },
-    update: { status: ContractStatus.COMPLETED },
-    create: {
-      id: contract2Id,
-      jobId: job2.id,
-      proposalId: prop3.id,
-      clientId: client2.id,
-      freelancerId: freelancer2.id,
-      totalCents: 200000n,
-      currency: "USD",
-      platformFeeBps: 1000,
-      clientFeeCents: 100n,
-      freelancerFeeCents: 100n,
-      feePolicyVersion: "v1_flat_1_dollar",
-      clientFeeCharged: true,
-      freelancerFeeCharged: true,
-      status: ContractStatus.COMPLETED,
-      startedAt: new Date(Date.now() - 25 * 86400000),
-      completedAt: new Date(Date.now() - 2 * 86400000),
-    },
-  });
-
   const c2m1Id = "30000000-0000-0000-0000-000000000004";
-  await prisma.milestone.upsert({
-    where: { id: c2m1Id },
-    update: { status: MilestoneStatus.RELEASED },
-    create: {
-      id: c2m1Id,
-      contractId: contract2.id,
-      position: 1,
-      title: "Figma Component Tokens & Color Scales",
-      amountCents: 100000n,
-      status: MilestoneStatus.RELEASED,
-      dueDate: new Date(Date.now() - 15 * 86400000),
-      submittedAt: new Date(Date.now() - 14 * 86400000),
-      approvedAt: new Date(Date.now() - 13 * 86400000),
-      releasedAt: new Date(Date.now() - 13 * 86400000),
-    },
-  });
-
   const c2m2Id = "30000000-0000-0000-0000-000000000005";
-  await prisma.milestone.upsert({
-    where: { id: c2m2Id },
-    update: { status: MilestoneStatus.RELEASED },
-    create: {
-      id: c2m2Id,
-      contractId: contract2.id,
-      position: 2,
-      title: "Tailwind CSS Components & Accessibility Testing",
-      amountCents: 100000n,
-      status: MilestoneStatus.RELEASED,
-      dueDate: new Date(Date.now() - 5 * 86400000),
-      submittedAt: new Date(Date.now() - 3 * 86400000),
-      approvedAt: new Date(Date.now() - 2 * 86400000),
-      releasedAt: new Date(Date.now() - 2 * 86400000),
-    },
+
+  const contract2 = await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe("SET CONSTRAINTS ALL DEFERRED;").catch(() => {});
+
+    const c2 = await tx.contract.upsert({
+      where: { proposalId: prop3.id },
+      update: {
+        totalCents: 200000n,
+        currency: "USD",
+        status: ContractStatus.COMPLETED,
+      },
+      create: {
+        id: contract2Id,
+        jobId: job2.id,
+        proposalId: prop3.id,
+        clientId: client2.id,
+        freelancerId: freelancer2.id,
+        totalCents: 200000n,
+        currency: "USD",
+        platformFeeBps: 1000,
+        clientFeeCents: 100n,
+        freelancerFeeCents: 100n,
+        feePolicyVersion: "v1_flat_1_dollar",
+        clientFeeCharged: true,
+        freelancerFeeCharged: true,
+        status: ContractStatus.COMPLETED,
+        startedAt: new Date(Date.now() - 25 * 86400000),
+        completedAt: new Date(Date.now() - 2 * 86400000),
+      },
+    });
+
+    await tx.milestone.deleteMany({
+      where: {
+        contractId: c2.id,
+        id: { notIn: [c2m1Id, c2m2Id] },
+      },
+    });
+
+    await tx.milestone.upsert({
+      where: { id: c2m1Id },
+      update: {
+        status: MilestoneStatus.RELEASED,
+        amountCents: 100000n,
+      },
+      create: {
+        id: c2m1Id,
+        contractId: c2.id,
+        position: 1,
+        title: "Figma Component Tokens & Color Scales",
+        amountCents: 100000n,
+        status: MilestoneStatus.RELEASED,
+        dueDate: new Date(Date.now() - 15 * 86400000),
+        submittedAt: new Date(Date.now() - 14 * 86400000),
+        approvedAt: new Date(Date.now() - 13 * 86400000),
+        releasedAt: new Date(Date.now() - 13 * 86400000),
+      },
+    });
+
+    await tx.milestone.upsert({
+      where: { id: c2m2Id },
+      update: {
+        status: MilestoneStatus.RELEASED,
+        amountCents: 100000n,
+      },
+      create: {
+        id: c2m2Id,
+        contractId: c2.id,
+        position: 2,
+        title: "Tailwind CSS Components & Accessibility Testing",
+        amountCents: 100000n,
+        status: MilestoneStatus.RELEASED,
+        dueDate: new Date(Date.now() - 5 * 86400000),
+        submittedAt: new Date(Date.now() - 3 * 86400000),
+        approvedAt: new Date(Date.now() - 2 * 86400000),
+        releasedAt: new Date(Date.now() - 2 * 86400000),
+      },
+    });
+
+    return c2;
   });
 
   // Reviews on Completed Contract 2
@@ -1273,42 +1324,63 @@ export async function seedDatabase() {
 
   // Contract 3: Disputed Contract for Admin Arbitration (Client 1: Ava & Alex Rivera)
   const contract3Id = "20000000-0000-0000-0000-000000000003";
-  const contract3 = await prisma.contract.upsert({
-    where: { proposalId: prop6.id },
-    update: { status: ContractStatus.DISPUTED },
-    create: {
-      id: contract3Id,
-      jobId: job4.id,
-      proposalId: prop6.id,
-      clientId: client1.id,
-      freelancerId: freelancer2.id,
-      totalCents: 80000n,
-      currency: "USD",
-      platformFeeBps: 1000,
-      clientFeeCents: 100n,
-      freelancerFeeCents: 100n,
-      feePolicyVersion: "v1_flat_1_dollar",
-      clientFeeCharged: true,
-      freelancerFeeCharged: false,
-      status: ContractStatus.DISPUTED,
-      startedAt: new Date(Date.now() - 15 * 86400000),
-    },
-  });
-
   const c3m1Id = "30000000-0000-0000-0000-000000000006";
-  const c3m1 = await prisma.milestone.upsert({
-    where: { id: c3m1Id },
-    update: { status: MilestoneStatus.DISPUTED },
-    create: {
-      id: c3m1Id,
-      contractId: contract3.id,
-      position: 1,
-      title: "Webhook Handler Implementation",
-      amountCents: 80000n,
-      status: MilestoneStatus.DISPUTED,
-      dueDate: new Date(Date.now() - 2 * 86400000),
-      submittedAt: new Date(Date.now() - 1 * 86400000),
-    },
+
+  const [contract3, c3m1] = await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe("SET CONSTRAINTS ALL DEFERRED;").catch(() => {});
+
+    const c3 = await tx.contract.upsert({
+      where: { proposalId: prop6.id },
+      update: {
+        totalCents: 80000n,
+        currency: "USD",
+        status: ContractStatus.DISPUTED,
+      },
+      create: {
+        id: contract3Id,
+        jobId: job4.id,
+        proposalId: prop6.id,
+        clientId: client1.id,
+        freelancerId: freelancer2.id,
+        totalCents: 80000n,
+        currency: "USD",
+        platformFeeBps: 1000,
+        clientFeeCents: 100n,
+        freelancerFeeCents: 100n,
+        feePolicyVersion: "v1_flat_1_dollar",
+        clientFeeCharged: true,
+        freelancerFeeCharged: false,
+        status: ContractStatus.DISPUTED,
+        startedAt: new Date(Date.now() - 15 * 86400000),
+      },
+    });
+
+    await tx.milestone.deleteMany({
+      where: {
+        contractId: c3.id,
+        id: { notIn: [c3m1Id] },
+      },
+    });
+
+    const m = await tx.milestone.upsert({
+      where: { id: c3m1Id },
+      update: {
+        status: MilestoneStatus.DISPUTED,
+        amountCents: 80000n,
+      },
+      create: {
+        id: c3m1Id,
+        contractId: c3.id,
+        position: 1,
+        title: "Webhook Handler Implementation",
+        amountCents: 80000n,
+        status: MilestoneStatus.DISPUTED,
+        dueDate: new Date(Date.now() - 2 * 86400000),
+        submittedAt: new Date(Date.now() - 1 * 86400000),
+      },
+    });
+
+    return [c3, m] as const;
   });
 
   // Dispute for Contract 3
