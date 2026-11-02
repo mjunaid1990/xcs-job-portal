@@ -1,6 +1,17 @@
 import { prisma } from "@/server/db/prisma";
-import { UserRole, UserStatus } from "@prisma/client";
+import {
+  UserRole,
+  UserStatus,
+  JobStatus,
+  BudgetType,
+  ProposalStatus,
+  ContractStatus,
+  MilestoneStatus,
+  LedgerType,
+  DisputeStatus,
+} from "@prisma/client";
 import argon2 from "argon2";
+import crypto from "node:crypto";
 
 const DEMO_PASSWORD = process.env.SEED_PASSWORD ?? "WorkNestDemo!2026";
 
@@ -394,6 +405,25 @@ export async function seedDatabase() {
     roles: [UserRole.FREELANCER],
   });
 
+  // Also support @workwasl.com aliases
+  await upsertDemoUser({
+    email: "admin@workwasl.com",
+    name: "WorkWasl Admin",
+    roles: [UserRole.ADMIN],
+  });
+
+  await upsertDemoUser({
+    email: "client@workwasl.com",
+    name: "Ava Client",
+    roles: [UserRole.CLIENT],
+  });
+
+  await upsertDemoUser({
+    email: "freelancer@workwasl.com",
+    name: "Noah Freelancer",
+    roles: [UserRole.FREELANCER],
+  });
+
   // Client Profiles with Enhanced Fields
   await prisma.clientProfile.upsert({
     where: { userId: client1.id },
@@ -604,6 +634,733 @@ export async function seedDatabase() {
     create: { key: "accepted_currencies", value: "USD" },
   });
 
+  // -------------------------------------------------------------
+  // 4. End-to-End Marketplace Flow Dummy Data
+  // -------------------------------------------------------------
+  const allCategories = await prisma.category.findMany();
+  const engCat =
+    allCategories.find((c) => c.slug === "engineering-architecture") ?? allCategories[0];
+  const designCat = allCategories.find((c) => c.slug === "design-creative") ?? allCategories[0];
+  const dataCat = allCategories.find((c) => c.slug === "data-science-ai") ?? allCategories[0];
+
+  const skillTs = skillMap.get("typescript");
+  const skillNext = skillMap.get("nextjs");
+  const skillPg = skillMap.get("postgresql");
+  const skillReact = skillMap.get("react");
+  const skillFigma = skillMap.get("figma");
+  const skillTailwind = skillMap.get("tailwindcss");
+
+  // JOB 1: Active In-Progress Architecture Job (Client 1: Ava)
+  const job1Id = "00000000-0000-0000-0000-000000000001";
+  const job1 = await prisma.job.upsert({
+    where: { id: job1Id },
+    update: {
+      status: JobStatus.IN_PROGRESS,
+      proposalsCount: 2,
+    },
+    create: {
+      id: job1Id,
+      clientId: client1.id,
+      categoryId: engCat?.id,
+      title: "Next.js 15 & PostgreSQL Escrow Marketplace Architecture",
+      description:
+        "Architect and implement an escrow-backed freelance marketplace with flat $1 platform fees, real-time SSE messaging, and double-entry accounting ledger.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 150000,
+      budgetMaxCents: 150000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "LARGE",
+      timeCommitment: "FULL_TIME",
+      deliverables:
+        "PostgreSQL schema with row locks, milestone escrow release flow, SSE chat, and automated audit ledger.",
+      screeningQuestions: [
+        "Have you built double-entry accounting ledgers or Stripe Connect marketplaces?",
+        "Can you provide links to production Next.js App Router repositories?",
+      ],
+      status: JobStatus.IN_PROGRESS,
+      proposalsCount: 2,
+      dedupeHash: crypto.createHash("sha256").update(`job1-${client1.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 14 * 86400000),
+    },
+  });
+
+  if (skillTs) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job1.id, skillId: skillTs } },
+      update: {},
+      create: { jobId: job1.id, skillId: skillTs },
+    });
+  }
+  if (skillNext) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job1.id, skillId: skillNext } },
+      update: {},
+      create: { jobId: job1.id, skillId: skillNext },
+    });
+  }
+  if (skillPg) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job1.id, skillId: skillPg } },
+      update: {},
+      create: { jobId: job1.id, skillId: skillPg },
+    });
+  }
+
+  // JOB 2: Completed Design System Job (Client 2: Acme Tech)
+  const job2Id = "00000000-0000-0000-0000-000000000002";
+  const job2 = await prisma.job.upsert({
+    where: { id: job2Id },
+    update: {
+      status: JobStatus.COMPLETED,
+      proposalsCount: 1,
+    },
+    create: {
+      id: job2Id,
+      clientId: client2.id,
+      categoryId: designCat?.id,
+      title: "Design System, Figma Component Tokens & WCAG UI Kit",
+      description:
+        "Develop an enterprise-grade accessible design system in Figma with Tailwind CSS v4 component tokens and dark mode support.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 200000,
+      budgetMaxCents: 200000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "Less than 1 month",
+      scope: "MEDIUM",
+      status: JobStatus.COMPLETED,
+      proposalsCount: 1,
+      dedupeHash: crypto.createHash("sha256").update(`job2-${client2.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 30 * 86400000),
+    },
+  });
+
+  if (skillFigma) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job2.id, skillId: skillFigma } },
+      update: {},
+      create: { jobId: job2.id, skillId: skillFigma },
+    });
+  }
+  if (skillTailwind) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job2.id, skillId: skillTailwind } },
+      update: {},
+      create: { jobId: job2.id, skillId: skillTailwind },
+    });
+  }
+
+  // JOB 3: Open Job with Competing Proposals for Comparison Matrix (Client 2: Acme Tech)
+  const job3Id = "00000000-0000-0000-0000-000000000003";
+  const job3 = await prisma.job.upsert({
+    where: { id: job3Id },
+    update: {
+      status: JobStatus.OPEN,
+      proposalsCount: 2,
+    },
+    create: {
+      id: job3Id,
+      clientId: client2.id,
+      categoryId: dataCat?.id,
+      title: "Full-Stack AI Copilot & Real-Time Prompt Engineering",
+      description:
+        "We need a senior full-stack AI engineer to build our real-time copilot assisting clients and freelancers in scoping milestone deliverables.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 350000,
+      budgetMaxCents: 350000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "LARGE",
+      status: JobStatus.OPEN,
+      proposalsCount: 2,
+      dedupeHash: crypto.createHash("sha256").update(`job3-${client2.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 3 * 86400000),
+    },
+  });
+
+  if (skillReact) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job3.id, skillId: skillReact } },
+      update: {},
+      create: { jobId: job3.id, skillId: skillReact },
+    });
+  }
+
+  // JOB 4: Disputed Job for Admin Arbitration (Client 1: Ava)
+  const job4Id = "00000000-0000-0000-0000-000000000004";
+  const job4 = await prisma.job.upsert({
+    where: { id: job4Id },
+    update: {
+      status: JobStatus.IN_PROGRESS,
+      proposalsCount: 1,
+    },
+    create: {
+      id: job4Id,
+      clientId: client1.id,
+      categoryId: engCat?.id,
+      title: "High-Frequency Crypto Payment Settlement Webhooks",
+      description:
+        "Build an idempotent webhook dispatcher and settlement verifier for external crypto payment rails.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 80000,
+      budgetMaxCents: 80000,
+      currency: "USD",
+      experienceLevel: "INTERMEDIATE",
+      status: JobStatus.IN_PROGRESS,
+      proposalsCount: 1,
+      dedupeHash: crypto.createHash("sha256").update(`job4-${client1.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 20 * 86400000),
+    },
+  });
+
+  // PROPOSALS
+  // Proposal 1 on Job 1 (Noah) -> Accepted into Contract 1
+  const prop1Id = "10000000-0000-0000-0000-000000000001";
+  const prop1 = await prisma.proposal.upsert({
+    where: { jobId_freelancerId: { jobId: job1.id, freelancerId: freelancer1.id } },
+    update: { status: ProposalStatus.ACCEPTED },
+    create: {
+      id: prop1Id,
+      jobId: job1.id,
+      freelancerId: freelancer1.id,
+      coverLetter:
+        "Hi Ava,\n\nI have over 8 years of experience building secure transactional marketplaces with Next.js 15, PostgreSQL row-level locks, and Stripe Connect. My proposal includes a 3-milestone breakdown with double-entry ledger audits and real-time SSE chat rooms.",
+      bidCents: 150000,
+      currency: "USD",
+      estimatedDays: 14,
+      status: ProposalStatus.ACCEPTED,
+    },
+  });
+
+  // Proposal 2 on Job 1 (Alex) -> Submitted
+  await prisma.proposal.upsert({
+    where: { jobId_freelancerId: { jobId: job1.id, freelancerId: freelancer2.id } },
+    update: { status: ProposalStatus.SUBMITTED },
+    create: {
+      id: "10000000-0000-0000-0000-000000000002",
+      jobId: job1.id,
+      freelancerId: freelancer2.id,
+      coverLetter:
+        "Hi Ava,\n\nI can deliver the front-end architecture and UI workflow components adhering to WCAG 2.1 AA standards and Tailwind CSS v4.",
+      bidCents: 160000,
+      currency: "USD",
+      estimatedDays: 18,
+      status: ProposalStatus.SUBMITTED,
+    },
+  });
+
+  // Proposal 3 on Job 2 (Alex) -> Accepted into Contract 2
+  const prop3Id = "10000000-0000-0000-0000-000000000003";
+  const prop3 = await prisma.proposal.upsert({
+    where: { jobId_freelancerId: { jobId: job2.id, freelancerId: freelancer2.id } },
+    update: { status: ProposalStatus.ACCEPTED },
+    create: {
+      id: prop3Id,
+      jobId: job2.id,
+      freelancerId: freelancer2.id,
+      coverLetter:
+        "Hi Acme team,\n\nI specialize in scalable design systems with multi-brand Figma tokens, accessible color contrasts, and production React component libraries.",
+      bidCents: 200000,
+      currency: "USD",
+      estimatedDays: 10,
+      status: ProposalStatus.ACCEPTED,
+    },
+  });
+
+  // Proposal 4 on Job 3 (Noah) -> Shortlisted (for Comparison Matrix)
+  await prisma.proposal.upsert({
+    where: { jobId_freelancerId: { jobId: job3.id, freelancerId: freelancer1.id } },
+    update: { status: ProposalStatus.SHORTLISTED },
+    create: {
+      id: "10000000-0000-0000-0000-000000000004",
+      jobId: job3.id,
+      freelancerId: freelancer1.id,
+      coverLetter:
+        "Experienced full-stack engineer ready to implement conversational LLM pipelines with Gemini 2.5 and streaming edge runtimes.",
+      bidCents: 340000,
+      currency: "USD",
+      estimatedDays: 21,
+      status: ProposalStatus.SHORTLISTED,
+    },
+  });
+
+  // Proposal 5 on Job 3 (Alex) -> Submitted (for Comparison Matrix)
+  await prisma.proposal.upsert({
+    where: { jobId_freelancerId: { jobId: job3.id, freelancerId: freelancer2.id } },
+    update: { status: ProposalStatus.SUBMITTED },
+    create: {
+      id: "10000000-0000-0000-0000-000000000005",
+      jobId: job3.id,
+      freelancerId: freelancer2.id,
+      coverLetter:
+        "Product-focused UI engineer with experience designing interactive AI prompts and workflow assistants.",
+      bidCents: 360000,
+      currency: "USD",
+      estimatedDays: 25,
+      status: ProposalStatus.SUBMITTED,
+    },
+  });
+
+  // Proposal 6 on Job 4 (Alex) -> Accepted into Disputed Contract
+  const prop6Id = "10000000-0000-0000-0000-000000000006";
+  const prop6 = await prisma.proposal.upsert({
+    where: { jobId_freelancerId: { jobId: job4.id, freelancerId: freelancer2.id } },
+    update: { status: ProposalStatus.ACCEPTED },
+    create: {
+      id: prop6Id,
+      jobId: job4.id,
+      freelancerId: freelancer2.id,
+      coverLetter: "I can build the webhook dispatch handler and testing harness.",
+      bidCents: 80000,
+      currency: "USD",
+      estimatedDays: 7,
+      status: ProposalStatus.ACCEPTED,
+    },
+  });
+
+  // CONTRACTS
+  // Contract 1: Active In-Progress (Ava Client & Noah Freelancer)
+  const contract1Id = "20000000-0000-0000-0000-000000000001";
+  const contract1 = await prisma.contract.upsert({
+    where: { proposalId: prop1.id },
+    update: { status: ContractStatus.ACTIVE },
+    create: {
+      id: contract1Id,
+      jobId: job1.id,
+      proposalId: prop1.id,
+      clientId: client1.id,
+      freelancerId: freelancer1.id,
+      totalCents: 150000n,
+      currency: "USD",
+      platformFeeBps: 1000,
+      clientFeeCents: 100n,
+      freelancerFeeCents: 100n,
+      feePolicyVersion: "v1_flat_1_dollar",
+      clientFeeCharged: true,
+      freelancerFeeCharged: false,
+      status: ContractStatus.ACTIVE,
+      startedAt: new Date(Date.now() - 10 * 86400000),
+    },
+  });
+
+  // Milestones for Contract 1
+  const m1Id = "30000000-0000-0000-0000-000000000001";
+  const m1 = await prisma.milestone.upsert({
+    where: { id: m1Id },
+    update: { status: MilestoneStatus.RELEASED },
+    create: {
+      id: m1Id,
+      contractId: contract1.id,
+      position: 1,
+      title: "Architecture & Database Schema Design",
+      description:
+        "PostgreSQL schema with row-level locks, audit log triggers, and double-entry ledger constraints.",
+      amountCents: 50000n,
+      status: MilestoneStatus.RELEASED,
+      dueDate: new Date(Date.now() - 5 * 86400000),
+      submittedAt: new Date(Date.now() - 4 * 86400000),
+      approvedAt: new Date(Date.now() - 3 * 86400000),
+      releasedAt: new Date(Date.now() - 3 * 86400000),
+    },
+  });
+
+  const m2Id = "30000000-0000-0000-0000-000000000002";
+  await prisma.milestone.upsert({
+    where: { id: m2Id },
+    update: { status: MilestoneStatus.FUNDED },
+    create: {
+      id: m2Id,
+      contractId: contract1.id,
+      position: 2,
+      title: "Real-Time Messaging & Workroom Channels",
+      description:
+        "Server-Sent Events (SSE) stream, optimistic chat composer, and unread counter badges.",
+      amountCents: 50000n,
+      status: MilestoneStatus.FUNDED,
+      dueDate: new Date(Date.now() + 7 * 86400000),
+    },
+  });
+
+  const m3Id = "30000000-0000-0000-0000-000000000003";
+  await prisma.milestone.upsert({
+    where: { id: m3Id },
+    update: { status: MilestoneStatus.PENDING },
+    create: {
+      id: m3Id,
+      contractId: contract1.id,
+      position: 3,
+      title: "Double-Entry Ledger & Stripe Settlement",
+      description:
+        "Immutable transaction logs, automated settlement payouts, and financial reconciliation audit.",
+      amountCents: 50000n,
+      status: MilestoneStatus.PENDING,
+      dueDate: new Date(Date.now() + 18 * 86400000),
+    },
+  });
+
+  // Ledger Entries for Contract 1
+  await prisma.ledgerEntry.upsert({
+    where: { idempotencyKey: `seed-fund-${contract1.id}` },
+    update: {},
+    create: {
+      type: LedgerType.ESCROW_FUND,
+      contractId: contract1.id,
+      userId: client1.id,
+      amountCents: 100000n,
+      currency: "USD",
+      idempotencyKey: `seed-fund-${contract1.id}`,
+      providerRef: "pi_demo_escrow_100000",
+      createdAt: new Date(Date.now() - 10 * 86400000),
+    },
+  });
+
+  await prisma.ledgerEntry.upsert({
+    where: { idempotencyKey: `seed-client-fee-${contract1.id}` },
+    update: {},
+    create: {
+      type: LedgerType.PLATFORM_FEE,
+      contractId: contract1.id,
+      userId: client1.id,
+      amountCents: 100n,
+      currency: "USD",
+      idempotencyKey: `seed-client-fee-${contract1.id}`,
+      providerRef: "ch_demo_fee_client_100",
+      createdAt: new Date(Date.now() - 10 * 86400000),
+    },
+  });
+
+  await prisma.ledgerEntry.upsert({
+    where: { idempotencyKey: `seed-release-${m1.id}` },
+    update: {},
+    create: {
+      type: LedgerType.ESCROW_RELEASE,
+      contractId: contract1.id,
+      milestoneId: m1.id,
+      userId: freelancer1.id,
+      amountCents: 49900n,
+      currency: "USD",
+      idempotencyKey: `seed-release-${m1.id}`,
+      providerRef: "tr_demo_release_m1_49900",
+      createdAt: new Date(Date.now() - 3 * 86400000),
+    },
+  });
+
+  await prisma.ledgerEntry.upsert({
+    where: { idempotencyKey: `seed-freelancer-fee-${contract1.id}` },
+    update: {},
+    create: {
+      type: LedgerType.PLATFORM_FEE,
+      contractId: contract1.id,
+      milestoneId: m1.id,
+      userId: freelancer1.id,
+      amountCents: 100n,
+      currency: "USD",
+      idempotencyKey: `seed-freelancer-fee-${contract1.id}`,
+      providerRef: "ch_demo_fee_freelancer_100",
+      createdAt: new Date(Date.now() - 3 * 86400000),
+    },
+  });
+
+  // Conversation 1 & Messages (Contract 1: Ava & Noah)
+  const conv1 = await prisma.conversation.upsert({
+    where: {
+      jobId_clientId_freelancerId: {
+        jobId: job1.id,
+        clientId: client1.id,
+        freelancerId: freelancer1.id,
+      },
+    },
+    update: { contractId: contract1.id },
+    create: {
+      jobId: job1.id,
+      contractId: contract1.id,
+      clientId: client1.id,
+      freelancerId: freelancer1.id,
+      lastMessageAt: new Date(Date.now() - 15 * 60000),
+    },
+  });
+
+  const chatMessages1 = [
+    {
+      senderId: client1.id,
+      body: "Hi Noah, excited to kick off the escrow architecture! Milestone 1 has been funded in full.",
+      offsetMs: 4 * 86400000,
+      read: true,
+    },
+    {
+      senderId: freelancer1.id,
+      body: "Thanks Ava! I have reviewed the PRD and set up the PostgreSQL schema with row-level locks and double-entry ledger constraints.",
+      offsetMs: 3.5 * 86400000,
+      read: true,
+    },
+    {
+      senderId: freelancer1.id,
+      body: "Milestone 1 is ready and code has been pushed. Please review the deliverable files on the staging branch.",
+      offsetMs: 3.1 * 86400000,
+      read: true,
+    },
+    {
+      senderId: client1.id,
+      body: "Approved and released! The flat $1 fee model works cleanly on the official invoice. Moving on to Milestone 2.",
+      offsetMs: 3 * 86400000,
+      read: true,
+    },
+    {
+      senderId: freelancer1.id,
+      body: "Received! Milestone 2 (Real-Time SSE Messaging & Workroom Channels) is currently in active development.",
+      offsetMs: 1 * 86400000,
+      read: true,
+    },
+    {
+      senderId: client1.id,
+      body: "Sounds great. Let me know once the preview branch is ready for an interactive test.",
+      offsetMs: 15 * 60000,
+      read: false, // Unread so badge shows in nav
+    },
+  ];
+
+  for (let i = 0; i < chatMessages1.length; i++) {
+    const item = chatMessages1[i];
+    const clientMsgId = `seed-c1-msg-${i}`;
+    await prisma.message.upsert({
+      where: {
+        conversationId_senderId_clientMsgId: {
+          conversationId: conv1.id,
+          senderId: item.senderId,
+          clientMsgId,
+        },
+      },
+      update: {},
+      create: {
+        conversationId: conv1.id,
+        senderId: item.senderId,
+        body: item.body,
+        clientMsgId,
+        readAt: item.read ? new Date(Date.now() - item.offsetMs + 60000) : null,
+        createdAt: new Date(Date.now() - item.offsetMs),
+      },
+    });
+  }
+
+  // Contract 2: Completed Contract (Acme Tech & Alex Rivera)
+  const contract2Id = "20000000-0000-0000-0000-000000000002";
+  const contract2 = await prisma.contract.upsert({
+    where: { proposalId: prop3.id },
+    update: { status: ContractStatus.COMPLETED },
+    create: {
+      id: contract2Id,
+      jobId: job2.id,
+      proposalId: prop3.id,
+      clientId: client2.id,
+      freelancerId: freelancer2.id,
+      totalCents: 200000n,
+      currency: "USD",
+      platformFeeBps: 1000,
+      clientFeeCents: 100n,
+      freelancerFeeCents: 100n,
+      feePolicyVersion: "v1_flat_1_dollar",
+      clientFeeCharged: true,
+      freelancerFeeCharged: true,
+      status: ContractStatus.COMPLETED,
+      startedAt: new Date(Date.now() - 25 * 86400000),
+      completedAt: new Date(Date.now() - 2 * 86400000),
+    },
+  });
+
+  const c2m1Id = "30000000-0000-0000-0000-000000000004";
+  await prisma.milestone.upsert({
+    where: { id: c2m1Id },
+    update: { status: MilestoneStatus.RELEASED },
+    create: {
+      id: c2m1Id,
+      contractId: contract2.id,
+      position: 1,
+      title: "Figma Component Tokens & Color Scales",
+      amountCents: 100000n,
+      status: MilestoneStatus.RELEASED,
+      dueDate: new Date(Date.now() - 15 * 86400000),
+      submittedAt: new Date(Date.now() - 14 * 86400000),
+      approvedAt: new Date(Date.now() - 13 * 86400000),
+      releasedAt: new Date(Date.now() - 13 * 86400000),
+    },
+  });
+
+  const c2m2Id = "30000000-0000-0000-0000-000000000005";
+  await prisma.milestone.upsert({
+    where: { id: c2m2Id },
+    update: { status: MilestoneStatus.RELEASED },
+    create: {
+      id: c2m2Id,
+      contractId: contract2.id,
+      position: 2,
+      title: "Tailwind CSS Components & Accessibility Testing",
+      amountCents: 100000n,
+      status: MilestoneStatus.RELEASED,
+      dueDate: new Date(Date.now() - 5 * 86400000),
+      submittedAt: new Date(Date.now() - 3 * 86400000),
+      approvedAt: new Date(Date.now() - 2 * 86400000),
+      releasedAt: new Date(Date.now() - 2 * 86400000),
+    },
+  });
+
+  // Reviews on Completed Contract 2
+  await prisma.review.upsert({
+    where: { contractId_reviewerId: { contractId: contract2.id, reviewerId: client2.id } },
+    update: {},
+    create: {
+      contractId: contract2.id,
+      reviewerId: client2.id,
+      revieweeId: freelancer2.id,
+      rating: 5,
+      comment:
+        "Alex provided world-class design systems work. Highly responsive, prompt delivery, and immaculate tokens.",
+    },
+  });
+
+  await prisma.review.upsert({
+    where: { contractId_reviewerId: { contractId: contract2.id, reviewerId: freelancer2.id } },
+    update: {},
+    create: {
+      contractId: contract2.id,
+      reviewerId: freelancer2.id,
+      revieweeId: client2.id,
+      rating: 5,
+      comment:
+        "Great working with Acme Tech. Clear vision, prompt milestone funding, and clear feedback throughout the project.",
+    },
+  });
+
+  // Conversation 2 (Contract 2: Acme & Alex)
+  const conv2 = await prisma.conversation.upsert({
+    where: {
+      jobId_clientId_freelancerId: {
+        jobId: job2.id,
+        clientId: client2.id,
+        freelancerId: freelancer2.id,
+      },
+    },
+    update: { contractId: contract2.id },
+    create: {
+      jobId: job2.id,
+      contractId: contract2.id,
+      clientId: client2.id,
+      freelancerId: freelancer2.id,
+      lastMessageAt: new Date(Date.now() - 2 * 86400000),
+    },
+  });
+
+  await prisma.message.upsert({
+    where: {
+      conversationId_senderId_clientMsgId: {
+        conversationId: conv2.id,
+        senderId: client2.id,
+        clientMsgId: "seed-c2-msg-0",
+      },
+    },
+    update: {},
+    create: {
+      conversationId: conv2.id,
+      senderId: client2.id,
+      body: "Thanks Alex! All components look gorgeous and passed our accessibility audits.",
+      clientMsgId: "seed-c2-msg-0",
+      readAt: new Date(Date.now() - 2 * 86400000),
+      createdAt: new Date(Date.now() - 2 * 86400000),
+    },
+  });
+
+  // Contract 3: Disputed Contract for Admin Arbitration (Client 1: Ava & Alex Rivera)
+  const contract3Id = "20000000-0000-0000-0000-000000000003";
+  const contract3 = await prisma.contract.upsert({
+    where: { proposalId: prop6.id },
+    update: { status: ContractStatus.DISPUTED },
+    create: {
+      id: contract3Id,
+      jobId: job4.id,
+      proposalId: prop6.id,
+      clientId: client1.id,
+      freelancerId: freelancer2.id,
+      totalCents: 80000n,
+      currency: "USD",
+      platformFeeBps: 1000,
+      clientFeeCents: 100n,
+      freelancerFeeCents: 100n,
+      feePolicyVersion: "v1_flat_1_dollar",
+      clientFeeCharged: true,
+      freelancerFeeCharged: false,
+      status: ContractStatus.DISPUTED,
+      startedAt: new Date(Date.now() - 15 * 86400000),
+    },
+  });
+
+  const c3m1Id = "30000000-0000-0000-0000-000000000006";
+  const c3m1 = await prisma.milestone.upsert({
+    where: { id: c3m1Id },
+    update: { status: MilestoneStatus.DISPUTED },
+    create: {
+      id: c3m1Id,
+      contractId: contract3.id,
+      position: 1,
+      title: "Webhook Handler Implementation",
+      amountCents: 80000n,
+      status: MilestoneStatus.DISPUTED,
+      dueDate: new Date(Date.now() - 2 * 86400000),
+      submittedAt: new Date(Date.now() - 1 * 86400000),
+    },
+  });
+
+  // Dispute for Contract 3
+  const existingDispute = await prisma.dispute.findFirst({
+    where: { contractId: contract3.id },
+  });
+  if (!existingDispute) {
+    await prisma.dispute.create({
+      data: {
+        contractId: contract3.id,
+        milestoneId: c3m1.id,
+        openedById: client1.id,
+        reason:
+          "Webhook signature verification failed to reject malformed replay attacks during stress testing.",
+        status: DisputeStatus.OPEN,
+      },
+    });
+  }
+
+  // IN-APP NOTIFICATIONS
+  await prisma.notification.createMany({
+    data: [
+      {
+        userId: freelancer1.id,
+        type: "ESCROW_FUNDED",
+        payload: {
+          contractId: contract1.id,
+          amount: "$500.00",
+          title: "Milestone 2 Funded into Escrow",
+        },
+      },
+      {
+        userId: client1.id,
+        type: "NEW_PROPOSAL",
+        payload: {
+          jobId: job3.id,
+          freelancerName: "Noah Freelancer",
+          title: "New Proposal Received",
+        },
+      },
+      {
+        userId: admin.id,
+        type: "DISPUTE_OPENED",
+        payload: {
+          contractId: contract3.id,
+          title: "New Dispute Awaiting Arbitration",
+        },
+      },
+    ],
+    skipDuplicates: true,
+  });
+
   await prisma.auditLog.create({
     data: {
       actorId: admin.id,
@@ -620,6 +1377,21 @@ export async function seedDatabase() {
   return {
     categoriesSeeded: categoriesCount,
     skillsSeeded: SKILLS.length,
-    seededUsers: [admin.email, client1.email, client2.email, freelancer1.email, freelancer2.email],
+    seededUsers: [
+      admin.email,
+      client1.email,
+      client2.email,
+      freelancer1.email,
+      freelancer2.email,
+      "admin@workwasl.com",
+      "client@workwasl.com",
+      "freelancer@workwasl.com",
+    ],
+    jobsSeeded: 4,
+    proposalsSeeded: 6,
+    contractsSeeded: 3,
+    milestonesSeeded: 6,
+    conversationsSeeded: 2,
+    demoPassword: DEMO_PASSWORD,
   };
 }

@@ -2,7 +2,7 @@ import { seedDatabase } from "../src/server/lib/seed";
 import { prisma } from "../src/server/db/prisma";
 
 async function main() {
-  console.log("Starting WorkNest database seed...");
+  console.log("Starting WorkWasl database seed...");
   const result = await seedDatabase();
   console.log("Database seeded successfully:", result);
 }
