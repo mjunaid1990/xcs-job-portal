@@ -2,6 +2,7 @@ import { auth } from "@/server/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ContractService } from "@/server/services/contract.service";
+import { MessagingService } from "@/server/services/messaging.service";
 import { ContractMilestoneActions } from "@/components/forms/contract-milestone-actions";
 import { ContractReviewForm } from "@/components/forms/contract-review-form";
 import { OpenDisputeModal } from "@/components/forms/open-dispute-modal";
@@ -47,6 +48,19 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
     (d) => d.status === "OPEN" || d.status === "UNDER_REVIEW",
   );
   const userReview = contract.reviews.find((r) => r.reviewerId === session.user.id);
+
+  let conversationUrl = "/messages";
+  try {
+    const conv = await MessagingService.getOrCreateConversation(
+      contract.clientId,
+      contract.freelancerId,
+      contract.jobId ?? undefined,
+      contract.id,
+    );
+    conversationUrl = `/messages/${conv.id}`;
+  } catch {
+    // Fallback to /messages
+  }
   const canDispute =
     (isClient || isFreelancer) &&
     contract.status !== "COMPLETED" &&
@@ -113,7 +127,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
           />
 
           <Link
-            href="/messages"
+            href={conversationUrl}
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 shadow-xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             <MessageSquare className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />

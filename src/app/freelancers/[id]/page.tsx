@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@/server/lib/auth";
 import { ProfileService } from "@/server/services/profile.service";
+import { MessageFreelancerButton } from "@/components/chat/message-freelancer-button";
 import {
   Star,
   ExternalLink,
@@ -35,6 +37,7 @@ interface PublicFreelancerPageProps {
 
 export default async function PublicFreelancerPage({ params }: PublicFreelancerPageProps) {
   const { id } = await params;
+  const session = await auth();
 
   let profile;
   try {
@@ -157,13 +160,20 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                 </span>
                 <span className="text-xs text-zinc-500"> / hour</span>
               </div>
-              <Link
-                href={`/login?redirect=/freelancers/${id}`}
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-indigo-500/20 transition hover:from-indigo-500 hover:to-purple-500"
-              >
-                <Briefcase className="h-4 w-4" />
-                <span>Contact & Hire</span>
-              </Link>
+              <div className="flex flex-wrap items-center gap-2">
+                <MessageFreelancerButton
+                  clientId={session?.user?.id}
+                  freelancerId={id}
+                  freelancerName={profile.user.name}
+                />
+                <Link
+                  href={session ? "/client/jobs/new" : `/login?redirect=/freelancers/${id}`}
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-purple-500/20 transition hover:from-purple-500 hover:to-indigo-500"
+                >
+                  <Briefcase className="h-4 w-4" />
+                  <span>Hire Specialist</span>
+                </Link>
+              </div>
             </div>
           </div>
 

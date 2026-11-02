@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { startConversationAction } from "@/server/actions/messaging.actions";
 import {
   Sparkles,
   DollarSign,
@@ -13,6 +15,7 @@ import {
   MessageSquare,
   ArrowRight,
   SlidersHorizontal,
+  Loader2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -45,10 +48,26 @@ export function ProposalComparisonMatrix({
   jobTitle,
   proposals,
 }: ProposalComparisonMatrixProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [chatLoadingId, setChatLoadingId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>(() =>
     proposals.slice(0, 3).map((p) => p.id),
   );
+
+  const handleStartChat = (freelancerId: string) => {
+    setChatLoadingId(freelancerId);
+    startTransition(async () => {
+      const res = await startConversationAction("", freelancerId, jobId);
+      if (res.success && res.conversationId) {
+        router.push(`/messages/${res.conversationId}`);
+      } else {
+        router.push("/messages");
+      }
+      setChatLoadingId(null);
+    });
+  };
 
   if (proposals.length < 2) return null;
 
@@ -247,13 +266,19 @@ export function ProposalComparisonMatrix({
                           <span>Hire Candidate</span>
                           <ArrowRight className="h-3 w-3" />
                         </Link>
-                        <Link
-                          href="/messages"
-                          className="rounded-xl border border-zinc-200 p-2 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
+                        <button
+                          type="button"
+                          onClick={() => handleStartChat(p.freelancer.id)}
+                          disabled={isPending && chatLoadingId === p.freelancer.id}
+                          className="rounded-xl border border-zinc-200 p-2 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 transition disabled:opacity-50"
                           title="Message Freelancer"
                         >
-                          <MessageSquare className="h-4 w-4" />
-                        </Link>
+                          {isPending && chatLoadingId === p.freelancer.id ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-purple-600" />
+                          ) : (
+                            <MessageSquare className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                          )}
+                        </button>
                       </div>
                     </div>
                   );

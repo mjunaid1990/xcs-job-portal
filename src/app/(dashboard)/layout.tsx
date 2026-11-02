@@ -1,6 +1,7 @@
 import { auth } from "@/server/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { MessagingService } from "@/server/services/messaging.service";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { UserNavDropdown } from "@/components/layout/user-nav-dropdown";
 import { ShieldCheck, MessageSquare, Bell, Search, PlusCircle } from "lucide-react";
@@ -15,6 +16,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const user = session.user;
   const roles = user.roles ?? [];
   const isClient = roles.includes("CLIENT");
+  const unreadMessagesCount = await MessagingService.getUnreadCount(user.id);
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 flex flex-col justify-between">
@@ -32,7 +34,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                  Work<span className="text-indigo-600 dark:text-indigo-400">Nest</span>
+                  Work<span className="text-indigo-600 dark:text-indigo-400">Wasl</span>
                 </span>
                 <span className="hidden lg:inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -53,10 +55,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
               <Link
                 href="/messages"
-                className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
+                className="relative flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
               >
                 <MessageSquare className="h-3.5 w-3.5 text-purple-500" />
                 <span>Messages</span>
+                {unreadMessagesCount > 0 && (
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-purple-600 px-1 text-[9px] font-black text-white">
+                    {unreadMessagesCount}
+                  </span>
+                )}
               </Link>
 
               <Link

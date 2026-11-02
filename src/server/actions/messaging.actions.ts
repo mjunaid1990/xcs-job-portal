@@ -44,14 +44,23 @@ export async function startConversationAction(
   clientId: string,
   freelancerId: string,
   jobId?: string,
+  contractId?: string,
 ): Promise<MessageActionResult> {
   const session = await auth();
   if (!session?.user?.id) {
     return { success: false, error: "Unauthorized." };
   }
 
+  const effectiveClientId = clientId || session.user.id;
+
   try {
-    const conv = await MessagingService.getOrCreateConversation(clientId, freelancerId, jobId);
+    const conv = await MessagingService.getOrCreateConversation(
+      effectiveClientId,
+      freelancerId,
+      jobId,
+      contractId,
+    );
+    revalidatePath("/messages");
     return { success: true, conversationId: conv.id };
   } catch (error: unknown) {
     if (error && typeof error === "object" && "message" in error) {
@@ -59,6 +68,21 @@ export async function startConversationAction(
     }
     return { success: false, error: "Failed to open conversation." };
   }
+}
+
+export async function markConversationReadAction(conversationId: string): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id || !conversationId) return;
+
+  await MessagingService.markConversationAsRead(conversationId, session.user.id);
+  revalidatePath(`/messages/${conversationId}`);
+  revalidatePath("/messages");
+}
+
+export async function getUnreadMessagesCountAction(): Promise<number> {
+  const session = await auth();
+  if (!session?.user?.id) return 0;
+  return MessagingService.getUnreadCount(session.user.id);
 }
 
 export async function markNotificationReadAction(notificationId: string): Promise<void> {
