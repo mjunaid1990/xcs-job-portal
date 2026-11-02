@@ -18,12 +18,10 @@ import {
   Users,
   Briefcase,
   Layers,
-  Coins,
+  Calendar,
   CheckCircle2,
   HelpCircle,
   Sparkles,
-  Shield,
-  Check,
   Lightbulb,
 } from "lucide-react";
 
@@ -172,52 +170,46 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
         {/* 2-Column Responsive Layout */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          {/* Main Content Column (8 cols) */}
-          <div className="lg:col-span-8 space-y-6">
-            {/* Primary Job Card */}
+          {/* Main Job Briefing Column (8 cols) */}
+          <div className="lg:col-span-8">
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-6">
-              {/* Header Meta Row */}
+              {/* Header: Title first, then Client & Meta below */}
               <div className="space-y-3">
-                <div className="flex flex-wrap items-center gap-2 text-xs">
-                  <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-[11px] font-bold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
-                    {job.category?.name ?? "General Opportunity"}
-                  </span>
-                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
-                  <span className="font-medium text-zinc-500">Posted {postedAgo}</span>
-                  <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} compact />
-                </div>
-
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
                   {job.title}
                 </h1>
 
-                {/* Client Trust Strip */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400 pt-0.5">
-                  <span className="inline-flex items-center gap-1.5 font-medium">
+                {/* Unified Client & Posting Meta Bar below Title */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-zinc-600 dark:text-zinc-400 pt-0.5">
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-900 dark:text-zinc-100">
                     <Building2 className="h-4 w-4 text-zinc-400" />
                     <span>{companyName}</span>
                   </span>
+
                   {isPaymentVerified && (
                     <span className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
                       <ShieldCheck className="h-4 w-4" />
                       <span>Payment Verified</span>
                     </span>
                   )}
+
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+
+                  <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                    {job.category?.name ?? "General Opportunity"}
+                  </span>
+
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+
+                  <span className="inline-flex items-center gap-1 text-zinc-500">
+                    <Clock className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>Posted {postedAgo}</span>
+                  </span>
                 </div>
               </div>
 
-              {/* Specifications Matrix */}
+              {/* Key Specifications Grid (Non-duplicated, unique project dimensions) */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
-                    <Coins className="h-3.5 w-3.5 text-zinc-500" />
-                    <span>Project Type</span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                    {job.budgetType === "HOURLY" ? "Hourly Contract" : "Fixed-Price Escrow"}
-                  </p>
-                </div>
-
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
                     <Briefcase className="h-3.5 w-3.5 text-zinc-500" />
@@ -240,17 +232,27 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
-                    <Clock className="h-3.5 w-3.5 text-zinc-500" />
+                    <Calendar className="h-3.5 w-3.5 text-zinc-500" />
                     <span>Est. Duration</span>
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
                     {job.duration ?? "1 to 3 months"}
                   </p>
                 </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
+                    <Clock className="h-3.5 w-3.5 text-zinc-500" />
+                    <span>Commitment</span>
+                  </div>
+                  <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                    {job.timeCommitment ?? "Flexible"}
+                  </p>
+                </div>
               </div>
 
               {/* Detailed Scope of Work */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2.5 pt-2">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                   Detailed Scope of Work
                 </h2>
@@ -259,7 +261,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 </div>
               </div>
 
-              {/* Structured Deliverables */}
+              {/* Structured Deliverables (Rendered only when defined) */}
               {job.deliverables && (
                 <div className="space-y-3 rounded-xl border border-indigo-100/80 bg-indigo-50/20 p-4.5 dark:border-indigo-950 dark:bg-indigo-950/10">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
@@ -272,7 +274,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 </div>
               )}
 
-              {/* Screening Questions */}
+              {/* Screening Questions (Rendered only when defined) */}
               {job.screeningQuestions && job.screeningQuestions.length > 0 && (
                 <div className="space-y-3 rounded-xl border border-amber-200/60 bg-amber-50/40 p-4.5 dark:border-amber-900/40 dark:bg-amber-950/20">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-300">
@@ -298,7 +300,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 </div>
               )}
 
-              {/* Skills Section */}
+              {/* Skills Section & Single AI Suitability Card */}
               {job.skills.length > 0 && (
                 <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
@@ -315,54 +317,16 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                     ))}
                   </div>
 
-                  {/* AI Suitability Match Breakdown (Clean Full-Width Placement) */}
+                  {/* AI Suitability Match Breakdown (Displayed once, right where skills are evaluated) */}
                   <div className="pt-2">
                     <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} />
                   </div>
                 </div>
               )}
             </div>
-
-            {/* Escrow & Security Trust Card */}
-            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50/20 p-6 shadow-xs dark:border-emerald-900/30 dark:bg-emerald-950/10 space-y-4">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
-                  <Shield className="h-4 w-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                    WorkWasl Milestone Escrow Protection
-                  </h3>
-                  <p className="text-[11px] text-zinc-500">
-                    Guaranteed payment security on every funded milestone.
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                Work with total peace of mind. Clients deposit 100% of milestone funds into platform
-                escrow before you begin development. When work is approved, funds release directly
-                to your balance with our transparent, flat $1 platform fee.
-              </p>
-
-              <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-3">
-                <div className="flex items-center gap-2 rounded-xl bg-white/80 p-3 text-xs font-medium text-zinc-700 shadow-2xs dark:bg-zinc-900/80 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800">
-                  <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Pre-funded Escrow</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-white/80 p-3 text-xs font-medium text-zinc-700 shadow-2xs dark:bg-zinc-900/80 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800">
-                  <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Flat $1 Fee Per Milestone</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl bg-white/80 p-3 text-xs font-medium text-zinc-700 shadow-2xs dark:bg-zinc-900/80 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800">
-                  <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Neutral Mediation</span>
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Sticky Sidebar (4 cols) */}
+          {/* Sticky Sidebar: Compensation & Client Dossier (4 cols) */}
           <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-20 self-start">
             {/* Compensation & Action Card */}
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
@@ -379,7 +343,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 </div>
               </div>
 
-              {/* Actions Stack */}
+              {/* Action Buttons */}
               <div className="space-y-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                 {isClientOwner ? (
                   <Link
