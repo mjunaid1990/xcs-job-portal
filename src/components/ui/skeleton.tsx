@@ -75,29 +75,59 @@ export function TableSkeleton({
 
 export function JobCardSkeleton() {
   return (
-    <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 sm:p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
-      <div className="flex items-start justify-between gap-4">
-        <div className="space-y-2 w-3/4">
-          <Skeleton className="h-5 w-48" />
-          <Skeleton className="h-3.5 w-32" />
+    <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 sm:p-6 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="space-y-2.5 flex-1 min-w-0 pr-0 sm:pr-4">
+          {/* Meta pill row: posted time, category, fit badge */}
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-3.5 w-12 rounded-md" />
+            <span className="text-zinc-300 dark:text-zinc-700">•</span>
+            <Skeleton className="h-4 w-24 rounded-full" />
+            <Skeleton className="h-4 w-20 rounded-full" />
+          </div>
+
+          {/* Job Title */}
+          <Skeleton className="h-6 w-3/4 max-w-md rounded-md" />
+
+          {/* Specifications row */}
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-3.5 w-24 rounded-md" />
+            <span className="text-zinc-300 dark:text-zinc-700">•</span>
+            <Skeleton className="h-3.5 w-20 rounded-md" />
+            <span className="text-zinc-300 dark:text-zinc-700">•</span>
+            <Skeleton className="h-3.5 w-24 rounded-md" />
+          </div>
+
+          {/* Description snippet */}
+          <div className="space-y-1.5 pt-0.5">
+            <Skeleton className="h-3.5 w-full rounded-md" />
+            <Skeleton className="h-3.5 w-4/5 rounded-md" />
+          </div>
+
+          {/* Skills pills */}
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            <Skeleton className="h-6 w-16 rounded-lg" />
+            <Skeleton className="h-6 w-20 rounded-lg" />
+            <Skeleton className="h-6 w-14 rounded-lg" />
+            <Skeleton className="h-6 w-18 rounded-lg" />
+          </div>
         </div>
-        <Skeleton className="h-6 w-20 rounded-full" />
+
+        {/* Budget column */}
+        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-1 shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800 min-w-[120px]">
+          <Skeleton className="h-7 w-24 rounded-lg" />
+          <Skeleton className="h-3 w-20 rounded-md mt-1" />
+          <Skeleton className="hidden sm:block h-4 w-16 rounded-md mt-3" />
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <Skeleton className="h-3 w-full" />
-        <Skeleton className="h-3 w-5/6" />
-      </div>
-
-      <div className="flex flex-wrap gap-2 pt-2">
-        <Skeleton className="h-5 w-16 rounded-full" />
-        <Skeleton className="h-5 w-20 rounded-full" />
-        <Skeleton className="h-5 w-14 rounded-full" />
-      </div>
-
-      <div className="flex items-center justify-between border-t border-zinc-100 pt-4 dark:border-zinc-800">
-        <Skeleton className="h-4 w-28" />
-        <Skeleton className="h-8 w-24 rounded-xl" />
+      {/* Client trust footer */}
+      <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-3.5 w-28 rounded-md" />
+          <Skeleton className="h-3.5 w-24 rounded-md" />
+        </div>
+        <Skeleton className="h-3 w-12 rounded-md sm:hidden" />
       </div>
     </div>
   );

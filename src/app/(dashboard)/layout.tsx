@@ -56,9 +56,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 flex flex-col justify-between">
-      {/* Top Ambient Glow Line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-80" />
-
       {/* Top Navigation Bar */}
       <DashboardHeader user={user} navItems={navItems} />
 
