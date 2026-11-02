@@ -173,13 +173,19 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
           {/* Main Job Briefing Column (8 cols) */}
           <div className="lg:col-span-8">
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-6">
-              {/* Header: Title first, then Client & Meta below */}
-              <div className="space-y-3">
+              {/* Header: Category Eyebrow, Title, then Client & Meta below */}
+              <div className="space-y-2.5">
+                <div>
+                  <span className="inline-block rounded-md bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                    {job.category?.name ?? "General Opportunity"}
+                  </span>
+                </div>
+
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
                   {job.title}
                 </h1>
 
-                {/* Unified Client & Posting Meta Bar below Title */}
+                {/* Client & Posting Meta Bar below Title */}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-zinc-600 dark:text-zinc-400 pt-0.5">
                   <span className="inline-flex items-center gap-1.5 font-semibold text-zinc-900 dark:text-zinc-100">
                     <Building2 className="h-4 w-4 text-zinc-400" />
@@ -192,12 +198,6 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                       <span>Payment Verified</span>
                     </span>
                   )}
-
-                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
-
-                  <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
-                    {job.category?.name ?? "General Opportunity"}
-                  </span>
 
                   <span className="text-zinc-300 dark:text-zinc-700">•</span>
 
