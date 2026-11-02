@@ -597,6 +597,41 @@ export async function seedDatabase() {
     }
   }
 
+  // Portfolio items for Noah (freelancer1)
+  await prisma.portfolioItem.deleteMany({ where: { freelancerId: freelancer1.id } });
+  await prisma.portfolioItem.createMany({
+    data: [
+      {
+        freelancerId: freelancer1.id,
+        title: "Enterprise Multi-Tenant Escrow Ledger Engine",
+        description:
+          "Architected a double-entry ledger platform with row-level locks, zero-knowledge audit trails, and Stripe Connect webhook idempotency processing over $12M annually.",
+        url: "https://github.com/noah-freelancer/escrow-vault",
+      },
+      {
+        freelancerId: freelancer1.id,
+        title: "Real-Time Distributed Collaboration Suite",
+        description:
+          "Engineered a high-concurrency CRDT collaboration engine with Next.js 15, WebSockets, and Redis pub/sub supporting 25,000+ simultaneous connected clients.",
+        url: "https://noah-engineer.dev/projects/crdt-canvas",
+      },
+    ],
+  });
+
+  // Portfolio items for Alex (freelancer2)
+  await prisma.portfolioItem.deleteMany({ where: { freelancerId: freelancer2.id } });
+  await prisma.portfolioItem.createMany({
+    data: [
+      {
+        freelancerId: freelancer2.id,
+        title: "Fintech Design System 2.0 with Token Studio",
+        description:
+          "Comprehensive multi-brand design system in Figma with WCAG AAA contrast tokens, automated Tailwind export, and 60+ accessible component specifications.",
+        url: "https://alexrivera.design/work/fintech-tokens",
+      },
+    ],
+  });
+
   // Platform Settings
   await prisma.platformSetting.upsert({
     where: { key: "platform_fee_bps" },
@@ -1621,7 +1656,19 @@ export async function seedDatabase() {
     return c2;
   });
 
-  // Reviews on Completed Contract 2
+  // Review on Milestone Release for Contract 1 (Noah)
+  await prisma.review.upsert({
+    where: { contractId_reviewerId: { contractId: contract1.id, reviewerId: client1.id } },
+    update: {},
+    create: {
+      contractId: contract1.id,
+      reviewerId: client1.id,
+      revieweeId: freelancer1.id,
+      rating: 5,
+      comment:
+        "Noah is a world-class architect. Milestone 1 was delivered ahead of schedule with bulletproof double-entry ledger constraints and impeccable documentation.",
+    },
+  });
   await prisma.review.upsert({
     where: { contractId_reviewerId: { contractId: contract2.id, reviewerId: client2.id } },
     update: {},

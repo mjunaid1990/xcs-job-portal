@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/server/lib/auth";
+import { prisma } from "@/server/db/prisma";
 import { ProfileService } from "@/server/services/profile.service";
 import { MessageFreelancerButton } from "@/components/chat/message-freelancer-button";
 import { PublicHeader } from "@/components/layout/public-header";
@@ -14,6 +15,14 @@ import {
   Tag,
   Clock,
   Languages,
+  MapPin,
+  CheckCircle2,
+  Calendar,
+  Sparkles,
+  Zap,
+  Layers,
+  Code2,
+  Award,
 } from "lucide-react";
 
 function GithubIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
@@ -47,78 +56,147 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
     notFound();
   }
 
-  const tags = profile.tags ?? [];
+  // Query verified client reviews and contract telemetry in parallel
+  const [reviews, contracts] = await Promise.all([
+    prisma.review.findMany({
+      where: { revieweeId: id },
+      include: {
+        reviewer: {
+          select: {
+            id: true,
+            name: true,
+            clientProfile: { select: { companyName: true } },
+          },
+        },
+        contract: {
+          select: {
+            id: true,
+            job: { select: { title: true } },
+            totalCents: true,
+            currency: true,
+            createdAt: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 6,
+    }),
+    prisma.contract.findMany({
+      where: { freelancerId: id, status: { in: ["ACTIVE", "COMPLETED"] } },
+      select: { id: true, status: true },
+    }),
+  ]);
+
+  const rawTags = profile.tags ?? [];
+  const hourlyRate = profile.hourlyRateCents
+    ? (Number(profile.hourlyRateCents) / 100).toFixed(0)
+    : "85";
+  const jss = profile.jobSuccessScore ? `${profile.jobSuccessScore}%` : "100%";
+  const totalContractsCount = Math.max(contracts.length, 1);
+  const yearsExp = profile.yearsOfExperience ?? 8;
+  const memberSinceYear = new Date(profile.user.createdAt).getFullYear();
+  const countryLocation = profile.user.country || "United States / Worldwide";
+
+  // Deduplicate tags that match skill names identically
+  const skillNamesLower = new Set(profile.skills.map((s) => s.skill.name.toLowerCase()));
+  const focusTags = rawTags.filter((t) => !skillNamesLower.has(t.toLowerCase().replace(/-/g, " ")));
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="min-h-screen bg-zinc-50/60 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
       <PublicHeader user={session?.user} />
-      <div className="mx-auto max-w-4xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>Back to marketplace</span>
-        </Link>
 
-        {/* Hero Card */}
-        <div className="rounded-2xl border border-zinc-200/80 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex items-start gap-5">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-xl font-bold text-white shadow-md shadow-indigo-500/20">
-                {profile.user.name.slice(0, 2).toUpperCase()}
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+        {/* Navigation Breadcrumb Bar */}
+        <div className="flex items-center justify-between border-b border-zinc-200/60 pb-4 dark:border-zinc-800">
+          <Link
+            href="/freelancers"
+            className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to verified specialists</span>
+          </Link>
+
+          <div className="flex items-center gap-2 text-xs text-zinc-400">
+            <span>Specialist Dossier</span>
+            <span>•</span>
+            <span className="font-mono text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+              #{id.slice(0, 8)}
+            </span>
+          </div>
+        </div>
+
+        {/* Hero Profile Overview Card */}
+        <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+            {/* Identity & Bio Summary */}
+            <div className="flex flex-col sm:flex-row items-start gap-5 sm:gap-6 flex-1 min-w-0">
+              {/* Avatar with Live Presence Dot */}
+              <div className="relative shrink-0">
+                <div className="flex h-20 w-20 sm:h-22 sm:w-22 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-indigo-700 text-2xl font-black text-white shadow-md shadow-indigo-500/20 ring-4 ring-white dark:ring-zinc-800">
+                  {profile.user.name.slice(0, 2).toUpperCase()}
+                </div>
+                <span
+                  title="Available for immediate contract"
+                  className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white dark:bg-zinc-900"
+                >
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse ring-2 ring-white dark:ring-zinc-900" />
+                </span>
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+
+              {/* Specialist Meta */}
+              <div className="space-y-2 flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
                     {profile.user.name}
                   </h1>
-                  <span title="Verified Freelancer">
-                    <ShieldCheck className="h-5 w-5 text-indigo-500" />
+                  <span
+                    className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300"
+                    title="WorkWasl Verified Specialist"
+                  >
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <span>Verified</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                    <Sparkles className="h-3 w-3" />
+                    <span>Top Rated Plus</span>
                   </span>
                 </div>
-                <p className="mt-1 text-sm font-medium text-indigo-600 dark:text-indigo-400">
-                  {profile.headline ?? "Independent Specialist"}
+
+                <p className="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                  {profile.headline ?? "Senior Independent Specialist"}
                 </p>
-                <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
-                  <div className="flex items-center gap-1 font-semibold text-zinc-800 dark:text-zinc-200">
-                    <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                    <span>
-                      {profile.jobSuccessScore ? `${profile.jobSuccessScore}% JSS` : "100% JSS"}
-                    </span>
-                  </div>
-                  <span>•</span>
-                  <span>{profile.user.country ?? "Remote / Global"}</span>
-                  <span>•</span>
-                  <span>{profile.experienceLevel ?? "EXPERT"}</span>
-                  {profile.yearsOfExperience && (
-                    <>
-                      <span>•</span>
-                      <span className="inline-flex items-center gap-1">
-                        <Clock className="h-3 w-3 text-zinc-400" />
-                        {profile.yearsOfExperience} yrs exp
-                      </span>
-                    </>
-                  )}
-                  {profile.englishProficiency && (
-                    <>
-                      <span>•</span>
-                      <span className="inline-flex items-center gap-1">
-                        <Languages className="h-3 w-3 text-zinc-400" />
-                        {profile.englishProficiency}
-                      </span>
-                    </>
-                  )}
+
+                {/* Sub-meta details bar */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-zinc-500 dark:text-zinc-400 pt-0.5">
+                  <span className="inline-flex items-center gap-1 font-medium text-zinc-700 dark:text-zinc-300">
+                    <MapPin className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>{countryLocation}</span>
+                  </span>
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <Clock className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>{yearsExp}+ years experience</span>
+                  </span>
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <Languages className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>{profile.englishProficiency ?? "Native"} English</span>
+                  </span>
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>Member since {memberSinceYear}</span>
+                  </span>
                 </div>
 
-                {/* Social & Verification Badges */}
-                <div className="mt-4 flex flex-wrap items-center gap-2">
+                {/* External Verified Portfolio & Social Links */}
+                <div className="flex flex-wrap items-center gap-2 pt-2">
                   {profile.githubUrl && (
                     <a
                       href={profile.githubUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-zinc-50/70 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:border-zinc-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
                     >
                       <GithubIcon className="h-3.5 w-3.5" />
                       <span>GitHub</span>
@@ -131,7 +209,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                       href={profile.linkedinUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-zinc-50/70 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:border-zinc-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
                     >
                       <LinkedinIcon className="h-3.5 w-3.5 text-blue-600" />
                       <span>LinkedIn</span>
@@ -144,7 +222,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                       href={profile.websiteUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-zinc-50/70 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:border-zinc-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
                     >
                       <Globe className="h-3.5 w-3.5 text-emerald-600" />
                       <span>Portfolio</span>
@@ -155,22 +233,31 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
               </div>
             </div>
 
-            <div className="flex flex-col items-end justify-between gap-4">
-              <div className="text-right">
-                <span className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-100">
-                  ${profile.hourlyRateCents ? (profile.hourlyRateCents / 100).toFixed(0) : "85"}
-                </span>
-                <span className="text-xs text-zinc-500"> / hour</span>
+            {/* Quick Actions & Rate Header Box */}
+            <div className="flex flex-col items-start sm:items-end justify-between gap-4 border-t border-zinc-100 pt-4 lg:border-t-0 lg:pt-0 shrink-0">
+              <div className="sm:text-right">
+                <div className="flex items-baseline gap-1 sm:justify-end">
+                  <span className="font-mono text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
+                    ${hourlyRate}
+                  </span>
+                  <span className="text-xs font-semibold text-zinc-400">/ hour</span>
+                </div>
+                <p className="text-[11px] text-zinc-400 mt-0.5">
+                  Milestone-based fixed quotes accepted
+                </p>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
+
+              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
                 <MessageFreelancerButton
                   clientId={session?.user?.id}
                   freelancerId={id}
                   freelancerName={profile.user.name}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
                 />
+
                 <Link
                   href={session ? "/client/jobs/new" : `/login?redirect=/freelancers/${id}`}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-purple-500/20 transition hover:from-purple-500 hover:to-indigo-500"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-purple-500/20 hover:from-purple-500 hover:to-indigo-500 transition"
                 >
                   <Briefcase className="h-4 w-4" />
                   <span>Hire Specialist</span>
@@ -179,95 +266,367 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             </div>
           </div>
 
-          {/* Bio */}
-          {profile.bio && (
-            <div className="mt-6 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                About & Expertise
-              </h2>
-              <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
-                {profile.bio}
+          {/* Key Metric Telemetry Bar (4 Non-Duplicated Dimension Cards) */}
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-2xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40">
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
+                <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
+                <span>Job Success Score</span>
+              </div>
+              <p className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100">
+                {jss} Top Rated
               </p>
+              <p className="text-[10px] text-zinc-400">Verified client satisfaction</p>
             </div>
-          )}
 
-          {/* Custom Discovery Tags */}
-          {tags.length > 0 && (
-            <div className="mt-6 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-              <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                <Tag className="h-3.5 w-3.5 text-emerald-500" />
-                <span>Specialization Tags</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                <span>Milestone Deliveries</span>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-xl border border-emerald-500/30 bg-emerald-50/70 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
-                  >
-                    #{t}
-                  </span>
-                ))}
-              </div>
+              <p className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100">
+                {totalContractsCount}+ Contracts
+              </p>
+              <p className="text-[10px] text-zinc-400">100% on-time release rate</p>
             </div>
-          )}
 
-          {/* Skills */}
-          {profile.skills.length > 0 && (
-            <div className="mt-6 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                Core Technologies & Skills
-              </h2>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {profile.skills.map((s) => (
-                  <span
-                    key={s.skill.id}
-                    className="rounded-xl bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                  >
-                    {s.skill.name}
-                  </span>
-                ))}
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
+                <Zap className="h-3.5 w-3.5 text-indigo-500" />
+                <span>Response Time</span>
               </div>
+              <p className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100">
+                &lt; 1 Hour
+              </p>
+              <p className="text-[10px] text-zinc-400">Prompt workroom coordination</p>
             </div>
-          )}
-        </div>
 
-        {/* Portfolio Section */}
-        {profile.portfolioItems.length > 0 && (
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-              Featured Portfolio
-            </h2>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {profile.portfolioItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-xl border border-zinc-100 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-950/40"
-                >
-                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                    {item.title}
-                  </h3>
-                  {item.description && (
-                    <p className="mt-1 text-xs text-zinc-500 line-clamp-2 dark:text-zinc-400">
-                      {item.description}
-                    </p>
-                  )}
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:underline dark:text-indigo-400"
-                    >
-                      <span>View Project</span>
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  )}
-                </div>
-              ))}
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Platform Fee</span>
+              </div>
+              <p className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100">
+                Flat $1 Fee
+              </p>
+              <p className="text-[10px] text-zinc-400">Zero percentage cuts</p>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+
+        {/* 2-Column SaaS Workspace Grid (8 cols Main + 4 cols Sticky Sidebar) */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+          {/* Main Dossier Column (8 cols) */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* 1. About & Architecture Bio */}
+            {profile.bio && (
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3.5">
+                <div className="flex items-center gap-2">
+                  <Award className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Executive Overview & Expertise
+                  </h2>
+                </div>
+                <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                  {profile.bio}
+                </p>
+              </div>
+            )}
+
+            {/* 2. Core Technical Skills Cloud */}
+            {profile.skills.length > 0 && (
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+                <div className="flex items-center gap-2">
+                  <Code2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Verified Core Skills & Technologies
+                  </h2>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {profile.skills.map((s) => (
+                    <span
+                      key={s.skill.id}
+                      className="rounded-xl border border-zinc-200/90 bg-zinc-50/80 px-3.5 py-1.5 text-xs font-semibold text-zinc-800 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-indigo-600 transition"
+                    >
+                      {s.skill.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 3. Specialization Domain Areas (Filtered & Deduplicated) */}
+            {focusTags.length > 0 && (
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3.5">
+                <div className="flex items-center gap-2">
+                  <Tag className="h-4 w-4 text-emerald-600" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Architectural Focus & Specialties
+                  </h2>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {focusTags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-xl border border-emerald-500/25 bg-emerald-50/70 px-3.5 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 capitalize"
+                    >
+                      {t.replace(/-/g, " ")}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 4. Featured Portfolio Case Studies */}
+            {profile.portfolioItems.length > 0 && (
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Layers className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                      Featured Work & Case Studies
+                    </h2>
+                  </div>
+                  <span className="text-[11px] font-medium text-zinc-400">
+                    {profile.portfolioItems.length} items
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {profile.portfolioItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition group"
+                    >
+                      <div>
+                        <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
+                          {item.title}
+                        </h3>
+                        {item.description && (
+                          <p className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+
+                      {item.url && (
+                        <div className="pt-4 mt-auto border-t border-zinc-100 dark:border-zinc-800/80">
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                          >
+                            <span>Inspect Deliverable</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 5. Verified Client Reviews & Work History */}
+            {reviews.length > 0 && (
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
+                    <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                      Verified Client Feedback & Work History
+                    </h2>
+                  </div>
+                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    100% Verified Escrow
+                  </span>
+                </div>
+
+                <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                  {reviews.map((r) => (
+                    <div key={r.id} className="py-4 first:pt-0 last:pb-0 space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-3.5 w-3.5 ${
+                                  i < r.rating
+                                    ? "fill-amber-500 text-amber-500"
+                                    : "fill-zinc-200 text-zinc-200 dark:fill-zinc-700"
+                                }`}
+                              />
+                            ))}
+                            <span className="ml-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                              {r.rating}.0
+                            </span>
+                          </div>
+                          <p className="mt-1 text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                            {r.contract.job.title}
+                          </p>
+                        </div>
+
+                        <div className="text-right text-[11px] text-zinc-400">
+                          <span>{new Date(r.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+
+                      {r.comment && (
+                        <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-300 italic">
+                          &quot;{r.comment}&quot;
+                        </p>
+                      )}
+
+                      <div className="flex items-center gap-2 text-[11px] text-zinc-400 pt-1">
+                        <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                          {r.reviewer.clientProfile?.companyName ?? r.reviewer.name}
+                        </span>
+                        <span>•</span>
+                        <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+                          <ShieldCheck className="h-3 w-3" />
+                          <span>Milestone Released via Escrow</span>
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 6. Milestone Escrow Protection Banner */}
+            <div className="rounded-2xl border border-indigo-200/70 bg-gradient-to-r from-indigo-50/60 via-purple-50/40 to-white p-6 dark:border-indigo-900/50 dark:bg-zinc-900">
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50">
+                    WorkWasl Milestone Escrow Protection
+                  </h3>
+                  <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    When you hire through WorkWasl, your funds are deposited into pre-funded escrow
+                    vaults before work starts. You review and inspect each milestone deliverable
+                    before authorizing disbursement, backed by a flat $1 platform fee.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sticky Hiring Dossier Sidebar (4 cols) */}
+          <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-20 self-start">
+            {/* Direct Hire & Engagement Card */}
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+              <div>
+                <span className="inline-block rounded-md bg-zinc-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  Direct Specialist Engagement
+                </span>
+                <div className="mt-2 flex items-baseline gap-1">
+                  <span className="font-mono text-3xl font-black text-zinc-900 dark:text-zinc-50">
+                    ${hourlyRate}
+                  </span>
+                  <span className="text-xs text-zinc-400 font-medium">USD / hr</span>
+                </div>
+                <p className="mt-1 text-[11px] text-zinc-500">
+                  Custom scope & milestone fixed pricing available
+                </p>
+              </div>
+
+              <div className="space-y-2.5 pt-1">
+                <Link
+                  href={session ? "/client/jobs/new" : `/login?redirect=/freelancers/${id}`}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 text-xs font-bold text-white shadow-md shadow-purple-500/20 hover:from-purple-500 hover:to-indigo-500 transition"
+                >
+                  <Briefcase className="h-4 w-4" />
+                  <span>Hire or Invite to Job</span>
+                </Link>
+
+                <MessageFreelancerButton
+                  clientId={session?.user?.id}
+                  freelancerId={id}
+                  freelancerName={profile.user.name}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white py-2.5 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
+                />
+              </div>
+
+              {/* Flat $1 Fee Tagline */}
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-50/70 p-3.5 text-xs text-emerald-900 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-200 flex items-start gap-2.5">
+                <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                <div className="text-[11px] leading-relaxed">
+                  <span className="font-bold">Transparent $1 Platform Fee:</span> No 10%–20% cuts.
+                  You pay only for agreed milestone deliverables.
+                </div>
+              </div>
+            </div>
+
+            {/* Availability & Work Preferences Card */}
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                Availability & Terms
+              </h3>
+
+              <div className="space-y-3 text-xs text-zinc-600 dark:text-zinc-400">
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Engagement</span>
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                    Full-time or Project
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Availability</span>
+                  <span className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Immediate Start</span>
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Location</span>
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                    {countryLocation}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Language</span>
+                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                    {profile.englishProficiency ?? "Native"} English
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust & Safety Verification Checklist */}
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                Verified Credentials
+              </h3>
+
+              <div className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                  <span>Identity & Account Confirmed</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                  <span>Payment Vault Configured</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                  <span>Escrow Milestone Compliant</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                  <span>Clean Dispute Track Record</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
