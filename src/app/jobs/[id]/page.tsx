@@ -5,9 +5,8 @@ import { JobService } from "@/server/services/job.service";
 import { auth } from "@/server/lib/auth";
 import { SaveJobButton } from "@/components/forms/save-job-button";
 import { ReportJobModal } from "@/components/forms/report-job-modal";
-import { JobFitBadge } from "@/components/jobs/job-fit-badge";
 import { PublicHeader } from "@/components/layout/public-header";
-import { formatRelativeTime } from "@/lib/format";
+import { formatRelativeTime, formatJobRef, getJobUrl, extractJobId } from "@/lib/format";
 import {
   ShieldCheck,
   Building2,
@@ -31,8 +30,9 @@ interface JobDetailsPageProps {
 
 export async function generateMetadata({ params }: JobDetailsPageProps): Promise<Metadata> {
   const { id } = await params;
+  const canonicalId = extractJobId(id);
   try {
-    const job = await JobService.getJobById(id);
+    const job = await JobService.getJobById(canonicalId);
     const company = job.client?.clientProfile?.companyName ?? job.client?.name ?? "WorkWasl Client";
     const budget = job.budgetMaxCents
       ? `$${(job.budgetMaxCents / 100).toLocaleString()}`
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: JobDetailsPageProps): Promise
         title: `${job.title} - ${budget}`,
         description: job.description.slice(0, 200),
         type: "article",
-        url: `/jobs/${job.id}`,
+        url: getJobUrl(job),
       },
     };
   } catch {
@@ -57,17 +57,20 @@ export async function generateMetadata({ params }: JobDetailsPageProps): Promise
 
 export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
   const { id } = await params;
+  const canonicalId = extractJobId(id);
   const session = await auth();
 
   let job;
   try {
-    job = await JobService.getJobById(id);
+    job = await JobService.getJobById(canonicalId);
   } catch {
     notFound();
   }
 
   const isClientOwner = session?.user?.id === job.clientId;
-  const isSaved = session?.user?.id ? await JobService.isJobSaved(session.user.id, id) : false;
+  const isSaved = session?.user?.id
+    ? await JobService.isJobSaved(session.user.id, canonicalId)
+    : false;
 
   const companyName =
     job.client?.clientProfile?.companyName ?? job.client?.name ?? "Confidential Client";
@@ -205,6 +208,12 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                     <Clock className="h-3.5 w-3.5 text-zinc-400" />
                     <span>Posted {postedAgo}</span>
                   </span>
+
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+
+                  <span className="font-mono text-[11px] font-semibold text-zinc-400">
+                    {formatJobRef(job.id)}
+                  </span>
                 </div>
               </div>
 
@@ -300,9 +309,9 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 </div>
               )}
 
-              {/* Skills Section & Single AI Suitability Card */}
+              {/* Skills Section */}
               {job.skills.length > 0 && (
-                <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
+                <div className="space-y-3 border-t border-zinc-100 pt-6 dark:border-zinc-800">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Required Skills & Expertise
                   </h2>
@@ -315,11 +324,6 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                         {s.skill.name}
                       </span>
                     ))}
-                  </div>
-
-                  {/* AI Suitability Match Breakdown (Displayed once, right where skills are evaluated) */}
-                  <div className="pt-2">
-                    <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} />
                   </div>
                 </div>
               )}
@@ -356,7 +360,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 ) : session?.user ? (
                   <div className="space-y-2">
                     <Link
-                      href={`/jobs/${job.id}/apply`}
+                      href={`${getJobUrl(job)}/apply`}
                       className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-xs font-bold text-white shadow-md shadow-emerald-500/20 hover:from-emerald-500 hover:to-teal-500 transition"
                     >
                       <Send className="h-4 w-4" />

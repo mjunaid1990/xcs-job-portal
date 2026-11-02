@@ -3,6 +3,7 @@ import { prisma } from "@/server/db/prisma";
 import { BudgetType, JobStatus, Prisma } from "@prisma/client";
 import { AppError, HTTP_STATUS } from "@/server/lib/errors";
 import { sanitizeHtml } from "@/server/lib/sanitize";
+import { extractJobId } from "@/lib/format";
 
 export interface CreateJobInput {
   title: string;
@@ -139,8 +140,9 @@ export class JobService {
    * Retrieves a job by ID with full details.
    */
   static async getJobById(jobId: string) {
+    const canonicalId = extractJobId(jobId);
     const job = await prisma.job.findFirst({
-      where: { id: jobId, deletedAt: null },
+      where: { id: canonicalId, deletedAt: null },
       include: {
         client: {
           select: {
@@ -260,8 +262,9 @@ export class JobService {
    * Toggles bookmark/saved state for a freelancer on a job.
    */
   static async toggleSaveJob(userId: string, jobId: string): Promise<{ saved: boolean }> {
+    const canonicalId = extractJobId(jobId);
     const job = await prisma.job.findFirst({
-      where: { id: jobId, deletedAt: null },
+      where: { id: canonicalId, deletedAt: null },
     });
 
     if (!job) {
@@ -272,7 +275,7 @@ export class JobService {
       where: {
         userId_jobId: {
           userId,
-          jobId,
+          jobId: canonicalId,
         },
       },
     });
@@ -282,7 +285,7 @@ export class JobService {
         where: {
           userId_jobId: {
             userId,
-            jobId,
+            jobId: canonicalId,
           },
         },
       });
@@ -292,7 +295,7 @@ export class JobService {
     await prisma.savedJob.create({
       data: {
         userId,
-        jobId,
+        jobId: canonicalId,
       },
     });
 
@@ -303,11 +306,12 @@ export class JobService {
    * Checks if a user has saved a job.
    */
   static async isJobSaved(userId: string, jobId: string): Promise<boolean> {
+    const canonicalId = extractJobId(jobId);
     const saved = await prisma.savedJob.findUnique({
       where: {
         userId_jobId: {
           userId,
-          jobId,
+          jobId: canonicalId,
         },
       },
     });

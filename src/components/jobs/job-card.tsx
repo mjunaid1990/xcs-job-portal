@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 import { JobFitBadge } from "@/components/jobs/job-fit-badge";
-import { formatRelativeTime } from "@/lib/format";
+import { formatRelativeTime, getJobUrl } from "@/lib/format";
 
 export interface JobCardProps {
   job: {
@@ -59,7 +59,7 @@ export function JobCard({ job }: JobCardProps) {
 
   return (
     <div className="group relative rounded-2xl border border-zinc-200/80 bg-white p-5 sm:p-6 shadow-2xs transition-all duration-200 hover:border-indigo-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-400/50">
-      <Link href={`/jobs/${job.id}`} className="block">
+      <Link href={getJobUrl(job)} className="block">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2.5 flex-1 min-w-0 pr-0 sm:pr-4">
             {/* Meta Pill Row */}

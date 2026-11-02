@@ -649,6 +649,15 @@ export async function seedDatabase() {
   const skillReact = skillMap.get("react");
   const skillFigma = skillMap.get("figma");
   const skillTailwind = skillMap.get("tailwindcss");
+  const skillPython = skillMap.get("python");
+  const skillDocker = skillMap.get("docker");
+  const skillK8s = skillMap.get("kubernetes");
+  const skillAws = skillMap.get("aws");
+  const skillTerraform = skillMap.get("terraform");
+  const skillSolidity = skillMap.get("solidity");
+  const skillFlutter = skillMap.get("flutter");
+  const skillReactNative = skillMap.get("react-native");
+  const skillFastApi = skillMap.get("fastapi");
 
   // JOB 1: Active In-Progress Architecture Job (Client 1: Ava)
   const job1Id = "00000000-0000-0000-0000-000000000001";
@@ -815,6 +824,361 @@ export async function seedDatabase() {
       publishedAt: new Date(Date.now() - 20 * 86400000),
     },
   });
+
+  // JOB 5: Real-Time Collaborative Canvas (Client 1: Ava)
+  const job5Id = "00000000-0000-0000-0000-000000000005";
+  const job5 = await prisma.job.upsert({
+    where: { id: job5Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job5Id,
+      clientId: client1.id,
+      categoryId: engCat?.id,
+      title: "Real-Time Collaborative Whiteboard Canvas with WebSockets",
+      description:
+        "Looking for an expert Next.js and WebSockets engineer to build a multi-cursor interactive whiteboard canvas with live state synchronisation and conflict-free replicated data types (CRDTs).",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 420000,
+      budgetMaxCents: 420000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "MEDIUM",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job5-${client1.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 5 * 3600000),
+    },
+  });
+  if (skillTs) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job5.id, skillId: skillTs } },
+      update: {},
+      create: { jobId: job5.id, skillId: skillTs },
+    });
+  }
+  if (skillNext) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job5.id, skillId: skillNext } },
+      update: {},
+      create: { jobId: job5.id, skillId: skillNext },
+    });
+  }
+  if (skillReact) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job5.id, skillId: skillReact } },
+      update: {},
+      create: { jobId: job5.id, skillId: skillReact },
+    });
+  }
+
+  // JOB 6: LangChain RAG Pipeline (Client 2: Acme Cloud)
+  const job6Id = "00000000-0000-0000-0000-000000000006";
+  const job6 = await prisma.job.upsert({
+    where: { id: job6Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job6Id,
+      clientId: client2.id,
+      categoryId: dataCat?.id,
+      title: "LangChain RAG Pipeline with FastAPI & Pinecone Vector Store",
+      description:
+        "Develop an enterprise retrieval-augmented generation (RAG) backend utilizing LangChain, FastAPI, and Pinecone. Must support hybrid semantic search and strict streaming response limits.",
+      budgetType: BudgetType.HOURLY,
+      budgetMinCents: 8500,
+      budgetMaxCents: 12000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "3 to 6 months",
+      scope: "LARGE",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job6-${client2.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 12 * 3600000),
+    },
+  });
+  if (skillPython) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job6.id, skillId: skillPython } },
+      update: {},
+      create: { jobId: job6.id, skillId: skillPython },
+    });
+  }
+  if (skillFastApi) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job6.id, skillId: skillFastApi } },
+      update: {},
+      create: { jobId: job6.id, skillId: skillFastApi },
+    });
+  }
+  if (skillDocker) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job6.id, skillId: skillDocker } },
+      update: {},
+      create: { jobId: job6.id, skillId: skillDocker },
+    });
+  }
+
+  // JOB 7: Flutter Mobile Crypto Wallet (Client 1: Ava)
+  const job7Id = "00000000-0000-0000-0000-000000000007";
+  const job7 = await prisma.job.upsert({
+    where: { id: job7Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job7Id,
+      clientId: client1.id,
+      categoryId: engCat?.id,
+      title: "Cross-Platform Flutter Mobile Crypto Wallet with Biometrics",
+      description:
+        "Build a sleek iOS and Android wallet app using Flutter. Features include biometric key storage (Secure Enclave / KeyStore), offline QR code signing, and native push notifications.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 650000,
+      budgetMaxCents: 650000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "LARGE",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job7-${client1.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 24 * 3600000),
+    },
+  });
+  if (skillFlutter) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job7.id, skillId: skillFlutter } },
+      update: {},
+      create: { jobId: job7.id, skillId: skillFlutter },
+    });
+  }
+  if (skillTs) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job7.id, skillId: skillTs } },
+      update: {},
+      create: { jobId: job7.id, skillId: skillTs },
+    });
+  }
+
+  // JOB 8: Fintech Design System in Figma (Client 2: Acme Cloud)
+  const job8Id = "00000000-0000-0000-0000-000000000008";
+  const job8 = await prisma.job.upsert({
+    where: { id: job8Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job8Id,
+      clientId: client2.id,
+      categoryId: designCat?.id,
+      title: "Fintech SaaS Design System & Interactive Prototypes in Figma",
+      description:
+        "Create an accessible, comprehensive Figma design system with variables, auto-layout 5.0, dark/light token sets, and micro-interaction prototypes for modern escrow dashboards.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 380000,
+      budgetMaxCents: 380000,
+      currency: "USD",
+      experienceLevel: "INTERMEDIATE",
+      duration: "Less than 1 month",
+      scope: "MEDIUM",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job8-${client2.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 36 * 3600000),
+    },
+  });
+  if (skillFigma) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job8.id, skillId: skillFigma } },
+      update: {},
+      create: { jobId: job8.id, skillId: skillFigma },
+    });
+  }
+  if (skillTailwind) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job8.id, skillId: skillTailwind } },
+      update: {},
+      create: { jobId: job8.id, skillId: skillTailwind },
+    });
+  }
+
+  // JOB 9: Kubernetes GitOps CI/CD (Client 2: Acme Cloud)
+  const job9Id = "00000000-0000-0000-0000-000000000009";
+  const job9 = await prisma.job.upsert({
+    where: { id: job9Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job9Id,
+      clientId: client2.id,
+      categoryId: engCat?.id,
+      title: "Kubernetes Cluster GitOps CI/CD with Terraform & AWS EKS",
+      description:
+        "Provision a production-grade multi-region AWS EKS cluster with Terraform, ArgoCD GitOps pipelines, Helm charts, Datadog observability, and zero-downtime blue/green rollouts.",
+      budgetType: BudgetType.HOURLY,
+      budgetMinCents: 9000,
+      budgetMaxCents: 13000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "3 to 6 months",
+      scope: "LARGE",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job9-${client2.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 48 * 3600000),
+    },
+  });
+  if (skillK8s) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job9.id, skillId: skillK8s } },
+      update: {},
+      create: { jobId: job9.id, skillId: skillK8s },
+    });
+  }
+  if (skillTerraform) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job9.id, skillId: skillTerraform } },
+      update: {},
+      create: { jobId: job9.id, skillId: skillTerraform },
+    });
+  }
+  if (skillAws) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job9.id, skillId: skillAws } },
+      update: {},
+      create: { jobId: job9.id, skillId: skillAws },
+    });
+  }
+  if (skillDocker) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job9.id, skillId: skillDocker } },
+      update: {},
+      create: { jobId: job9.id, skillId: skillDocker },
+    });
+  }
+
+  // JOB 10: Stripe Connect Custom Marketplace Onboarding (Client 1: Ava)
+  const job10Id = "00000000-0000-0000-0000-000000000010";
+  const job10 = await prisma.job.upsert({
+    where: { id: job10Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job10Id,
+      clientId: client1.id,
+      categoryId: engCat?.id,
+      title: "Stripe Connect Custom Marketplace Onboarding & Split Payouts",
+      description:
+        "Implement custom account onboarding, verification webhooks, 1099 compliance checks, and split payout transfers with escrow milestone holds via Stripe Connect API.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 500000,
+      budgetMaxCents: 500000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "MEDIUM",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job10-${client1.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 60 * 3600000),
+    },
+  });
+  if (skillTs) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job10.id, skillId: skillTs } },
+      update: {},
+      create: { jobId: job10.id, skillId: skillTs },
+    });
+  }
+  if (skillPg) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job10.id, skillId: skillPg } },
+      update: {},
+      create: { jobId: job10.id, skillId: skillPg },
+    });
+  }
+  if (skillNext) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job10.id, skillId: skillNext } },
+      update: {},
+      create: { jobId: job10.id, skillId: skillNext },
+    });
+  }
+
+  // JOB 11: Solidity Escrow Smart Contract (Client 1: Ava)
+  const job11Id = "00000000-0000-0000-0000-000000000011";
+  const job11 = await prisma.job.upsert({
+    where: { id: job11Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job11Id,
+      clientId: client1.id,
+      categoryId: engCat?.id,
+      title: "Smart Contract Solidity Escrow Vault with Formal Verification",
+      description:
+        "Audit and optimize our multi-sig EVM escrow smart contract with timelocks, dispute arbitrator callbacks, reentrancy guards, and formal verification tests with Foundry.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 750000,
+      budgetMaxCents: 750000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "LARGE",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job11-${client1.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 72 * 3600000),
+    },
+  });
+  if (skillSolidity) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job11.id, skillId: skillSolidity } },
+      update: {},
+      create: { jobId: job11.id, skillId: skillSolidity },
+    });
+  }
+  if (skillTs) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job11.id, skillId: skillTs } },
+      update: {},
+      create: { jobId: job11.id, skillId: skillTs },
+    });
+  }
+
+  // JOB 12: Offline-First React Native App (Client 2: Acme Cloud)
+  const job12Id = "00000000-0000-0000-0000-000000000012";
+  const job12 = await prisma.job.upsert({
+    where: { id: job12Id },
+    update: { status: JobStatus.OPEN },
+    create: {
+      id: job12Id,
+      clientId: client2.id,
+      categoryId: engCat?.id,
+      title: "React Native Offline-First Field Service Technician App",
+      description:
+        "Engineer an offline-first mobile app using React Native, WatermelonDB (SQLite), and background delta sync for field technicians operating in low-connectivity areas.",
+      budgetType: BudgetType.FIXED,
+      budgetMinCents: 580000,
+      budgetMaxCents: 580000,
+      currency: "USD",
+      experienceLevel: "EXPERT",
+      duration: "1 to 3 months",
+      scope: "LARGE",
+      status: JobStatus.OPEN,
+      proposalsCount: 0,
+      dedupeHash: crypto.createHash("sha256").update(`job12-${client2.id}`).digest("hex"),
+      publishedAt: new Date(Date.now() - 84 * 3600000),
+    },
+  });
+  if (skillReactNative) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job12.id, skillId: skillReactNative } },
+      update: {},
+      create: { jobId: job12.id, skillId: skillReactNative },
+    });
+  }
+  if (skillTs) {
+    await prisma.jobSkill.upsert({
+      where: { jobId_skillId: { jobId: job12.id, skillId: skillTs } },
+      update: {},
+      create: { jobId: job12.id, skillId: skillTs },
+    });
+  }
 
   // PROPOSALS
   // Proposal 1 on Job 1 (Noah) -> Accepted into Contract 1

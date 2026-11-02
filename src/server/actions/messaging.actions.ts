@@ -8,6 +8,16 @@ import { revalidatePath } from "next/cache";
 export interface MessageActionResult {
   success: boolean;
   conversationId?: string;
+  message?: {
+    id: string;
+    conversationId?: string;
+    senderId: string;
+    body: string;
+    clientMsgId?: string;
+    readAt: string | Date | null;
+    createdAt: string | Date;
+    sender: { id: string; name: string };
+  };
   error?: string;
 }
 
@@ -29,10 +39,28 @@ export async function sendMessageAction(
   }
 
   try {
-    await MessagingService.sendMessage(session.user.id, conversationId, body, clientMsgId);
+    const createdMsg = await MessagingService.sendMessage(
+      session.user.id,
+      conversationId,
+      body,
+      clientMsgId,
+    );
     revalidatePath(`/messages/${conversationId}`);
     revalidatePath("/messages");
-    return { success: true, conversationId };
+    return {
+      success: true,
+      conversationId,
+      message: {
+        id: createdMsg.id,
+        conversationId: createdMsg.conversationId,
+        senderId: createdMsg.senderId,
+        body: createdMsg.body,
+        clientMsgId: createdMsg.clientMsgId ?? undefined,
+        readAt: createdMsg.readAt,
+        createdAt: createdMsg.createdAt,
+        sender: createdMsg.sender,
+      },
+    };
   } catch (error: unknown) {
     if (error && typeof error === "object" && "message" in error) {
       return { success: false, error: String((error as { message: string }).message) };

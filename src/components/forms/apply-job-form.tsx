@@ -3,41 +3,32 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { submitProposalAction } from "@/server/actions/proposal.actions";
-import {
-  Loader2,
-  DollarSign,
-  Send,
-  Clock,
-  ShieldCheck,
-  TrendingUp,
-  HelpCircle,
-} from "lucide-react";
+import { Loader2, DollarSign, Send, Clock, HelpCircle } from "lucide-react";
 
 interface ApplyJobFormProps {
   jobId: string;
+  jobTitle?: string;
   budgetType: "FIXED" | "HOURLY";
   screeningQuestions?: string[];
+  defaultBid?: string;
 }
 
-export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: ApplyJobFormProps) {
+export function ApplyJobForm({
+  jobId,
+  budgetType,
+  screeningQuestions = [],
+  defaultBid = "500",
+}: ApplyJobFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const [bid, setBid] = useState("500");
+  const [bid, setBid] = useState(defaultBid);
   const [estimatedDays, setEstimatedDays] = useState("14");
   const [coverLetter, setCoverLetter] = useState("");
 
   const bidNum = Number(bid) || 0;
-  // Transparent economic math: WorkWasl flat $1 fee vs Legacy 10% platforms
-  const workWaslPlatformFee = bidNum > 0 ? 1 : 0;
-  const stripeEstimatedFee = bidNum > 0 ? Number((bidNum * 0.029 + 0.3).toFixed(2)) : 0;
-  const netEarnings = Math.max(
-    0,
-    Number((bidNum - workWaslPlatformFee - stripeEstimatedFee).toFixed(2)),
-  );
-  const legacyPlatformTax = Math.round(bidNum * 0.1); // Upwork/Fiverr 10% cut
-  const additionalEarnings = Math.max(0, Math.round(legacyPlatformTax - workWaslPlatformFee));
+  const netEarnings = Math.max(0, bidNum > 0 ? bidNum - 1 : 0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,17 +53,21 @@ export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: App
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="rounded-lg bg-red-500/10 p-3 text-sm text-red-700 dark:text-red-400">
+        <div className="rounded-xl border border-red-200 bg-red-50/70 p-3.5 text-xs text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
           {error}
         </div>
       )}
 
-      {/* Bid Breakdown */}
-      <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-950/40 space-y-4">
+      {/* Proposed Terms */}
+      <div className="space-y-4">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+          Proposed Terms & Timeline
+        </h2>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-              {budgetType === "HOURLY" ? "Hourly Bid Rate ($/hr)" : "Total Bid Amount ($)"}{" "}
+            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+              {budgetType === "HOURLY" ? "Hourly Bid Rate ($/hr)" : "Your Total Bid ($)"}{" "}
               <span className="text-red-500">*</span>
             </label>
             <div className="relative mt-1.5">
@@ -80,17 +75,21 @@ export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: App
               <input
                 type="number"
                 min="5"
+                step="any"
                 required
                 value={bid}
                 onChange={(e) => setBid(e.target.value)}
-                className="w-full rounded-lg border border-zinc-300 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                placeholder="500"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 transition"
               />
             </div>
-            <p className="mt-1 text-[11px] text-zinc-500">The total amount the client will see.</p>
+            <p className="mt-1 text-[11px] text-zinc-400">
+              Total amount the client will be billed.
+            </p>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
+            <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
               Estimated Delivery Time (Days) <span className="text-red-500">*</span>
             </label>
             <div className="relative mt-1.5">
@@ -101,74 +100,63 @@ export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: App
                 required
                 value={estimatedDays}
                 onChange={(e) => setEstimatedDays(e.target.value)}
-                className="w-full rounded-lg border border-zinc-300 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                placeholder="14"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 transition"
               />
             </div>
-            <p className="mt-1 text-[11px] text-zinc-500">Target completion timeframe.</p>
+            <p className="mt-1 text-[11px] text-zinc-400">
+              Estimated days to full project delivery.
+            </p>
           </div>
         </div>
 
-        {/* Transparent Take-Home Earnings Breakdown */}
-        <div className="border-t border-zinc-200/70 pt-4 text-xs dark:border-zinc-800 space-y-2.5">
-          <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
-            <span className="flex items-center gap-1.5 font-medium">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-              <span>WorkWasl Platform Fee (Flat $1 Per Contract):</span>
-            </span>
-            <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
-              ${workWaslPlatformFee.toFixed(2)}
-            </span>
-          </div>
+        {/* Clean, Non-Duplicative Take-Home Snapshot */}
+        <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
+            <div className="flex items-center gap-4 text-zinc-600 dark:text-zinc-400">
+              <div>
+                <span className="text-[11px] text-zinc-400 block">Your Bid</span>
+                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                  ${bidNum.toFixed(2)}
+                </span>
+              </div>
+              <span className="text-zinc-300 dark:text-zinc-700">—</span>
+              <div>
+                <span className="text-[11px] text-zinc-400 block">Platform Fee</span>
+                <span className="font-mono font-medium text-zinc-500">$1.00 (Flat)</span>
+              </div>
+            </div>
 
-          <div className="flex items-center justify-between text-zinc-500">
-            <span>Direct Stripe Merchant Rails (2.9% + $0.30):</span>
-            <span className="font-mono">-${stripeEstimatedFee.toFixed(2)}</span>
-          </div>
-
-          <div className="flex items-center justify-between rounded-xl bg-emerald-500/10 p-3 text-emerald-900 dark:text-emerald-200">
-            <span className="font-bold text-xs sm:text-sm">
-              Estimated Net Payout (Direct to Bank):
-            </span>
-            <span className="font-mono text-base font-black text-emerald-700 dark:text-emerald-300">
-              ${netEarnings.toFixed(2)}
-            </span>
-          </div>
-
-          {bidNum >= 50 && (
-            <div className="flex items-center gap-2 rounded-lg bg-indigo-50 p-2.5 text-[11px] font-semibold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
-              <TrendingUp className="h-3.5 w-3.5 flex-shrink-0 text-indigo-600 dark:text-indigo-400" />
-              <span>
-                You keep <strong>+${additionalEarnings}</strong> more on WorkWasl compared to Upwork
-                / Fiverr&apos;s 10% commission.
+            <div className="sm:text-right border-t sm:border-t-0 pt-2 sm:pt-0 border-zinc-200/60 dark:border-zinc-800">
+              <span className="text-[11px] text-zinc-400 block">You&apos;ll Receive (Net)</span>
+              <span className="font-mono text-base font-black text-emerald-600 dark:text-emerald-400">
+                ${netEarnings.toFixed(2)}
               </span>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
-      {/* Screening Questions from Client */}
+      {/* Screening Questions from Client (if specified) */}
       {screeningQuestions.length > 0 && (
-        <div className="rounded-xl border border-indigo-200/70 bg-indigo-50/40 p-4 dark:border-indigo-900/50 dark:bg-indigo-950/20">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
-            <HelpCircle className="h-4 w-4" />
-            <span>Client Screening Questions ({screeningQuestions.length})</span>
+        <div className="space-y-3 rounded-xl border border-amber-200/60 bg-amber-50/30 p-4 dark:border-amber-900/40 dark:bg-amber-950/20">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
+            <HelpCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            <span>Client Screening Questions</span>
           </div>
-          <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
-            Please make sure to explicitly address each of the client&apos;s questions below within
-            your proposal pitch:
+          <p className="text-[11px] text-amber-800/80 dark:text-amber-300/70">
+            Please make sure to address these questions directly in your pitch below:
           </p>
-          <div className="mt-3 space-y-2.5">
+          <div className="space-y-2 pt-1">
             {screeningQuestions.map((question, i) => (
               <div
                 key={i}
-                className="flex items-start gap-2.5 rounded-lg border border-indigo-100 bg-white p-3 text-xs shadow-2xs dark:border-indigo-900/40 dark:bg-zinc-900"
+                className="flex items-start gap-2 text-xs text-zinc-800 dark:text-zinc-200"
               >
-                <span className="flex h-5 w-6 shrink-0 items-center justify-center rounded-md bg-indigo-100 font-mono text-[10px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-                  Q{i + 1}
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-200/80 font-bold text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 text-[10px]">
+                  {i + 1}
                 </span>
-                <p className="font-medium text-zinc-800 dark:text-zinc-200 leading-relaxed">
-                  {question}
-                </p>
+                <span className="pt-0.5 leading-snug">{question}</span>
               </div>
             ))}
           </div>
@@ -176,17 +164,17 @@ export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: App
       )}
 
       {/* Cover Letter */}
-      <div>
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-            Cover Letter & Pitch <span className="text-red-500">*</span>
+          <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+            Cover Letter & Proposal Pitch <span className="text-red-500">*</span>
           </label>
           <span
-            className={`text-[11px] font-mono ${
+            className={`font-mono text-[11px] ${
               coverLetter.trim().length >= 20 && coverLetter.trim().length <= 5000
                 ? "text-zinc-400"
                 : coverLetter.trim().length > 5000
-                  ? "text-red-500 font-bold"
+                  ? "font-bold text-red-500"
                   : "text-amber-500"
             }`}
           >
@@ -194,6 +182,7 @@ export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: App
             {coverLetter.trim().length < 20 && "(min 20)"}
           </span>
         </div>
+
         <textarea
           rows={7}
           required
@@ -201,20 +190,28 @@ export function ApplyJobForm({ jobId, budgetType, screeningQuestions = [] }: App
           maxLength={5000}
           value={coverLetter}
           onChange={(e) => setCoverLetter(e.target.value)}
-          placeholder="Explain why you are the best fit for this project, how you will approach the deliverables, and mention relevant past experience. Plaintext with line breaks, markdown, links, and emojis are supported..."
-          className="mt-1.5 w-full rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-sm text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 whitespace-pre-wrap leading-relaxed"
+          placeholder="Explain your approach to the project, how you will tackle the milestone deliverables, and highlight past relevant experience..."
+          className="w-full rounded-xl border border-zinc-200 bg-white p-3.5 text-xs leading-relaxed text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 whitespace-pre-wrap transition"
         />
-        <p className="mt-1 text-xs text-zinc-500">
-          Plaintext format supported: multi-line paragraphs, numbered lists, markdown, and links are
-          preserved.
+        <p className="text-[11px] text-zinc-400">
+          Markdown formatting, bullet points, and code links are fully supported.
         </p>
       </div>
 
-      <div className="flex justify-end pt-2">
+      {/* Actions */}
+      <div className="flex items-center justify-end gap-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="rounded-xl border border-zinc-200 px-4 py-2.5 text-xs font-semibold text-zinc-600 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 transition"
+        >
+          Cancel
+        </button>
+
         <button
           type="submit"
-          disabled={isPending}
-          className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-500 disabled:opacity-60"
+          disabled={isPending || coverLetter.trim().length < 20}
+          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-2.5 text-xs font-bold text-white shadow-md shadow-emerald-500/20 transition hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50"
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />

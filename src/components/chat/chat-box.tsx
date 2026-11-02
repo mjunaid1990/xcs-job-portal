@@ -85,6 +85,7 @@ export function ChatBox({
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isSubmittingRef = useRef<boolean>(false);
   const lastFetchedTimeRef = useRef<string>(
     initialMessages.length > 0
       ? new Date(initialMessages[initialMessages.length - 1].createdAt).toISOString()
@@ -192,11 +193,12 @@ export function ChatBox({
     };
   }, [conversationId, currentUserId, showScrollBottom, scrollToBottom]);
 
-  // Send message handler with optimistic UI update and clientMsgId tracking
+  // Send message handler with optimistic UI update, double-submit guard and immediate reconciliation
   const handleSend = (overrideText?: string) => {
     const content = (overrideText ?? text).trim();
-    if (!content) return;
+    if (!content || isPending || isSubmittingRef.current) return;
 
+    isSubmittingRef.current = true;
     if (!overrideText) {
       setText("");
     }
@@ -206,9 +208,11 @@ export function ChatBox({
         ? crypto.randomUUID()
         : `40000000-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, "0")}`;
 
+    const tempId = `temp-${Date.now()}`;
+
     // Optimistic item
     const optimisticMsg: MessageItem = {
-      id: `temp-${Date.now()}`,
+      id: tempId,
       conversationId,
       senderId: currentUserId,
       body: content,
@@ -227,14 +231,33 @@ export function ChatBox({
     formData.append("clientMsgId", tempClientMsgId);
 
     startTransition(async () => {
-      await sendMessageAction(null, formData);
+      try {
+        const res = await sendMessageAction(null, formData);
+        if (res.success && res.message) {
+          const confirmed = res.message as MessageItem;
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === tempId || (m.clientMsgId && m.clientMsgId === tempClientMsgId)
+                ? confirmed
+                : m,
+            ),
+          );
+        }
+      } catch {
+        // Remove failed temp message
+        setMessages((prev) => prev.filter((m) => m.id !== tempId));
+      } finally {
+        isSubmittingRef.current = false;
+      }
     });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      if (!isPending && !isSubmittingRef.current && text.trim()) {
+        handleSend();
+      }
     }
   };
 
@@ -272,7 +295,7 @@ export function ChatBox({
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="relative flex-1 overflow-y-auto px-6 py-4 space-y-3.5"
+        className="relative flex-1 overflow-y-auto px-4 sm:px-6 py-4"
       >
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center text-center p-8 text-zinc-400">
@@ -288,53 +311,76 @@ export function ChatBox({
             </p>
           </div>
         ) : (
-          messages.map((m) => {
+          messages.map((m, idx) => {
             const isMe = m.senderId === currentUserId;
             const isOptimistic = m.id.startsWith("temp-");
             const isRead = Boolean(m.readAt);
 
+            const prev = messages[idx - 1];
+            const next = messages[idx + 1];
+
+            const isSameSenderAsPrev =
+              prev &&
+              prev.senderId === m.senderId &&
+              Math.abs(new Date(m.createdAt).getTime() - new Date(prev.createdAt).getTime()) <
+                120000;
+
+            const isSameSenderAsNext =
+              next &&
+              next.senderId === m.senderId &&
+              Math.abs(new Date(next.createdAt).getTime() - new Date(m.createdAt).getTime()) <
+                120000;
+
             return (
               <div
                 key={m.id}
-                className={`flex flex-col ${isMe ? "items-end" : "items-start"} transition-all`}
+                className={`flex flex-col ${isMe ? "items-end" : "items-start"} ${
+                  isSameSenderAsPrev ? "mt-1" : "mt-3.5"
+                } transition-all`}
               >
-                {!isMe && (
-                  <span className="mb-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                {!isMe && !isSameSenderAsPrev && (
+                  <span className="mb-1 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
                     {partnerName ?? m.sender.name}
                   </span>
                 )}
 
                 <div
-                  className={`max-w-[78%] rounded-2xl px-3.5 py-2 text-xs leading-relaxed shadow-2xs ${
+                  className={`max-w-[78%] px-3.5 py-2 text-xs leading-relaxed shadow-2xs ${
                     isMe
-                      ? "bg-indigo-600 text-white rounded-br-xs"
-                      : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100 rounded-bl-xs border border-zinc-200/50 dark:border-zinc-700/50"
+                      ? `bg-indigo-600 text-white rounded-2xl ${
+                          isSameSenderAsPrev ? "rounded-tr-md" : ""
+                        } ${isSameSenderAsNext ? "rounded-br-md" : "rounded-br-xs"}`
+                      : `bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100 border border-zinc-200/50 dark:border-zinc-700/50 rounded-2xl ${
+                          isSameSenderAsPrev ? "rounded-tl-md" : ""
+                        } ${isSameSenderAsNext ? "rounded-bl-md" : "rounded-bl-xs"}`
                   }`}
                 >
                   <p className="whitespace-pre-wrap break-words">{m.body}</p>
                 </div>
 
-                <div className="mt-1 flex items-center gap-1.5 text-[10px] text-zinc-400">
-                  <span>{formatMessageTime(m.createdAt)}</span>
-                  {isMe && (
-                    <span className="inline-flex items-center">
-                      {isOptimistic ? (
-                        <Loader2 className="h-2.5 w-2.5 animate-spin text-zinc-400" />
-                      ) : isRead ? (
-                        <span
-                          className="inline-flex items-center text-indigo-500 dark:text-indigo-400"
-                          title="Read"
-                        >
-                          <CheckCheck className="h-3 w-3" />
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center text-zinc-400" title="Sent">
-                          <Check className="h-2.5 w-2.5" />
-                        </span>
-                      )}
-                    </span>
-                  )}
-                </div>
+                {!isSameSenderAsNext && (
+                  <div className="mt-1 flex items-center gap-1.5 text-[10px] text-zinc-400 px-1">
+                    <span>{formatMessageTime(m.createdAt)}</span>
+                    {isMe && (
+                      <span className="inline-flex items-center">
+                        {isOptimistic ? (
+                          <Loader2 className="h-2.5 w-2.5 animate-spin text-zinc-400" />
+                        ) : isRead ? (
+                          <span
+                            className="inline-flex items-center text-indigo-500 dark:text-indigo-400"
+                            title="Read"
+                          >
+                            <CheckCheck className="h-3 w-3" />
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center text-zinc-400" title="Sent">
+                            <Check className="h-2.5 w-2.5" />
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })

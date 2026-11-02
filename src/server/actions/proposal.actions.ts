@@ -2,6 +2,7 @@
 
 import { auth } from "@/server/lib/auth";
 import { ProposalService } from "@/server/services/proposal.service";
+import { extractJobId } from "@/lib/format";
 import { revalidatePath } from "next/cache";
 
 export interface ProposalActionResult {
@@ -19,7 +20,8 @@ export async function submitProposalAction(
     return { success: false, error: "Please sign in to submit a proposal." };
   }
 
-  const jobId = formData.get("jobId")?.toString();
+  const rawJobId = formData.get("jobId")?.toString();
+  const jobId = rawJobId ? extractJobId(rawJobId) : undefined;
   const coverLetter = formData.get("coverLetter")?.toString();
   const bidDollars = Number(formData.get("bid"));
   const estimatedDays = Number(formData.get("estimatedDays"));
