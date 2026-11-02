@@ -2,26 +2,16 @@ import { auth } from "@/server/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/server/db/prisma";
-import { PageHeader } from "@/components/ui/page-header";
-import { StatCard } from "@/components/ui/stat-card";
-import { Badge } from "@/components/ui/badge";
-import { JobFitBadge } from "@/components/jobs/job-fit-badge";
+import { getJobUrl } from "@/lib/format";
 import {
-  UserCheck,
   Search,
-  Send,
-  CheckCircle,
-  Sparkles,
-  ArrowRight,
   Briefcase,
   Clock,
-  ShieldCheck,
-  DollarSign,
-  TrendingUp,
-  FileText,
-  Calendar,
+  ArrowRight,
   ChevronRight,
-  Check,
+  ExternalLink,
+  CheckCircle2,
+  FileText,
 } from "lucide-react";
 
 export default async function FreelancerDashboardPage() {
@@ -48,126 +38,142 @@ export default async function FreelancerDashboardPage() {
         where: { freelancerId: session.user.id, status: "ACTIVE" },
         include: {
           job: true,
-          client: { include: { clientProfile: true } },
+          client: {
+            select: {
+              name: true,
+              clientProfile: { select: { companyName: true } },
+            },
+          },
           milestones: true,
         },
         orderBy: { updatedAt: "desc" },
-        take: 3,
       }),
       prisma.proposal.findMany({
         where: { freelancerId: session.user.id },
-        include: { job: true },
+        take: 5,
         orderBy: { createdAt: "desc" },
-        take: 4,
+        include: {
+          job: { select: { id: true, title: true, budgetMaxCents: true, budgetType: true } },
+        },
       }),
       prisma.job.findMany({
-        where: { status: "OPEN", deletedAt: null },
-        include: {
-          skills: { include: { skill: true } },
-          client: { include: { clientProfile: true } },
-        },
+        where: { status: "OPEN" },
+        take: 4,
         orderBy: { createdAt: "desc" },
-        take: 3,
+        include: {
+          category: true,
+          skills: { include: { skill: true } },
+          client: {
+            select: {
+              name: true,
+              clientProfile: { select: { companyName: true } },
+            },
+          },
+        },
       }),
     ]);
 
+  const firstName = session.user.name?.split(" ")[0] ?? "Freelancer";
   const hourlyRate = profile?.hourlyRateCents
     ? `$${(profile.hourlyRateCents / 100).toFixed(0)}/hr`
     : "$85/hr";
 
-  // Calculate Profile Completeness
-  let completenessScore = 30; // base registered
+  let completenessScore = 30; // base account
   if (profile?.headline) completenessScore += 25;
   if (profile?.bio) completenessScore += 20;
   if (profile?.hourlyRateCents) completenessScore += 15;
   if (profile?.skills && profile.skills.length > 0) completenessScore += 10;
   completenessScore = Math.min(100, completenessScore);
 
-  const userSkillNames = profile?.skills?.map((s) => s.skill.name) ?? [
-    "React",
-    "TypeScript",
-    "Next.js",
-  ];
-
   return (
     <div className="space-y-8">
-      {/* Header with CTA */}
-      <PageHeader
-        badge="Freelancer Hub"
-        badgeIcon={UserCheck}
-        badgeVariant="success"
-        title={`Welcome back, ${session.user.name?.split(" ")[0] ?? "Freelancer"}`}
-        description="Find vetted opportunities, manage active contracts with milestone escrow, and track your take-home earnings."
-      >
+      {/* Human, Natural Greeting Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+            Welcome back, {firstName}
+          </h1>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            {activeContracts.length > 0
+              ? `You have ${activeContracts.length} active project${activeContracts.length > 1 ? "s" : ""} and ${recentProposals.length} proposal${recentProposals.length === 1 ? "" : "s"} under review.`
+              : "Track your active proposals, manage deliverables, and discover open client briefs."}
+          </p>
+        </div>
+
         <div className="flex items-center gap-3">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-purple-500/20 transition hover:from-purple-500 hover:to-indigo-500"
+            className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
           >
             <Search className="h-4 w-4" />
-            <span>Browse Opportunities</span>
+            <span>Find Work</span>
           </Link>
         </div>
-      </PageHeader>
-
-      {/* Top Telemetry Metrics */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <StatCard
-          title="Active Proposals"
-          value={proposalCount}
-          description="Submitted client pitches"
-          icon={Send}
-          iconColor="text-indigo-600 dark:text-indigo-400"
-          iconBg="bg-indigo-50 dark:bg-indigo-950/40"
-        />
-
-        <StatCard
-          title="Hourly Rate"
-          value={hourlyRate}
-          description="Current baseline rate"
-          icon={DollarSign}
-          iconColor="text-emerald-600 dark:text-emerald-400"
-          iconBg="bg-emerald-50 dark:bg-emerald-950/40"
-          badge={{
-            text: profile?.currency ?? "USD",
-            color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
-          }}
-        />
-
-        <StatCard
-          title="Job Success Score"
-          value="100%"
-          description="Top-rated contractor standing"
-          icon={CheckCircle}
-          iconColor="text-purple-600 dark:text-purple-400"
-          iconBg="bg-purple-50 dark:bg-purple-950/40"
-          badge={{
-            text: "Top Rated Plus",
-            color: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
-          }}
-        />
       </div>
 
-      {/* High-Density Dual-Column Layout */}
+      {/* Clean KPI Summary Strip (Human, Minimal, High-Contrast) */}
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            Active Projects
+          </span>
+          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            {activeContracts.length}
+          </div>
+          <p className="mt-1 text-[11px] text-zinc-400">Contracts in flight</p>
+        </div>
+
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            Proposals Sent
+          </span>
+          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            {proposalCount}
+          </div>
+          <p className="mt-1 text-[11px] text-zinc-400">Submitted pitches</p>
+        </div>
+
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            Baseline Rate
+          </span>
+          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            {hourlyRate}
+          </div>
+          <p className="mt-1 text-[11px] text-zinc-400">Profile rate in USD</p>
+        </div>
+
+        <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            Available Funds
+          </span>
+          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">$0.00</div>
+          <p className="mt-1 text-[11px] text-zinc-400">Ready for payout</p>
+        </div>
+      </div>
+
+      {/* Main 2-Column Responsive Body */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* Left Column (2/3 Grid): Work In-Flight & Discovery */}
+        {/* Left Column (2 spans): Active Work & In-Flight Proposals */}
         <div className="space-y-6 lg:col-span-2">
           {/* Active Milestone Contracts */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between mb-4">
+          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                <Briefcase className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+                <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                   Active Engagements ({activeContracts.length})
-                </h3>
+                </h2>
               </div>
-              <Link
-                href="/freelancer/contracts"
-                className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center gap-1"
-              >
-                <span>View all</span>
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Link>
+              {activeContracts.length > 0 && (
+                <Link
+                  href="/freelancer/contracts"
+                  className="text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 flex items-center gap-1"
+                >
+                  <span>View all</span>
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
+              )}
             </div>
 
             {activeContracts.length > 0 ? (
@@ -178,34 +184,38 @@ export default async function FreelancerDashboardPage() {
                   ).length;
                   const totalM = contract.milestones.length;
                   const progress = totalM > 0 ? Math.round((completedM / totalM) * 100) : 0;
+                  const clientName =
+                    contract.client.clientProfile?.companyName ?? contract.client.name;
 
                   return (
                     <div
                       key={contract.id}
                       className="rounded-xl border border-zinc-100 bg-zinc-50/50 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
                     >
-                      <div className="space-y-1.5 flex-1">
+                      <div className="space-y-1.5 flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                          <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
                             {contract.job.title}
-                          </h4>
-                          <Badge variant="purple">ACTIVE</Badge>
+                          </h3>
+                          <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+                            Active
+                          </span>
                         </div>
                         <p className="text-xs text-zinc-500">
                           Client:{" "}
                           <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                            {contract.client.clientProfile?.companyName ?? contract.client.name}
+                            {clientName}
                           </span>{" "}
-                          &middot; ${(Number(contract.totalCents) / 100).toFixed(0)} Escrow
+                          · ${(Number(contract.totalCents) / 100).toFixed(0)} Escrow
                         </p>
                         <div className="flex items-center gap-3 pt-1">
-                          <div className="h-1.5 w-32 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+                          <div className="h-1.5 w-28 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-emerald-500 to-indigo-600 rounded-full"
+                              className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full"
                               style={{ width: `${progress}%` }}
                             />
                           </div>
-                          <span className="text-[11px] font-semibold text-zinc-500">
+                          <span className="text-[11px] font-medium text-zinc-500">
                             {completedM}/{totalM} milestones ({progress}%)
                           </span>
                         </div>
@@ -213,7 +223,7 @@ export default async function FreelancerDashboardPage() {
 
                       <Link
                         href={`/contracts/${contract.id}`}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-bold text-zinc-800 shadow-xs hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition"
+                        className="inline-flex items-center justify-center gap-1.5 self-start sm:self-auto rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition shrink-0"
                       >
                         <span>Open Workroom</span>
                         <ArrowRight className="h-3.5 w-3.5 text-zinc-400" />
@@ -223,44 +233,44 @@ export default async function FreelancerDashboardPage() {
                 })}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-zinc-200 p-6 text-center dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-950/20">
-                <Clock className="mx-auto h-8 w-8 text-zinc-400" />
-                <h4 className="mt-2 text-sm font-bold text-zinc-800 dark:text-zinc-200">
-                  No active milestone contracts yet
-                </h4>
-                <p className="mt-1 text-xs text-zinc-500 max-w-sm mx-auto">
-                  Submit milestone proposals to clients. Once approved and funded, workrooms with
-                  WebRTC huddles appear here.
+              <div className="rounded-xl border border-dashed border-zinc-200 p-8 text-center text-xs text-zinc-500 dark:border-zinc-800">
+                <Clock className="mx-auto h-7 w-7 text-zinc-400 mb-2" />
+                <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+                  No active contracts right now
                 </p>
-                <div className="mt-4">
-                  <Link
-                    href="/jobs"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
-                  >
-                    <span>Browse available opportunities</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
+                <p className="mt-1 text-zinc-400">
+                  When a client accepts your proposal and funds a milestone, workrooms will appear
+                  here.
+                </p>
+                <Link
+                  href="/jobs"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-900 underline dark:text-zinc-100"
+                >
+                  <span>Explore open briefs</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
               </div>
             )}
           </div>
 
           {/* Recent Proposals Tracker */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between mb-4">
+          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-                  Recent Pitch Submissions ({recentProposals.length})
-                </h3>
+                <FileText className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+                <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  Recent Proposals ({recentProposals.length})
+                </h2>
               </div>
-              <Link
-                href="/freelancer/proposals"
-                className="text-xs font-semibold text-purple-600 hover:text-purple-700 dark:text-purple-400 flex items-center gap-1"
-              >
-                <span>View all</span>
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Link>
+              {recentProposals.length > 0 && (
+                <Link
+                  href="/freelancer/proposals"
+                  className="text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 flex items-center gap-1"
+                >
+                  <span>View all</span>
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
+              )}
             </div>
 
             {recentProposals.length > 0 ? (
@@ -270,104 +280,96 @@ export default async function FreelancerDashboardPage() {
                     key={proposal.id}
                     className="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4"
                   >
-                    <div className="space-y-1">
+                    <div className="space-y-1 min-w-0">
                       <Link
-                        href={`/jobs/${proposal.job.id}`}
-                        className="text-xs font-bold text-zinc-900 hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400 transition"
+                        href={getJobUrl(proposal.job)}
+                        className="text-xs font-bold text-zinc-900 hover:underline dark:text-zinc-100 truncate block"
                       >
                         {proposal.job.title}
                       </Link>
-                      <div className="flex items-center gap-3 text-[11px] text-zinc-500">
-                        <span className="font-mono font-semibold text-zinc-700 dark:text-zinc-300">
+                      <div className="flex items-center gap-2.5 text-[11px] text-zinc-500">
+                        <span className="font-medium text-zinc-700 dark:text-zinc-300">
                           ${(proposal.bidCents / 100).toFixed(0)} Bid
                         </span>
-                        <span>&middot;</span>
+                        <span>·</span>
                         <span>
                           {proposal.estimatedDays ? `${proposal.estimatedDays} days` : "Flexible"}
                         </span>
-                        <span>&middot;</span>
+                        <span>·</span>
                         <span>{new Date(proposal.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>
 
-                    <Badge
-                      variant={
+                    <span
+                      className={`rounded-md px-2.5 py-1 text-[11px] font-semibold shrink-0 ${
                         proposal.status === "ACCEPTED"
-                          ? "success"
+                          ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
                           : proposal.status === "SHORTLISTED"
-                            ? "purple"
+                            ? "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300"
                             : proposal.status === "REJECTED"
-                              ? "destructive"
-                              : "secondary"
-                      }
+                              ? "bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300"
+                              : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                      }`}
                     >
-                      {proposal.status}
-                    </Badge>
+                      {proposal.status === "SUBMITTED" ? "In Review" : proposal.status}
+                    </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-zinc-500 py-3">
+              <p className="text-xs text-zinc-500 py-2">
                 You haven&apos;t pitched for any projects yet.
               </p>
             )}
           </div>
 
-          {/* Curated Recommendations for You */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-                  Recommended Opportunities for You
-                </h3>
-              </div>
-              <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full dark:bg-emerald-950 dark:text-emerald-300">
-                AI Skill Matched
-              </span>
+          {/* Recommended Opportunities */}
+          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Opportunities Matching Your Profile
+              </h2>
+              <Link
+                href="/jobs"
+                className="text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              >
+                Browse all &rarr;
+              </Link>
             </div>
 
             <div className="space-y-3">
               {recommendedJobs.map((job) => {
-                const jobSkillNames = job.skills.map((s) => s.skill.name);
                 const budget = job.budgetMaxCents
-                  ? `$${(job.budgetMaxCents / 100).toFixed(0)}`
+                  ? `$${(job.budgetMaxCents / 100).toLocaleString()}`
                   : "Competitive";
+                const clientName = job.client.clientProfile?.companyName ?? job.client.name;
 
                 return (
                   <div
                     key={job.id}
                     className="rounded-xl border border-zinc-100 bg-zinc-50/50 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:border-zinc-200 dark:hover:border-zinc-700 transition"
                   >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={`/jobs/${job.id}`}
-                          className="font-bold text-sm text-zinc-900 hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400 transition"
-                        >
-                          {job.title}
-                        </Link>
-                        <JobFitBadge
-                          jobSkills={jobSkillNames}
-                          userSkills={userSkillNames}
-                          compact
-                        />
-                      </div>
-                      <div className="flex items-center gap-3 text-xs text-zinc-500">
+                    <div className="space-y-1 min-w-0">
+                      <Link
+                        href={getJobUrl(job)}
+                        className="font-bold text-xs text-zinc-900 hover:underline dark:text-zinc-100 truncate block"
+                      >
+                        {job.title}
+                      </Link>
+                      <div className="flex items-center gap-2.5 text-[11px] text-zinc-500">
                         <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                          {budget} &middot; {job.budgetType}
+                          {budget} {job.budgetType === "HOURLY" ? "/hr" : "Fixed"}
                         </span>
-                        <span>&middot;</span>
-                        <span>{job.client.clientProfile?.companyName ?? job.client.name}</span>
+                        <span>·</span>
+                        <span>{clientName}</span>
                       </div>
                     </div>
 
                     <Link
-                      href={`/jobs/${job.id}/apply`}
-                      className="inline-flex items-center justify-center gap-1 rounded-xl bg-indigo-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-indigo-500 transition"
+                      href={`${getJobUrl(job)}/apply`}
+                      className="inline-flex items-center justify-center gap-1 self-start sm:self-auto rounded-xl bg-zinc-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition shrink-0"
                     >
-                      <span>Quick Pitch</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <span>Submit Proposal</span>
                     </Link>
                   </div>
                 );
@@ -376,124 +378,87 @@ export default async function FreelancerDashboardPage() {
           </div>
         </div>
 
-        {/* Right Sidebar Area (1/3 Grid): Profile Readiness, Wallet & Resources */}
+        {/* Right Sidebar (1 span): Profile Standing & Payouts */}
         <div className="space-y-6">
-          {/* Profile Completeness & Reputation Meter */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+          {/* Profile Standing */}
+          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-indigo-600" />
-                <span>Profile Readiness</span>
-              </h3>
-              <span className="font-mono text-xs font-black text-indigo-600 dark:text-indigo-400">
+              <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                Profile Completeness
+              </span>
+              <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
                 {completenessScore}%
               </span>
             </div>
 
-            <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden dark:bg-zinc-800">
+            <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full transition-all duration-500"
+                className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full transition-all"
                 style={{ width: `${completenessScore}%` }}
               />
             </div>
 
-            <div className="space-y-2 pt-1 text-xs text-zinc-600 dark:text-zinc-400">
+            <div className="space-y-2 text-xs text-zinc-500 pt-1">
               <div className="flex items-center gap-2">
-                <Check className="h-3.5 w-3.5 text-emerald-600" />
-                <span>Email & Account Verified</span>
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Account & Email Verified</span>
               </div>
               <div className="flex items-center gap-2">
-                <Check className="h-3.5 w-3.5 text-emerald-600" />
-                <span>Hourly Rate Configured (${hourlyRate})</span>
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Rate & Availability Configured</span>
               </div>
               <div className="flex items-center gap-2">
-                {profile?.headline ? (
-                  <Check className="h-3.5 w-3.5 text-emerald-600" />
-                ) : (
-                  <div className="h-3.5 w-3.5 rounded-full border border-zinc-300" />
-                )}
-                <span>Professional Headline</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {profile?.bio ? (
-                  <Check className="h-3.5 w-3.5 text-emerald-600" />
-                ) : (
-                  <div className="h-3.5 w-3.5 rounded-full border border-zinc-300" />
-                )}
-                <span>Portfolio Bio & Technical Summary</span>
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Technical Skills Listed</span>
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex flex-col gap-2">
               <Link
                 href="/freelancer/profile"
-                className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs font-semibold text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
+                className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 transition"
               >
-                <span>Edit Profile & Portfolio</span>
-                <ArrowRight className="h-3.5 w-3.5 text-zinc-400" />
+                <span>Edit Profile Settings</span>
+              </Link>
+              <Link
+                href={`/freelancers/${session.user.id}`}
+                target="_blank"
+                className="inline-flex w-full items-center justify-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 py-1 transition"
+              >
+                <span>View Public Profile</span>
+                <ExternalLink className="h-3 w-3" />
               </Link>
             </div>
           </div>
 
-          {/* Escrow & Earnings Wallet Card */}
-          <div className="rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50/80 via-white to-white p-6 shadow-xs dark:border-emerald-900/40 dark:bg-zinc-900 space-y-4">
+          {/* Earnings & Payouts Card */}
+          <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
-                <DollarSign className="h-4 w-4" />
-                <span>Escrow Wallet</span>
+              <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                Earnings & Escrow
               </span>
-              <Badge variant="success">0% Fee Tier</Badge>
+              <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                Stripe Connect
+              </span>
             </div>
 
             <div>
-              <div className="text-[11px] text-zinc-500">Available Payout Balance</div>
-              <div className="font-mono text-2xl font-black text-zinc-900 dark:text-zinc-50 mt-0.5">
+              <div className="text-[11px] text-zinc-500">Available to Withdraw</div>
+              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-0.5">
                 $0.00 <span className="text-xs font-normal text-zinc-400">USD</span>
               </div>
             </div>
 
-            <div className="rounded-xl bg-emerald-500/10 p-3 text-[11px] text-emerald-900 dark:text-emerald-200 space-y-1">
-              <div className="font-semibold flex items-center gap-1">
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
-                <span>Zero Connects Tax</span>
-              </div>
-              <p className="text-emerald-800/80 dark:text-emerald-300/80 leading-relaxed">
-                You retain 100% of approved milestone payouts minus pass-through Stripe processing.
-              </p>
-            </div>
+            <p className="text-[11px] text-zinc-500 leading-relaxed">
+              Escrow funds release automatically to your balance once the client approves your
+              submitted milestone.
+            </p>
 
             <Link
               href="/freelancer/payouts"
-              className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-500 transition"
+              className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 transition"
             >
-              <span>Manage Stripe Connect Payouts</span>
-            </Link>
-          </div>
-
-          {/* Quick Shortcuts */}
-          <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3">
-              Contractor Quick Tools
-            </h4>
-            <Link
-              href="/jobs"
-              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
-            >
-              <span className="flex items-center gap-2">
-                <Search className="h-3.5 w-3.5 text-indigo-500" />
-                <span>Explore Open RFPs</span>
-              </span>
-              <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
-            </Link>
-            <Link
-              href="/messages"
-              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800 transition"
-            >
-              <span className="flex items-center gap-2">
-                <Calendar className="h-3.5 w-3.5 text-purple-500" />
-                <span>Client Conversations & Huddles</span>
-              </span>
-              <ChevronRight className="h-3.5 w-3.5 text-zinc-400" />
+              <span>Payout Settings</span>
             </Link>
           </div>
         </div>

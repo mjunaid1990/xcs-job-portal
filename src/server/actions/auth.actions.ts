@@ -82,12 +82,57 @@ export async function registerAction(
     return { success: false, error: "Password must be at least 8 characters long." };
   }
 
+  const companyName = formData.get("companyName")?.toString().trim();
+  const headline = formData.get("headline")?.toString().trim();
+  const hourlyRateDollars = Number(formData.get("hourlyRate"));
+  const hourlyRateCents =
+    !isNaN(hourlyRateDollars) && hourlyRateDollars > 0
+      ? Math.round(hourlyRateDollars * 100)
+      : undefined;
+  const experienceLevel = formData.get("experienceLevel")?.toString();
+  const yearsOfExperienceRaw = formData.get("yearsOfExperience")?.toString();
+  const yearsOfExperience =
+    yearsOfExperienceRaw && !isNaN(Number(yearsOfExperienceRaw))
+      ? Number(yearsOfExperienceRaw)
+      : undefined;
+  const availability = formData.get("availability")?.toString();
+  const bio = formData.get("bio")?.toString().trim();
+  const githubUrl = formData.get("githubUrl")?.toString().trim();
+  const linkedinUrl = formData.get("linkedinUrl")?.toString().trim();
+  const websiteUrl = formData.get("websiteUrl")?.toString().trim();
+
+  const rawTags = formData.getAll("tags");
+  let tags: string[] = [];
+  if (rawTags.length > 0) {
+    tags = rawTags
+      .flatMap((t) => t.toString().split(","))
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+  }
+
+  const skillIds = formData
+    .getAll("skillIds")
+    .map(Number)
+    .filter((id) => !isNaN(id));
+
   try {
     await AuthService.register({
       name,
       email,
       password,
       role,
+      companyName,
+      headline,
+      hourlyRateCents,
+      experienceLevel,
+      yearsOfExperience,
+      availability,
+      bio,
+      tags,
+      githubUrl,
+      linkedinUrl,
+      websiteUrl,
+      skillIds,
     });
 
     // Auto sign-in after registration

@@ -22,6 +22,18 @@ export interface RegisterInput {
   password: string;
   name: string;
   role: "CLIENT" | "FREELANCER";
+  companyName?: string;
+  headline?: string;
+  hourlyRateCents?: number;
+  experienceLevel?: string;
+  yearsOfExperience?: number;
+  availability?: string;
+  bio?: string;
+  tags?: string[];
+  githubUrl?: string;
+  linkedinUrl?: string;
+  websiteUrl?: string;
+  skillIds?: number[];
 }
 
 export interface LoginResult {
@@ -94,18 +106,39 @@ export class AuthService {
         await tx.clientProfile.create({
           data: {
             userId: createdUser.id,
-            companyName: `${input.name.trim()}'s Team`,
+            companyName: input.companyName?.trim() || `${input.name.trim()}'s Team`,
           },
         });
       } else {
+        const cleanTags = input.tags
+          ? Array.from(new Set(input.tags.map((t) => t.trim().toLowerCase()).filter(Boolean)))
+          : [];
+
         await tx.freelancerProfile.create({
           data: {
             userId: createdUser.id,
-            headline: "Freelancer",
-            availability: "AVAILABLE",
+            headline: input.headline?.trim() || "Independent Specialist",
+            bio: input.bio?.trim() || null,
+            hourlyRateCents: input.hourlyRateCents ?? 7500,
+            availability: input.availability || "AVAILABLE",
+            experienceLevel: input.experienceLevel || "EXPERT",
+            yearsOfExperience: input.yearsOfExperience ?? 5,
             currency: "USD",
+            tags: cleanTags,
+            githubUrl: input.githubUrl?.trim() || null,
+            linkedinUrl: input.linkedinUrl?.trim() || null,
+            websiteUrl: input.websiteUrl?.trim() || null,
           },
         });
+
+        if (input.skillIds && input.skillIds.length > 0) {
+          await tx.freelancerSkill.createMany({
+            data: input.skillIds.map((skillId) => ({
+              freelancerId: createdUser.id,
+              skillId,
+            })),
+          });
+        }
       }
 
       // Generate verification token (expires in 24h)
