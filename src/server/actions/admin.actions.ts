@@ -126,6 +126,7 @@ export async function updatePlatformSettingsBatchAction(
     await adminService.updatePlatformSettingsBatch(session.user.id, settings);
     revalidatePath("/admin");
     revalidatePath("/admin/settings");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (err: unknown) {
     return {

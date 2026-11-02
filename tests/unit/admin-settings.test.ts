@@ -59,7 +59,7 @@ describe("Admin Platform Settings & Governance Module", () => {
       stripe_connect_type: "EXPRESS",
       stripe_payout_schedule: "DAILY",
       email_provider: "RESEND",
-      email_from_address: "notifications@worknest.dev",
+      email_from_address: "notifications@workwasl.com",
       github_app_integration_enabled: true,
       ai_milestone_copilot_enabled: false,
     };
@@ -99,7 +99,7 @@ describe("Admin Platform Settings & Governance Module", () => {
         entityType: "SETTING",
         metadata: { platform_fee_bps: 1000 },
         createdAt: new Date(),
-        actor: { id: "admin-1", name: "Super Admin", email: "admin@worknest.dev" },
+        actor: { id: "admin-1", name: "Super Admin", email: "admin@workwasl.com" },
       },
     ];
 
@@ -116,5 +116,43 @@ describe("Admin Platform Settings & Governance Module", () => {
         take: 10,
       }),
     );
+  });
+
+  it("retrieves platform currency settings defaulting to USD and $ symbol", async () => {
+    (
+      vi.mocked(prisma.platformSetting.findMany) as unknown as ReturnType<typeof vi.fn>
+    ).mockResolvedValueOnce([
+      { key: "settlement_currency", value: "USD" },
+      { key: "settlement_currency_symbol", value: "$" },
+    ]);
+
+    const result = await adminService.getPlatformCurrency();
+    expect(result).toEqual({ currency: "USD", symbol: "$" });
+  });
+
+  it("falls back to USD and $ symbol when settings are missing in DB", async () => {
+    (
+      vi.mocked(prisma.platformSetting.findMany) as unknown as ReturnType<typeof vi.fn>
+    ).mockResolvedValueOnce([]);
+
+    const result = await adminService.getPlatformCurrency();
+    expect(result).toEqual({ currency: "USD", symbol: "$" });
+  });
+
+  it("updates currency and symbol in platform settings atomically", async () => {
+    const adminId = "admin-uuid-1";
+    const currencyPayload = {
+      settlement_currency: "USD",
+      settlement_currency_symbol: "$",
+      accepted_currencies: "USD",
+    };
+
+    const results = await adminService.updatePlatformSettingsBatch(adminId, currencyPayload);
+    expect(results).toHaveLength(3);
+    expect(results.map((r) => r.key)).toEqual([
+      "settlement_currency",
+      "settlement_currency_symbol",
+      "accepted_currencies",
+    ]);
   });
 });

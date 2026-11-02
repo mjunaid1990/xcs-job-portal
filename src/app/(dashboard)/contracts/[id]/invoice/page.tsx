@@ -3,6 +3,7 @@ import { auth } from "@/server/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ContractService } from "@/server/services/contract.service";
+import { adminService } from "@/server/services/admin.service";
 import { PrintButton } from "@/components/ui/print-button";
 import { ShieldCheck, ArrowLeft, CheckCircle2, Lock, Building, User } from "lucide-react";
 
@@ -30,9 +31,11 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
     notFound();
   }
 
+  const platformCurrency = await adminService.getPlatformCurrency();
   const invoiceNumber = `INV-${contract.id.slice(0, 8).toUpperCase()}`;
   const isClient = session.user.id === contract.clientId;
-  const currency = contract.currency || "USD";
+  const currency = contract.currency || platformCurrency.currency;
+  const currencySymbol = platformCurrency.symbol;
 
   const totalMilestonesCents = contract.milestones.reduce(
     (acc, m) => acc + Number(m.amountCents),
@@ -172,7 +175,8 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
                       </span>
                     </td>
                     <td className="p-3.5 text-right pr-4 font-mono font-bold text-zinc-900 dark:text-zinc-100">
-                      ${(Number(m.amountCents) / 100).toFixed(2)}
+                      {currencySymbol}
+                      {(Number(m.amountCents) / 100).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -186,7 +190,8 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
               <div className="flex justify-between text-zinc-500">
                 <span>Milestone Scope Subtotal:</span>
                 <span className="font-mono font-semibold text-zinc-900 dark:text-zinc-100">
-                  ${(totalMilestonesCents / 100).toFixed(2)}
+                  {currencySymbol}
+                  {(totalMilestonesCents / 100).toFixed(2)}
                 </span>
               </div>
 
@@ -195,13 +200,15 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
                   <div className="flex justify-between text-zinc-500">
                     <span>WorkWasl Platform Flat Fee:</span>
                     <span className="font-mono font-semibold text-emerald-600 dark:text-emerald-400">
-                      +${(clientFeeCents / 100).toFixed(2)}
+                      +{currencySymbol}
+                      {(clientFeeCents / 100).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between border-t border-zinc-200 pt-3 text-sm font-black text-zinc-900 dark:text-zinc-50">
                     <span>Total Client Payment:</span>
                     <span className="font-mono text-indigo-600 dark:text-indigo-400">
-                      ${(clientTotalCents / 100).toFixed(2)} {currency}
+                      {currencySymbol}
+                      {(clientTotalCents / 100).toFixed(2)} {currency}
                     </span>
                   </div>
                 </>
@@ -210,13 +217,15 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
                   <div className="flex justify-between text-zinc-500">
                     <span>WorkWasl Platform Flat Fee:</span>
                     <span className="font-mono font-semibold text-zinc-500">
-                      -${(freelancerFeeCents / 100).toFixed(2)}
+                      -{currencySymbol}
+                      {(freelancerFeeCents / 100).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between border-t border-zinc-200 pt-3 text-sm font-black text-zinc-900 dark:text-zinc-50">
                     <span>Total Contractor Net:</span>
                     <span className="font-mono text-emerald-600 dark:text-emerald-400">
-                      ${(freelancerNetCents / 100).toFixed(2)} {currency}
+                      {currencySymbol}
+                      {(freelancerNetCents / 100).toFixed(2)} {currency}
                     </span>
                   </div>
                 </>

@@ -586,6 +586,24 @@ export async function seedDatabase() {
     create: { key: "unfunded_contract_cancel_days", value: 7 },
   });
 
+  await prisma.platformSetting.upsert({
+    where: { key: "settlement_currency" },
+    update: { value: "USD" },
+    create: { key: "settlement_currency", value: "USD" },
+  });
+
+  await prisma.platformSetting.upsert({
+    where: { key: "settlement_currency_symbol" },
+    update: { value: "$" },
+    create: { key: "settlement_currency_symbol", value: "$" },
+  });
+
+  await prisma.platformSetting.upsert({
+    where: { key: "accepted_currencies" },
+    update: { value: "USD" },
+    create: { key: "accepted_currencies", value: "USD" },
+  });
+
   await prisma.auditLog.create({
     data: {
       actorId: admin.id,

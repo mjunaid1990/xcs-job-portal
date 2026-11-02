@@ -3,6 +3,8 @@ import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { CookieBanner } from "@/components/layout/cookie-banner";
+import { CurrencyProvider } from "@/components/providers/currency-provider";
+import { adminService } from "@/server/services/admin.service";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -52,7 +54,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
+  const [nonceHeader, currencyConfig] = await Promise.all([
+    headers(),
+    adminService.getPlatformCurrency(),
+  ]);
+  const nonce = nonceHeader.get("x-nonce") ?? undefined;
 
   return (
     <html lang="en">
@@ -60,7 +66,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         data-nonce={nonce}
       >
-        {children}
+        <CurrencyProvider currency={currencyConfig.currency} symbol={currencyConfig.symbol}>
+          {children}
+        </CurrencyProvider>
         <CookieBanner />
         <Toaster position="top-right" richColors closeButton />
       </body>

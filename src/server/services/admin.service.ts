@@ -374,6 +374,28 @@ export class AdminService {
     });
   }
 
+  async getPlatformCurrency(): Promise<{ currency: string; symbol: string }> {
+    try {
+      const settings = await prisma.platformSetting.findMany({
+        where: {
+          key: {
+            in: ["settlement_currency", "settlement_currency_symbol"],
+          },
+        },
+      });
+      const currSetting = settings.find((s) => s.key === "settlement_currency")?.value;
+      const symSetting = settings.find((s) => s.key === "settlement_currency_symbol")?.value;
+      const currency =
+        typeof currSetting === "string" && currSetting.trim()
+          ? currSetting.trim().toUpperCase()
+          : "USD";
+      const symbol = typeof symSetting === "string" && symSetting.trim() ? symSetting.trim() : "$";
+      return { currency, symbol };
+    } catch {
+      return { currency: "USD", symbol: "$" };
+    }
+  }
+
   async getSettingsAuditLogs(limit = 10) {
     const logs = await prisma.auditLog.findMany({
       where: {

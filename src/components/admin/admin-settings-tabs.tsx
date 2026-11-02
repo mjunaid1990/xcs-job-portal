@@ -78,6 +78,9 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
   const [settlementCurrency, setSettlementCurrency] = useState<string>(
     getSetting<string>("settlement_currency", "USD"),
   );
+  const [currencySymbol, setCurrencySymbol] = useState<string>(
+    getSetting<string>("settlement_currency_symbol", "$"),
+  );
 
   // Tab 2: Payments & Stripe Rails State
   const [stripeEnvironment, setStripeEnvironment] = useState<string>(
@@ -102,7 +105,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
     getSetting<number>("instant_payout_fee_percent", 1.5),
   );
   const [acceptedCurrencies, setAcceptedCurrencies] = useState<string>(
-    getSetting<string>("accepted_currencies", "USD, EUR, GBP, CAD, AUD"),
+    getSetting<string>("accepted_currencies", "USD"),
   );
   const [cryptoUsdcEnabled, setCryptoUsdcEnabled] = useState<boolean>(
     getSetting<boolean>("crypto_usdc_escrow_enabled", false),
@@ -260,6 +263,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
         max_escrow_deposit_cents: maxEscrowDepositDollars * 100,
         instant_payout_enabled: instantPayoutEnabled,
         settlement_currency: settlementCurrency,
+        settlement_currency_symbol: currencySymbol.trim() || "$",
       };
     } else if (tab === "payments") {
       if (minPayoutThresholdDollars < 1) {
@@ -520,21 +524,42 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               </p>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-                Primary Settlement Currency
-              </label>
-              <div className="relative mt-1.5">
-                <select
-                  value={settlementCurrency}
-                  onChange={(e) => setSettlementCurrency(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
-                >
-                  <option value="USD">USD ($ - United States Dollar)</option>
-                  <option value="EUR">EUR (€ - Euro)</option>
-                  <option value="GBP">GBP (£ - British Pound)</option>
-                  <option value="CAD">CAD ($ - Canadian Dollar)</option>
-                </select>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
+                  Primary Settlement Currency
+                </label>
+                <div className="relative mt-1.5">
+                  <select
+                    value={settlementCurrency}
+                    onChange={(e) => setSettlementCurrency(e.target.value)}
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  >
+                    <option value="USD">USD ($ - United States Dollar)</option>
+                  </select>
+                </div>
+                <p className="mt-1 text-[11px] text-zinc-400">
+                  Exclusive platform settlement currency (USD only).
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
+                  Currency Symbol
+                </label>
+                <div className="relative mt-1.5">
+                  <input
+                    type="text"
+                    value={currencySymbol}
+                    onChange={(e) => setCurrencySymbol(e.target.value)}
+                    placeholder="$"
+                    maxLength={3}
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  />
+                </div>
+                <p className="mt-1 text-[11px] text-zinc-400">
+                  Display symbol applied platform-wide ($ for USD).
+                </p>
               </div>
             </div>
 
@@ -729,11 +754,13 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   type="text"
                   value={acceptedCurrencies}
                   onChange={(e) => setAcceptedCurrencies(e.target.value)}
-                  placeholder="USD, EUR, GBP, CAD, AUD"
+                  placeholder="USD"
                   className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
-              <p className="mt-1 text-[11px] text-zinc-400">Comma-separated ISO currency codes.</p>
+              <p className="mt-1 text-[11px] text-zinc-400">
+                Restricted to USD settlement for WorkWasl marketplace compliance.
+              </p>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-950/40">
