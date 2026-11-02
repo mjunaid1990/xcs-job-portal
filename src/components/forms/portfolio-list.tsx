@@ -12,6 +12,7 @@ interface PortfolioItem {
   title: string;
   description: string | null;
   url: string | null;
+  imageUrl?: string | null;
 }
 
 interface PortfolioListProps {
@@ -24,6 +25,7 @@ export function PortfolioList({ items }: PortfolioListProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,12 +33,14 @@ export function PortfolioList({ items }: PortfolioListProps) {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("url", url);
+    formData.append("imageUrl", imageUrl);
 
     startTransition(async () => {
       await addPortfolioItemAction(null, formData);
       setTitle("");
       setDescription("");
       setUrl("");
+      setImageUrl("");
       setShowAddForm(false);
     });
   };
@@ -95,6 +99,18 @@ export function PortfolioList({ items }: PortfolioListProps) {
           </div>
           <div>
             <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
+              Project Screenshot / Cover Image URL (Optional)
+            </label>
+            <input
+              type="url"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://images.unsplash.com/... or project screenshot link"
+              className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
               Description
             </label>
             <textarea
@@ -119,8 +135,18 @@ export function PortfolioList({ items }: PortfolioListProps) {
         {items.map((item) => (
           <div
             key={item.id}
-            className="group relative rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+            className="group relative rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden"
           >
+            {item.imageUrl && (
+              <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800 mb-3 border border-zinc-200/60 dark:border-zinc-700/60">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
+                />
+              </div>
+            )}
             <div className="flex items-start justify-between">
               <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 {item.title}

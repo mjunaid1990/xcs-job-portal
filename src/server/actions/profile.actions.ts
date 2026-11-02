@@ -259,6 +259,7 @@ export async function addPortfolioItemAction(
   const title = formData.get("title")?.toString();
   const description = formData.get("description")?.toString();
   const url = formData.get("url")?.toString();
+  const imageUrl = formData.get("imageUrl")?.toString();
 
   if (!title) {
     return { success: false, error: "Title is required." };
@@ -269,9 +270,11 @@ export async function addPortfolioItemAction(
       title,
       description,
       url,
+      imageUrl,
     });
 
     revalidatePath("/freelancer/profile");
+    revalidatePath(`/freelancers/${session.user.id}`);
     return { success: true };
   } catch (error: unknown) {
     if (error && typeof error === "object" && "message" in error) {

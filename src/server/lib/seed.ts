@@ -607,6 +607,8 @@ export async function seedDatabase() {
         description:
           "Architected a double-entry ledger platform with row-level locks, zero-knowledge audit trails, and Stripe Connect webhook idempotency processing over $12M annually.",
         url: "https://github.com/noah-freelancer/escrow-vault",
+        imageUrl:
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
       },
       {
         freelancerId: freelancer1.id,
@@ -614,6 +616,8 @@ export async function seedDatabase() {
         description:
           "Engineered a high-concurrency CRDT collaboration engine with Next.js 15, WebSockets, and Redis pub/sub supporting 25,000+ simultaneous connected clients.",
         url: "https://noah-engineer.dev/projects/crdt-canvas",
+        imageUrl:
+          "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
       },
     ],
   });
@@ -628,6 +632,8 @@ export async function seedDatabase() {
         description:
           "Comprehensive multi-brand design system in Figma with WCAG AAA contrast tokens, automated Tailwind export, and 60+ accessible component specifications.",
         url: "https://alexrivera.design/work/fintech-tokens",
+        imageUrl:
+          "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80",
       },
     ],
   });

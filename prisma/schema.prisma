@@ -329,6 +329,7 @@ model PortfolioItem {
   title        String
   description  String?
   url          String?
+  imageUrl     String?  @map("image_url")
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
@@ -406,14 +407,15 @@ model SavedJob {
 }
 
 model Proposal {
-  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  jobId         String          @map("job_id") @db.Uuid
-  freelancerId  String          @map("freelancer_id") @db.Uuid
-  coverLetter   String          @map("cover_letter")
-  bidCents      Int             @map("bid_cents")
-  currency      String          @default("USD") @db.Char(3)
-  estimatedDays Int?            @map("estimated_days")
-  status        ProposalStatus  @default(SUBMITTED)
+  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobId            String          @map("job_id") @db.Uuid
+  freelancerId     String          @map("freelancer_id") @db.Uuid
+  coverLetter      String          @map("cover_letter")
+  bidCents         Int             @map("bid_cents")
+  currency         String          @default("USD") @db.Char(3)
+  estimatedDays    Int?            @map("estimated_days")
+  screeningAnswers String[]        @default([]) @map("screening_answers")
+  status           ProposalStatus  @default(SUBMITTED)
   version       Int             @default(0)
   createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz

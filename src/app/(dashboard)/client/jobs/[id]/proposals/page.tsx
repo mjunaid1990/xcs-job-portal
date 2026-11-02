@@ -8,7 +8,7 @@ import { ProposalComparisonMatrix } from "@/components/proposals/proposal-compar
 import { PageHeader } from "@/components/ui/page-header";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Briefcase, ArrowLeft, Calendar, DollarSign, UserCheck } from "lucide-react";
+import { Briefcase, ArrowLeft, Calendar, DollarSign, UserCheck, HelpCircle } from "lucide-react";
 
 interface ProposalsPageProps {
   params: Promise<{ id: string }>;
@@ -52,8 +52,6 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
         title={`Proposals: ${job.title}`}
         description="Review candidate credentials, compare bids, message directly, and award milestone contracts."
       />
-
-      <ProposalComparisonMatrix jobId={job.id} jobTitle={job.title} proposals={proposals} />
 
       <ProposalComparisonMatrix jobId={job.id} jobTitle={job.title} proposals={proposals} />
 
@@ -142,6 +140,44 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
                   {proposal.coverLetter}
                 </div>
               </div>
+
+              {/* Candidate Screening Question Responses */}
+              {proposal.screeningAnswers &&
+                proposal.screeningAnswers.length > 0 &&
+                job.screeningQuestions &&
+                job.screeningQuestions.length > 0 && (
+                  <div className="mt-4 rounded-xl border border-indigo-100 bg-indigo-50/30 p-4 dark:border-indigo-950/40 dark:bg-indigo-950/20 space-y-3">
+                    <h5 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-indigo-800 dark:text-indigo-300">
+                      <HelpCircle className="h-3.5 w-3.5" />
+                      <span>Screening Question Responses</span>
+                    </h5>
+                    <div className="space-y-2.5 pt-1">
+                      {job.screeningQuestions.map((q, idx) => {
+                        const answer = proposal.screeningAnswers[idx];
+                        return (
+                          <div
+                            key={idx}
+                            className="rounded-lg bg-white p-3 text-xs border border-zinc-200/70 dark:border-zinc-800 dark:bg-zinc-900 space-y-1"
+                          >
+                            <div className="flex items-start gap-2 font-semibold text-zinc-900 dark:text-zinc-100">
+                              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[9px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                {idx + 1}
+                              </span>
+                              <span>{q}</span>
+                            </div>
+                            <p className="pl-6 text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                              {answer?.trim() ? (
+                                answer
+                              ) : (
+                                <span className="italic text-zinc-400">No response provided</span>
+                              )}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
             </div>
           );
         })}

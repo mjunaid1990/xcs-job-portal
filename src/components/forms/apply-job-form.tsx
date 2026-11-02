@@ -26,6 +26,7 @@ export function ApplyJobForm({
   const [bid, setBid] = useState(defaultBid);
   const [estimatedDays, setEstimatedDays] = useState("14");
   const [coverLetter, setCoverLetter] = useState("");
+  const [answers, setAnswers] = useState<Record<number, string>>({});
 
   const bidNum = Number(bid) || 0;
   const netEarnings = Math.max(0, bidNum > 0 ? bidNum - 1 : 0);
@@ -39,6 +40,9 @@ export function ApplyJobForm({
     formData.append("bid", bid);
     formData.append("estimatedDays", estimatedDays);
     formData.append("coverLetter", coverLetter);
+
+    const answersList = screeningQuestions.map((_, i) => answers[i] ?? "");
+    formData.append("screeningAnswers", JSON.stringify(answersList));
 
     startTransition(async () => {
       const result = await submitProposalAction(null, formData);
@@ -139,24 +143,35 @@ export function ApplyJobForm({
 
       {/* Screening Questions from Client (if specified) */}
       {screeningQuestions.length > 0 && (
-        <div className="space-y-3 rounded-xl border border-amber-200/60 bg-amber-50/30 p-4 dark:border-amber-900/40 dark:bg-amber-950/20">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
-            <HelpCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-            <span>Client Screening Questions</span>
+        <div className="space-y-4 rounded-2xl border border-indigo-100 bg-indigo-50/30 p-5 dark:border-indigo-950/40 dark:bg-indigo-950/20">
+          <div className="flex items-center gap-2 text-xs font-bold text-indigo-950 dark:text-indigo-200">
+            <HelpCircle className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            <span>Client Screening Questions ({screeningQuestions.length})</span>
           </div>
-          <p className="text-[11px] text-amber-800/80 dark:text-amber-300/70">
-            Please make sure to address these questions directly in your pitch below:
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            The client has requested responses to these specific questions. Please provide your
+            answers in the fields below:
           </p>
-          <div className="space-y-2 pt-1">
+          <div className="space-y-3.5 pt-1">
             {screeningQuestions.map((question, i) => (
               <div
                 key={i}
-                className="flex items-start gap-2 text-xs text-zinc-800 dark:text-zinc-200"
+                className="space-y-2 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
               >
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-200/80 font-bold text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 text-[10px]">
-                  {i + 1}
-                </span>
-                <span className="pt-0.5 leading-snug">{question}</span>
+                <div className="flex items-start gap-2.5 text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5 leading-snug">{question}</span>
+                </div>
+
+                <textarea
+                  rows={2}
+                  value={answers[i] ?? ""}
+                  onChange={(e) => setAnswers((prev) => ({ ...prev, [i]: e.target.value }))}
+                  placeholder={`Type your answer to question #${i + 1}...`}
+                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50/60 p-2.5 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-100 transition"
+                />
               </div>
             ))}
           </div>

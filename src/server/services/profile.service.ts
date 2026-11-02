@@ -33,6 +33,7 @@ export interface AddPortfolioItemInput {
   title: string;
   description?: string;
   url?: string;
+  imageUrl?: string;
 }
 
 export class ProfileService {
@@ -343,6 +344,7 @@ export class ProfileService {
         title: input.title.trim(),
         description: input.description?.trim(),
         url: input.url?.trim(),
+        imageUrl: input.imageUrl?.trim() || null,
       },
     });
   }

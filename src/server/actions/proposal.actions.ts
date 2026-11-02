@@ -25,6 +25,19 @@ export async function submitProposalAction(
   const coverLetter = formData.get("coverLetter")?.toString();
   const bidDollars = Number(formData.get("bid"));
   const estimatedDays = Number(formData.get("estimatedDays"));
+  const rawAnswers = formData.get("screeningAnswers")?.toString();
+
+  let screeningAnswers: string[] = [];
+  if (rawAnswers) {
+    try {
+      const parsed = JSON.parse(rawAnswers);
+      if (Array.isArray(parsed)) {
+        screeningAnswers = parsed.map((a) => String(a ?? ""));
+      }
+    } catch {
+      screeningAnswers = [];
+    }
+  }
 
   if (!jobId || !coverLetter || isNaN(bidDollars) || bidDollars <= 0) {
     return { success: false, error: "Please provide a valid bid amount and cover letter." };
@@ -36,6 +49,7 @@ export async function submitProposalAction(
       coverLetter,
       bidCents: Math.round(bidDollars * 100),
       estimatedDays: !isNaN(estimatedDays) && estimatedDays > 0 ? estimatedDays : undefined,
+      screeningAnswers,
     });
 
     revalidatePath(`/jobs/${jobId}`);

@@ -396,9 +396,19 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                   {profile.portfolioItems.map((item) => (
                     <div
                       key={item.id}
-                      className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition group"
+                      className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition group overflow-hidden"
                     >
                       <div>
+                        {item.imageUrl && (
+                          <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800 mb-3 border border-zinc-200/60 dark:border-zinc-700/60">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
+                            />
+                          </div>
+                        )}
                         <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
                           {item.title}
                         </h3>

@@ -8,6 +8,7 @@ export interface SubmitProposalInput {
   coverLetter: string;
   bidCents: number;
   estimatedDays?: number;
+  screeningAnswers?: string[];
 }
 
 export class ProposalService {
@@ -81,6 +82,7 @@ export class ProposalService {
           coverLetter,
           bidCents: input.bidCents,
           estimatedDays: input.estimatedDays,
+          screeningAnswers: (input.screeningAnswers ?? []).map((a) => sanitizeHtml(a).trim()),
           status: ProposalStatus.SUBMITTED,
         },
         include: {
