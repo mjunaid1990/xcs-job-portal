@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MessagingService } from "@/server/services/messaging.service";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { UserNavDropdown } from "@/components/layout/user-nav-dropdown";
-import { ShieldCheck, MessageSquare, Bell, Search, PlusCircle } from "lucide-react";
+import { ShieldCheck, Bell } from "lucide-react";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -16,7 +16,39 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const user = session.user;
   const roles = user.roles ?? [];
   const isClient = roles.includes("CLIENT");
+  const isFreelancer = roles.includes("FREELANCER");
+  const isAdmin = roles.includes("ADMIN");
   const unreadMessagesCount = await MessagingService.getUnreadCount(user.id);
+
+  // Top header navigation: Dashboard is strictly first menu item, max 2 words per item, clean neutrals
+  const navItems = isFreelancer
+    ? [
+        { label: "Dashboard", href: "/freelancer" },
+        { label: "Proposals", href: "/freelancer/proposals" },
+        { label: "Contracts", href: "/freelancer/contracts" },
+        { label: "Marketplace", href: "/jobs" },
+        { label: "Messages", href: "/messages", badge: unreadMessagesCount },
+      ]
+    : isClient
+      ? [
+          { label: "Dashboard", href: "/client" },
+          { label: "My Jobs", href: "/client/jobs" },
+          { label: "Contracts", href: "/client/contracts" },
+          { label: "Talent", href: "/freelancers" },
+          { label: "Messages", href: "/messages", badge: unreadMessagesCount },
+        ]
+      : isAdmin
+        ? [
+            { label: "Dashboard", href: "/admin" },
+            { label: "Categories", href: "/admin/categories" },
+            { label: "Settings", href: "/admin/settings" },
+            { label: "Messages", href: "/messages", badge: unreadMessagesCount },
+          ]
+        : [
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Marketplace", href: "/jobs" },
+            { label: "Messages", href: "/messages", badge: unreadMessagesCount },
+          ];
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 flex flex-col justify-between">
@@ -29,50 +61,32 @@ export default async function DashboardLayout({ children }: { children: React.Re
           {/* Brand & Left Navigation */}
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="flex items-center gap-2.5 group">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white shadow-md shadow-indigo-500/25 transition-transform group-hover:scale-105">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 text-white shadow-xs group-hover:scale-105 transition-transform dark:bg-zinc-100 dark:text-zinc-900">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
+                <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-zinc-50">
                   Work<span className="text-indigo-600 dark:text-indigo-400">Wasl</span>
                 </span>
               </div>
             </Link>
 
             {/* Core Header Navigation */}
-            <nav className="hidden md:flex items-center gap-1.5 pl-4 border-l border-zinc-200 dark:border-zinc-800">
-              <Link
-                href="/jobs"
-                className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
-              >
-                <Search className="h-3.5 w-3.5 text-zinc-400" />
-                <span>Marketplace</span>
-              </Link>
-
-              <Link
-                href="/messages"
-                className="relative flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
-              >
-                <MessageSquare className="h-3.5 w-3.5 text-purple-500" />
-                <span>Messages</span>
-                {unreadMessagesCount > 0 && (
-                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-purple-600 px-1 text-[9px] font-black text-white">
-                    {unreadMessagesCount}
-                  </span>
-                )}
-              </Link>
-
-              <Link
-                href="/notifications"
-                className="relative flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
-              >
-                <Bell className="h-3.5 w-3.5 text-zinc-400" />
-                <span>Alerts</span>
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500" />
-                </span>
-              </Link>
+            <nav className="hidden md:flex items-center gap-1 pl-4 border-l border-zinc-200 dark:border-zinc-800">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
+                >
+                  <span>{item.label}</span>
+                  {typeof item.badge === "number" && item.badge > 0 && (
+                    <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[9px] font-bold text-white">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              ))}
             </nav>
           </div>
 
@@ -80,15 +94,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <div className="flex items-center gap-3">
             <CommandPalette />
 
-            {isClient && (
-              <Link
-                href="/client/jobs/new"
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:from-purple-500 hover:to-indigo-500 transition"
-              >
-                <PlusCircle className="h-3.5 w-3.5" />
-                <span>Post Job</span>
-              </Link>
-            )}
+            <Link
+              href="/notifications"
+              aria-label="Notifications"
+              className="relative rounded-xl p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition"
+            >
+              <Bell className="h-4 w-4" />
+            </Link>
 
             <div className="pl-2 border-l border-zinc-200 dark:border-zinc-800">
               <UserNavDropdown user={user} />
