@@ -22,9 +22,9 @@ import {
   CheckCircle2,
   HelpCircle,
   Sparkles,
-  Info,
   Shield,
   Check,
+  Lightbulb,
 } from "lucide-react";
 
 interface JobDetailsPageProps {
@@ -73,6 +73,13 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
   const companyName =
     job.client?.clientProfile?.companyName ?? job.client?.name ?? "Confidential Client";
+  const clientInitials = companyName
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   const isPaymentVerified = job.client?.clientProfile?.paymentVerified ?? true;
   const postedAgo = formatRelativeTime(job.createdAt);
   const clientMemberSince = job.client?.createdAt
@@ -98,6 +105,14 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
     }
     return "Competitive";
   };
+
+  const formattedScope = job.scope
+    ? `${job.scope.charAt(0).toUpperCase() + job.scope.slice(1).toLowerCase()} Scope`
+    : "Medium Scope";
+
+  const formattedLevel = job.experienceLevel
+    ? job.experienceLevel.charAt(0).toUpperCase() + job.experienceLevel.slice(1).toLowerCase()
+    : "Intermediate";
 
   // Schema.org JobPosting structured data
   const jsonLd = {
@@ -132,7 +147,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="min-h-screen bg-zinc-50/70 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
       <PublicHeader user={session?.user} />
 
       {/* JSON-LD Structured Data */}
@@ -142,11 +157,11 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
       />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-        {/* Navigation Bar */}
+        {/* Navigation Breadcrumb Bar */}
         <div className="flex items-center justify-between border-b border-zinc-200/60 pb-4 dark:border-zinc-800">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition"
+            className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to all opportunities</span>
@@ -156,19 +171,19 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
         </div>
 
         {/* 2-Column Responsive Layout */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           {/* Main Content Column (8 cols) */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Main Job Overview Card */}
+            {/* Primary Job Card */}
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-6">
-              {/* Header Badges & Meta */}
+              {/* Header Meta Row */}
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-[11px] font-bold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
                     {job.category?.name ?? "General Opportunity"}
                   </span>
-                  <span className="text-zinc-400">•</span>
-                  <span className="text-zinc-500">Posted {postedAgo}</span>
+                  <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                  <span className="font-medium text-zinc-500">Posted {postedAgo}</span>
                   <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} compact />
                 </div>
 
@@ -176,8 +191,8 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                   {job.title}
                 </h1>
 
-                {/* Client Trust Tagline */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400 pt-1">
+                {/* Client Trust Strip */}
+                <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400 pt-0.5">
                   <span className="inline-flex items-center gap-1.5 font-medium">
                     <Building2 className="h-4 w-4 text-zinc-400" />
                     <span>{companyName}</span>
@@ -192,9 +207,9 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
               </div>
 
               {/* Specifications Matrix */}
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800/80 dark:bg-zinc-950/40">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
                     <Coins className="h-3.5 w-3.5 text-zinc-500" />
                     <span>Project Type</span>
                   </div>
@@ -204,27 +219,27 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
                     <Briefcase className="h-3.5 w-3.5 text-zinc-500" />
                     <span>Experience Level</span>
                   </div>
-                  <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 capitalize">
-                    {job.experienceLevel?.toLowerCase() ?? "Intermediate"}
+                  <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                    {formattedLevel}
                   </p>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
                     <Layers className="h-3.5 w-3.5 text-zinc-500" />
                     <span>Project Scope</span>
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                    {job.scope ? `${job.scope} Scope` : "Medium Scope"}
+                    {formattedScope}
                   </p>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[11px] text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
                     <Clock className="h-3.5 w-3.5 text-zinc-500" />
                     <span>Est. Duration</span>
                   </div>
@@ -239,7 +254,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                   Detailed Scope of Work
                 </h2>
-                <div className="whitespace-pre-wrap break-words text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                <div className="whitespace-pre-wrap break-words text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 min-h-[4rem]">
                   {job.description}
                 </div>
               </div>
@@ -285,54 +300,63 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
               {/* Skills Section */}
               {job.skills.length > 0 && (
-                <div className="space-y-3 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                      Required Technical Skills
-                    </h2>
-                    <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} />
-                  </div>
+                <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Required Skills & Expertise
+                  </h2>
                   <div className="flex flex-wrap gap-2">
                     {job.skills.map((s) => (
                       <span
                         key={s.skill.id}
-                        className="rounded-xl border border-zinc-200/90 bg-zinc-50/70 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-indigo-600 transition"
+                        className="rounded-xl border border-zinc-200/90 bg-zinc-50/80 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-indigo-600 transition"
                       >
                         {s.skill.name}
                       </span>
                     ))}
+                  </div>
+
+                  {/* AI Suitability Match Breakdown (Clean Full-Width Placement) */}
+                  <div className="pt-2">
+                    <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} />
                   </div>
                 </div>
               )}
             </div>
 
             {/* Escrow & Security Trust Card */}
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 sm:p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50/20 p-6 shadow-xs dark:border-emerald-900/30 dark:bg-emerald-950/10 space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
                   <Shield className="h-4 w-4" />
                 </div>
-                <h3 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  WorkWasl Milestone Escrow Protection
-                </h3>
+                <div>
+                  <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                    WorkWasl Milestone Escrow Protection
+                  </h3>
+                  <p className="text-[11px] text-zinc-500">
+                    Guaranteed payment security on every funded milestone.
+                  </p>
+                </div>
               </div>
+
               <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                Work with confidence. Client funds are fully deposited into platform escrow before
-                any milestone begins. Freelancers keep 100% of their earnings with our transparent,
-                flat $1 platform fee.
+                Work with total peace of mind. Clients deposit 100% of milestone funds into platform
+                escrow before you begin development. When work is approved, funds release directly
+                to your balance with our transparent, flat $1 platform fee.
               </p>
-              <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-3 text-[11px] text-zinc-500">
-                <div className="flex items-center gap-1.5">
-                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Funds pre-locked in escrow</span>
+
+              <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-3">
+                <div className="flex items-center gap-2 rounded-xl bg-white/80 p-3 text-xs font-medium text-zinc-700 shadow-2xs dark:bg-zinc-900/80 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800">
+                  <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span>Pre-funded Escrow</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Flat $1 fee per milestone</span>
+                <div className="flex items-center gap-2 rounded-xl bg-white/80 p-3 text-xs font-medium text-zinc-700 shadow-2xs dark:bg-zinc-900/80 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800">
+                  <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span>Flat $1 Fee Per Milestone</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Fair dispute mediation</span>
+                <div className="flex items-center gap-2 rounded-xl bg-white/80 p-3 text-xs font-medium text-zinc-700 shadow-2xs dark:bg-zinc-900/80 dark:text-zinc-300 border border-zinc-100 dark:border-zinc-800">
+                  <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span>Neutral Mediation</span>
                 </div>
               </div>
             </div>
@@ -343,19 +367,19 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
             {/* Compensation & Action Card */}
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                <span className="inline-block rounded-md bg-zinc-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   {job.budgetType === "HOURLY" ? "Hourly Rate" : "Fixed-Price Escrow"}
-                </div>
-                <div className="mt-1 font-mono text-3xl font-black text-zinc-900 dark:text-zinc-50">
+                </span>
+                <div className="mt-2 font-mono text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
                   {formatBudget()}
                 </div>
-                <div className="mt-1 flex items-center gap-1.5 text-xs text-zinc-500">
+                <div className="mt-1.5 flex items-center gap-1.5 text-xs text-zinc-500">
                   <Users className="h-3.5 w-3.5 text-zinc-400" />
                   <span>{job.proposalsCount} proposals submitted</span>
                 </div>
               </div>
 
-              {/* Actions */}
+              {/* Actions Stack */}
               <div className="space-y-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                 {isClientOwner ? (
                   <Link
@@ -366,36 +390,39 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                     <span>View Proposals ({job.proposalsCount})</span>
                   </Link>
                 ) : session?.user ? (
-                  <Link
-                    href={`/jobs/${job.id}/apply`}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-xs font-bold text-white shadow-md shadow-emerald-500/20 hover:from-emerald-500 hover:to-teal-500 transition"
-                  >
-                    <Send className="h-4 w-4" />
-                    <span>Submit Proposal</span>
-                  </Link>
+                  <div className="space-y-2">
+                    <Link
+                      href={`/jobs/${job.id}/apply`}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-xs font-bold text-white shadow-md shadow-emerald-500/20 hover:from-emerald-500 hover:to-teal-500 transition"
+                    >
+                      <Send className="h-4 w-4" />
+                      <span>Submit Proposal</span>
+                    </Link>
+                    <SaveJobButton
+                      jobId={job.id}
+                      initialSaved={isSaved}
+                      className="w-full justify-center"
+                    />
+                  </div>
                 ) : (
-                  <Link
-                    href={`/login?redirect=/jobs/${job.id}`}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-3 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white transition"
-                  >
-                    <Lock className="h-4 w-4" />
-                    <span>Sign In to Apply</span>
-                  </Link>
-                )}
-
-                {session?.user?.id && !isClientOwner && (
-                  <div className="flex justify-center w-full">
-                    <SaveJobButton jobId={job.id} initialSaved={isSaved} />
+                  <div className="space-y-2">
+                    <Link
+                      href={`/login?redirect=/jobs/${job.id}`}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-3 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white transition"
+                    >
+                      <Lock className="h-4 w-4" />
+                      <span>Sign In to Apply</span>
+                    </Link>
                   </div>
                 )}
               </div>
 
-              {/* Flat $1 Fee Tagline */}
-              <div className="rounded-xl bg-emerald-50/70 p-3 text-xs text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 flex items-start gap-2">
+              {/* Flat $1 Fee Tagline Banner */}
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-50/70 p-3.5 text-xs text-emerald-900 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-200 flex items-start gap-2.5">
                 <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <div className="text-[11px] leading-relaxed">
-                  <span className="font-bold">Transparent $1 Platform Fee:</span> No
-                  percentage-based cuts or hidden deductions. Keep what you earn.
+                  <span className="font-bold">Transparent $1 Platform Fee:</span> No 10%–20% cuts or
+                  hidden commission fees. You keep 100% of your earnings.
                 </div>
               </div>
             </div>
@@ -406,54 +433,67 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                 About the Client
               </h3>
 
-              <div className="space-y-3">
-                <div>
-                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-xs font-bold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+                  {clientInitials || <Building2 className="h-5 w-5" />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-bold text-zinc-900 dark:text-zinc-100">
                     {companyName}
                   </div>
                   {isPaymentVerified && (
-                    <div className="mt-0.5 flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                    <div className="mt-0.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                       <ShieldCheck className="h-3.5 w-3.5" />
                       <span>Payment Method Verified</span>
                     </div>
                   )}
                 </div>
+              </div>
 
-                <div className="space-y-2 border-t border-zinc-100 pt-3 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-400">
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-400">Member Since</span>
-                    <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                      {clientMemberSince}
-                    </span>
-                  </div>
+              <div className="space-y-2.5 border-t border-zinc-100 pt-3 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-400">
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Member Since</span>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                    {clientMemberSince}
+                  </span>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-400">Location</span>
-                    <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                      Remote / Worldwide
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Location</span>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                    Remote / Worldwide
+                  </span>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-zinc-400">Escrow Security</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                      100% Pre-funded
-                    </span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Escrow Security</span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    100% Pre-funded
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Proposal Safety Tip */}
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                <Info className="h-4 w-4 text-indigo-500" />
-                <span>Tips for Submitting Proposals</span>
+            {/* Proposal Safety Tips Card */}
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3">
+              <div className="flex items-center gap-2 text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                <Lightbulb className="h-4 w-4 text-amber-500" />
+                <span>Tips for a Winning Proposal</span>
               </div>
-              <p className="text-[11px] text-zinc-500 leading-relaxed">
-                Break your proposal down into clear milestones with defined deliverables. Keep all
-                communications and milestones on WorkWasl to remain fully covered by escrow.
-              </p>
+              <ul className="space-y-2 text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                <li className="flex items-start gap-1.5">
+                  <span className="text-indigo-600 font-bold">•</span>
+                  <span>Reference the specific tech stack and deliverables requested.</span>
+                </li>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-indigo-600 font-bold">•</span>
+                  <span>Propose realistic milestone breakdowns with acceptance criteria.</span>
+                </li>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-indigo-600 font-bold">•</span>
+                  <span>Keep all chat and milestones on WorkWasl to remain covered by escrow.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
