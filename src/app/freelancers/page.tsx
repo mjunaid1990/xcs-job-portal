@@ -50,6 +50,9 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
     auth(),
   ]);
 
+  const roles = session?.user?.roles ?? [];
+  const isClient = roles.includes("CLIENT") || roles.includes("ADMIN");
+
   return (
     <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       <PublicHeader user={session?.user ?? null} />
@@ -73,15 +76,17 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 shrink-0">
-            <Link
-              href="/client/jobs/new"
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition"
-            >
-              <Briefcase className="h-4 w-4" />
-              <span>Post a Job for Free</span>
-            </Link>
-          </div>
+          {isClient && (
+            <div className="flex items-center gap-2.5 shrink-0">
+              <Link
+                href="/client/jobs/new"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition"
+              >
+                <Briefcase className="h-4 w-4" />
+                <span>Post a Job</span>
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Filter Controls Bar */}

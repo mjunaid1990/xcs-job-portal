@@ -49,6 +49,8 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
   ]);
 
   const hasActiveFilters = Boolean(params.q || params.category || params.type || params.level);
+  const roles = session?.user?.roles ?? [];
+  const isClient = roles.includes("CLIENT") || roles.includes("ADMIN");
 
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
@@ -71,13 +73,15 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
               </p>
             </div>
 
-            <Link
-              href="/client/jobs/new"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition shrink-0 self-start sm:self-auto"
-            >
-              <PlusCircle className="h-4 w-4" />
-              <span>Post a Job Scope</span>
-            </Link>
+            {isClient && (
+              <Link
+                href="/client/jobs/new"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition shrink-0 self-start sm:self-auto"
+              >
+                <PlusCircle className="h-4 w-4" />
+                <span>Post a Job</span>
+              </Link>
+            )}
           </div>
 
           {/* Unified Search & Multi-Filter Bar */}
@@ -240,13 +244,15 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                         <span>Reset Filters</span>
                       </Link>
                     )}
-                    <Link
-                      href="/client/jobs/new"
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-indigo-500 transition"
-                    >
-                      <PlusCircle className="h-3.5 w-3.5" />
-                      <span>Post a Job Scope</span>
-                    </Link>
+                    {isClient && (
+                      <Link
+                        href="/client/jobs/new"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-indigo-500 transition"
+                      >
+                        <PlusCircle className="h-3.5 w-3.5" />
+                        <span>Post a Job</span>
+                      </Link>
+                    )}
                   </div>
                 </div>
 
