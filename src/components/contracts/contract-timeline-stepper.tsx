@@ -85,48 +85,46 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
 
   return (
     <div className="rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900/90 space-y-6">
-      {/* Capital Allocation Telemetry Bar */}
+      {/* Capital Allocation Summary */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-emerald-200/70 bg-emerald-50/50 p-3.5 dark:border-emerald-900/40 dark:bg-emerald-950/20">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+        <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/60 p-3.5 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <div className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
             <CheckCircle2 className="h-3.5 w-3.5" />
             <span>Released Payouts</span>
           </div>
-          <div className="mt-1 font-mono text-xl font-black text-emerald-900 dark:text-emerald-100">
+          <div className="mt-1 font-mono text-xl font-bold text-zinc-900 dark:text-zinc-100">
             $
             {releasedAmount.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
-          <div className="text-[11px] text-emerald-700/80 dark:text-emerald-400/80">
-            {completedCount} of {milestones.length} milestones paid out
+          <div className="text-[11px] text-zinc-500">
+            {completedCount} of {milestones.length} milestones released
           </div>
         </div>
 
-        <div className="rounded-xl border border-blue-200/70 bg-blue-50/50 p-3.5 dark:border-blue-900/40 dark:bg-blue-950/20">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-blue-800 dark:text-blue-300 flex items-center gap-1.5">
+        <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/60 p-3.5 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <div className="text-[11px] font-semibold text-blue-700 dark:text-blue-400 flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5" />
-            <span>Locked in Escrow</span>
+            <span>Secured in Escrow</span>
           </div>
-          <div className="mt-1 font-mono text-xl font-black text-blue-900 dark:text-blue-100">
+          <div className="mt-1 font-mono text-xl font-bold text-zinc-900 dark:text-zinc-100">
             $
             {inEscrowAmount.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
-          <div className="text-[11px] text-blue-700/80 dark:text-blue-400/80">
-            Held in double-entry platform vaults
-          </div>
+          <div className="text-[11px] text-zinc-500">Funded & protected</div>
         </div>
 
-        <div className="rounded-xl border border-zinc-200/70 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-900/40">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5">
+        <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/60 p-3.5 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <div className="text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5">
             <Clock className="h-3.5 w-3.5" />
             <span>Remaining Contract</span>
           </div>
-          <div className="mt-1 font-mono text-xl font-black text-zinc-900 dark:text-zinc-100">
+          <div className="mt-1 font-mono text-xl font-bold text-zinc-900 dark:text-zinc-100">
             $
             {pendingAmount.toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -134,7 +132,7 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
             })}
           </div>
           <div className="text-[11px] text-zinc-500">
-            Total Contract: $
+            Total Value: $
             {totalAmount.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,

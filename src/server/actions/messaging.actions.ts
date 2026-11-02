@@ -22,13 +22,14 @@ export async function sendMessageAction(
 
   const conversationId = formData.get("conversationId")?.toString();
   const body = formData.get("body")?.toString();
+  const clientMsgId = formData.get("clientMsgId")?.toString();
 
   if (!conversationId || !body) {
     return { success: false, error: "Message body is required." };
   }
 
   try {
-    await MessagingService.sendMessage(session.user.id, conversationId, body);
+    await MessagingService.sendMessage(session.user.id, conversationId, body, clientMsgId);
     revalidatePath(`/messages/${conversationId}`);
     revalidatePath("/messages");
     return { success: true, conversationId };

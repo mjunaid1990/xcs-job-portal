@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ContractService } from "@/server/services/contract.service";
 import { adminService } from "@/server/services/admin.service";
 import { PrintButton } from "@/components/ui/print-button";
+import { formatContractRef } from "@/lib/format";
 import { ShieldCheck, ArrowLeft, CheckCircle2, Lock, Building, User } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
   }
 
   const platformCurrency = await adminService.getPlatformCurrency();
-  const invoiceNumber = `INV-${contract.id.slice(0, 8).toUpperCase()}`;
+  const invoiceNumber = `INV-${formatContractRef(contract.id).replace("CNT-", "")}`;
   const isClient = session.user.id === contract.clientId;
   const currency = contract.currency || platformCurrency.currency;
   const currencySymbol = platformCurrency.symbol;

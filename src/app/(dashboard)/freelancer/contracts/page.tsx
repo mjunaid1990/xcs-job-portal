@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { UserCheck, Eye, Search, Briefcase } from "lucide-react";
 
+import { formatContractRef } from "@/lib/format";
+
 export default async function FreelancerContractsPage() {
   const session = await auth();
   if (!session?.user?.id) {
@@ -55,9 +57,12 @@ export default async function FreelancerContractsPage() {
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2.5">
+                    <span className="font-mono text-xs font-bold text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-md border border-zinc-200/60 dark:border-zinc-700/60">
+                      #{formatContractRef(c.id)}
+                    </span>
                     <Link
                       href={`/contracts/${c.id}`}
-                      className="font-bold text-zinc-900 hover:text-purple-600 dark:text-zinc-100 dark:hover:text-purple-400 transition"
+                      className="font-bold text-zinc-900 hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400 transition"
                     >
                       {c.job.title}
                     </Link>

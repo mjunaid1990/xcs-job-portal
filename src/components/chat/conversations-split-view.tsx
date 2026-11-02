@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChatBox, MessageItem } from "@/components/chat/chat-box";
-import { Search, MessageSquare, ShieldCheck, Briefcase, ArrowLeft, Sparkles } from "lucide-react";
+import { Search, MessageSquare, Briefcase, ArrowLeft, Sparkles } from "lucide-react";
 
 export interface ConversationItem {
   id: string;
@@ -232,17 +232,12 @@ export function ConversationsSplitView({
                   {activeConv.contract && (
                     <Link
                       href={`/contracts/${activeConv.contract.id}`}
-                      className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition shadow-xs"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition"
                     >
-                      <Briefcase className="h-3.5 w-3.5 text-purple-600" />
-                      <span>Contract Workroom</span>
+                      <Briefcase className="h-3.5 w-3.5 text-indigo-500" />
+                      <span>View Contract</span>
                     </Link>
                   )}
-
-                  <div className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-900/60">
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                    <span>Protected Escrow Chat</span>
-                  </div>
                 </div>
               </div>
 

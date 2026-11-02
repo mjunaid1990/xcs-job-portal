@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useTransition } from "react";
+import { Send, Check, CheckCheck, Loader2, ArrowDown, Sparkles, WifiOff } from "lucide-react";
 import { sendMessageAction, markConversationReadAction } from "@/server/actions/messaging.actions";
-import { Send, Loader2, Check, CheckCheck, Wifi, WifiOff, Sparkles, ArrowDown } from "lucide-react";
 
 export interface MessageItem {
   id: string;
@@ -10,8 +10,8 @@ export interface MessageItem {
   senderId: string;
   body: string;
   clientMsgId?: string;
-  readAt?: Date | string | null;
-  createdAt: Date | string;
+  readAt: string | Date | null;
+  createdAt: string | Date;
   sender: { id: string; name: string };
 }
 
@@ -28,18 +28,53 @@ interface ChatBoxProps {
 const CANNED_RESPONSES = [
   "Could you please review the latest milestone scope?",
   "Deliverables submitted for review, please check the files.",
-  "Let's hop on a live contract workroom huddle to align.",
+  "Let's hop on a quick workroom huddle to align.",
   "Thanks for the update, working on the adjustments now!",
 ];
+
+/**
+ * Merges incoming messages into the existing list.
+ * Deduplicates by real database id, clientMsgId, or matching optimistic temp items.
+ */
+function mergeMessages(current: MessageItem[], incomingList: MessageItem[]): MessageItem[] {
+  const result = [...current];
+
+  for (const inc of incomingList) {
+    const existingIndex = result.findIndex((m) => {
+      // 1. Direct ID match
+      if (m.id === inc.id) return true;
+
+      // 2. Client message ID match (optimistic temp replacement)
+      if (inc.clientMsgId && m.clientMsgId && m.clientMsgId === inc.clientMsgId) return true;
+
+      // 3. Fallback heuristic: temp message with same sender & body sent within 15 seconds
+      if (
+        m.id.startsWith("temp-") &&
+        m.senderId === inc.senderId &&
+        m.body.trim() === inc.body.trim() &&
+        Math.abs(new Date(m.createdAt).getTime() - new Date(inc.createdAt).getTime()) < 15000
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (existingIndex !== -1) {
+      result[existingIndex] = inc;
+    } else {
+      result.push(inc);
+    }
+  }
+
+  return result;
+}
 
 export function ChatBox({
   conversationId,
   currentUserId,
   initialMessages,
   partnerName,
-  partnerRole,
-  jobTitle,
-  contractId,
 }: ChatBoxProps) {
   const [messages, setMessages] = useState<MessageItem[]>(initialMessages);
   const [text, setText] = useState("");
@@ -63,7 +98,6 @@ export function ChatBox({
     setShowScrollBottom(false);
   }, []);
 
-  // Check scroll position to display "Scroll to bottom" button
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
@@ -71,7 +105,6 @@ export function ChatBox({
     setShowScrollBottom(!isAtBottom);
   };
 
-  // Scroll to bottom on initial render
   useEffect(() => {
     scrollToBottom(false);
   }, [scrollToBottom]);
@@ -95,35 +128,18 @@ export function ChatBox({
 
             if (data.type === "new_message" && data.message) {
               const incomingMsg = data.message as MessageItem;
-              setMessages((prev) => {
-                // Deduplicate by id or clientMsgId
-                if (
-                  prev.some(
-                    (m) =>
-                      m.id === incomingMsg.id ||
-                      (incomingMsg.clientMsgId && m.clientMsgId === incomingMsg.clientMsgId),
-                  )
-                ) {
-                  return prev.map((m) =>
-                    m.clientMsgId === incomingMsg.clientMsgId ? incomingMsg : m,
-                  );
-                }
-                return [...prev, incomingMsg];
-              });
 
+              setMessages((prev) => mergeMessages(prev, [incomingMsg]));
               lastFetchedTimeRef.current = new Date(incomingMsg.createdAt).toISOString();
 
-              // If message is from partner and user has window active, mark read
               if (incomingMsg.senderId !== currentUserId) {
                 markConversationReadAction(conversationId);
               }
 
-              // Auto scroll if user was near bottom
               if (!showScrollBottom) {
                 setTimeout(() => scrollToBottom(true), 50);
               }
             } else if (data.type === "read_receipt") {
-              // Mark all messages by current user as read
               setMessages((prev) =>
                 prev.map((m) =>
                   m.senderId === currentUserId && !m.readAt
@@ -133,7 +149,7 @@ export function ChatBox({
               );
             }
           } catch {
-            // Ignore parse errors (e.g. ping/heartbeat comments)
+            // Ignore parse errors (e.g. heartbeat)
           }
         };
 
@@ -148,7 +164,7 @@ export function ChatBox({
 
     setupSSE();
 
-    // Secondary fallback polling (every 4 seconds) to guarantee sync across firewalls/proxies
+    // Fallback polling (every 4s) with safe deduplication
     fallbackPollInterval = setInterval(async () => {
       try {
         const res = await fetch(
@@ -159,20 +175,14 @@ export function ChatBox({
         if (res.ok) {
           const json = await res.json();
           if (json.success && Array.isArray(json.messages) && json.messages.length > 0) {
-            setMessages((prev) => {
-              const existingIds = new Set(prev.map((m) => m.id));
-              const newItems = json.messages.filter((m: MessageItem) => !existingIds.has(m.id));
-              if (newItems.length === 0) return prev;
-              return [...prev, ...newItems];
-            });
-
+            setMessages((prev) => mergeMessages(prev, json.messages));
             const latest = json.messages[json.messages.length - 1];
             lastFetchedTimeRef.current = new Date(latest.createdAt).toISOString();
             setIsConnected(true);
           }
         }
       } catch {
-        // Silently continue polling
+        // Silently continue
       }
     }, 4000);
 
@@ -182,7 +192,7 @@ export function ChatBox({
     };
   }, [conversationId, currentUserId, showScrollBottom, scrollToBottom]);
 
-  // Send message handler with instant optimistic UI update
+  // Send message handler with optimistic UI update and clientMsgId tracking
   const handleSend = (overrideText?: string) => {
     const content = (overrideText ?? text).trim();
     if (!content) return;
@@ -196,7 +206,7 @@ export function ChatBox({
         ? crypto.randomUUID()
         : `40000000-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, "0")}`;
 
-    // Optimistic UI item
+    // Optimistic item
     const optimisticMsg: MessageItem = {
       id: `temp-${Date.now()}`,
       conversationId,
@@ -214,6 +224,7 @@ export function ChatBox({
     const formData = new FormData();
     formData.append("conversationId", conversationId);
     formData.append("body", content);
+    formData.append("clientMsgId", tempClientMsgId);
 
     startTransition(async () => {
       await sendMessageAction(null, formData);
@@ -234,70 +245,22 @@ export function ChatBox({
 
   return (
     <div className="flex flex-col h-[600px] bg-white dark:bg-zinc-900 overflow-hidden">
-      {/* Real-time Status & Context Sub-Header */}
-      <div className="flex items-center justify-between border-b border-zinc-100 bg-zinc-50/70 px-6 py-2.5 dark:border-zinc-800 dark:bg-zinc-950/40">
-        <div className="flex items-center gap-2 text-[11px] text-zinc-500">
-          {isConnected ? (
-            <span className="inline-flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              <Wifi className="h-3 w-3" />
-              <span>Real-Time Live</span>
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 font-medium text-zinc-400">
-              <WifiOff className="h-3 w-3" />
-              <span>Polling Sync</span>
-            </span>
-          )}
-          {partnerRole && (
-            <>
-              <span>•</span>
-              <span className="text-zinc-500 font-medium">{partnerRole}</span>
-            </>
-          )}
-          {jobTitle && (
-            <>
-              <span>•</span>
-              <span className="truncate max-w-[240px] text-zinc-600 dark:text-zinc-400 font-medium">
-                {jobTitle}
-              </span>
-            </>
-          )}
-          {contractId && (
-            <>
-              <span>•</span>
-              <a
-                href={`/contracts/${contractId}`}
-                className="text-purple-600 hover:underline dark:text-purple-400 font-medium"
-              >
-                Workroom
-              </a>
-            </>
-          )}
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setShowQuickChips(!showQuickChips)}
-          className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-semibold text-purple-600 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-950/40 transition"
-        >
-          <Sparkles className="h-3 w-3" />
-          <span>{showQuickChips ? "Hide Quick Prompts" : "Quick Prompts"}</span>
-        </button>
-      </div>
-
-      {/* Quick Prompts Bar */}
+      {/* Quick Prompts Drawer (toggled from composer, not taking up persistent top bar space) */}
       {showQuickChips && (
-        <div className="flex flex-wrap gap-1.5 border-b border-zinc-100 bg-purple-50/40 p-3 dark:border-zinc-800 dark:bg-purple-950/20 animate-in fade-in duration-150">
+        <div className="flex flex-wrap items-center gap-1.5 border-b border-zinc-100 bg-zinc-50/80 px-4 py-2.5 dark:border-zinc-800 dark:bg-zinc-950/60 animate-in fade-in duration-150">
+          <span className="text-[11px] font-semibold text-zinc-500 mr-1 flex items-center gap-1">
+            <Sparkles className="h-3 w-3 text-indigo-500" />
+            Quick Prompts:
+          </span>
           {CANNED_RESPONSES.map((chip, idx) => (
             <button
               key={idx}
               type="button"
-              onClick={() => handleSend(chip)}
-              className="rounded-full border border-purple-200 bg-white px-3 py-1 text-[11px] font-medium text-purple-800 shadow-xs hover:border-purple-300 hover:bg-purple-50 dark:border-purple-900/50 dark:bg-zinc-900 dark:text-purple-300 dark:hover:bg-purple-950/60 transition"
+              onClick={() => {
+                handleSend(chip);
+                setShowQuickChips(false);
+              }}
+              className="rounded-full border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-700 shadow-2xs hover:border-indigo-400 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:text-indigo-400 transition"
             >
               {chip}
             </button>
@@ -309,7 +272,7 @@ export function ChatBox({
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="relative flex-1 overflow-y-auto p-6 space-y-4"
+        className="relative flex-1 overflow-y-auto px-6 py-4 space-y-3.5"
       >
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center text-center p-8 text-zinc-400">
@@ -320,8 +283,8 @@ export function ChatBox({
               Direct Conversation Ready
             </p>
             <p className="mt-1 text-xs text-zinc-500 max-w-sm">
-              Send a message to {partnerName ?? "the recipient"} to coordinate milestones, clarify
-              scope deliverables, or discuss contract terms.
+              Send a message to coordinate milestones, clarify deliverables, or discuss project
+              terms.
             </p>
           </div>
         ) : (
@@ -333,18 +296,18 @@ export function ChatBox({
             return (
               <div
                 key={m.id}
-                className={`flex flex-col ${isMe ? "items-end" : "items-start"} animate-in fade-in duration-150`}
+                className={`flex flex-col ${isMe ? "items-end" : "items-start"} transition-all`}
               >
                 {!isMe && (
-                  <span className="mb-1 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+                  <span className="mb-1 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
                     {partnerName ?? m.sender.name}
                   </span>
                 )}
 
                 <div
-                  className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-xs ${
+                  className={`max-w-[78%] rounded-2xl px-3.5 py-2 text-xs leading-relaxed shadow-2xs ${
                     isMe
-                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-br-xs"
+                      ? "bg-indigo-600 text-white rounded-br-xs"
                       : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100 rounded-bl-xs border border-zinc-200/50 dark:border-zinc-700/50"
                   }`}
                 >
@@ -356,19 +319,17 @@ export function ChatBox({
                   {isMe && (
                     <span className="inline-flex items-center">
                       {isOptimistic ? (
-                        <Loader2 className="h-3 w-3 animate-spin text-zinc-400" />
+                        <Loader2 className="h-2.5 w-2.5 animate-spin text-zinc-400" />
                       ) : isRead ? (
                         <span
                           className="inline-flex items-center text-indigo-500 dark:text-indigo-400"
-                          title="Read by recipient"
+                          title="Read"
                         >
-                          <CheckCheck className="h-3.5 w-3.5" />
-                          <span className="sr-only">Read</span>
+                          <CheckCheck className="h-3 w-3" />
                         </span>
                       ) : (
                         <span className="inline-flex items-center text-zinc-400" title="Sent">
-                          <Check className="h-3 w-3" />
-                          <span className="sr-only">Sent</span>
+                          <Check className="h-2.5 w-2.5" />
                         </span>
                       )}
                     </span>
@@ -385,22 +346,22 @@ export function ChatBox({
           <button
             type="button"
             onClick={() => scrollToBottom(true)}
-            className="absolute bottom-4 right-6 inline-flex items-center gap-1.5 rounded-full bg-zinc-900/90 px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
+            className="absolute bottom-4 right-6 inline-flex items-center gap-1.5 rounded-full bg-zinc-900/90 px-3 py-1.5 text-xs font-medium text-white shadow-lg backdrop-blur-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
           >
-            <ArrowDown className="h-3.5 w-3.5" />
+            <ArrowDown className="h-3 w-3" />
             <span>Latest Messages</span>
           </button>
         )}
       </div>
 
       {/* Message Composer */}
-      <div className="border-t border-zinc-100 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
+      <div className="border-t border-zinc-100 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
           }}
-          className="flex items-end gap-3"
+          className="flex items-end gap-2"
         >
           <div className="relative flex-1">
             <textarea
@@ -410,26 +371,54 @@ export function ChatBox({
               onKeyDown={handleKeyDown}
               placeholder="Type your message... (Enter to send, Shift+Enter for newline)"
               maxLength={2000}
-              className="w-full resize-none rounded-xl border border-zinc-300 bg-white p-3 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-purple-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-100 transition"
             />
-            <div className="absolute bottom-2 right-2.5 text-[10px] text-zinc-400">
+            <div className="absolute bottom-2 right-2 text-[10px] text-zinc-400">
               {text.length}/2000
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={!text.trim() || isPending}
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 transition hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50"
-            title="Send Message"
-          >
-            {isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-          </button>
+          <div className="flex items-center gap-1 pb-1">
+            <button
+              type="button"
+              onClick={() => setShowQuickChips(!showQuickChips)}
+              title="Quick Prompts"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 transition"
+            >
+              <Sparkles className="h-4 w-4" />
+            </button>
+
+            <button
+              type="submit"
+              disabled={!text.trim() || isPending}
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs transition hover:bg-indigo-500 disabled:opacity-40"
+              title="Send Message"
+            >
+              {isPending ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
+            </button>
+          </div>
         </form>
+
+        <div className="flex items-center justify-between px-1 pt-1 text-[10px] text-zinc-400">
+          <div className="flex items-center gap-1.5">
+            {isConnected ? (
+              <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live Sync Active
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-zinc-400">
+                <WifiOff className="h-2.5 w-2.5" />
+                Polling Sync
+              </span>
+            )}
+          </div>
+          <span>Shift + Enter for new line</span>
+        </div>
       </div>
     </div>
   );

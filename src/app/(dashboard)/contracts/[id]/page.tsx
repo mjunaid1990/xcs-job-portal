@@ -9,6 +9,7 @@ import { OpenDisputeModal } from "@/components/forms/open-dispute-modal";
 import { ContractHuddleModal } from "@/components/chat/contract-huddle-modal";
 import { ContractTimelineStepper } from "@/components/contracts/contract-timeline-stepper";
 import { Badge } from "@/components/ui/badge";
+import { formatContractRef } from "@/lib/format";
 import {
   ArrowLeft,
   FileCheck,
@@ -16,7 +17,6 @@ import {
   AlertCircle,
   Star,
   MessageSquare,
-  Lock,
   Building2,
   User,
 } from "lucide-react";
@@ -66,12 +66,6 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
     contract.status !== "COMPLETED" &&
     contract.status !== "CANCELLED";
 
-  const completedMilestones = contract.milestones.filter((m) => m.status === "RELEASED").length;
-  const progressPct =
-    contract.milestones.length > 0
-      ? Math.round((completedMilestones / contract.milestones.length) * 100)
-      : 0;
-
   const getContractStatusVariant = (status: string) => {
     switch (status) {
       case "ACTIVE":
@@ -115,7 +109,23 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
           <span>Back to contracts</span>
         </Link>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          <Link
+            href={conversationUrl}
+            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition hover:bg-indigo-500"
+          >
+            <MessageSquare className="h-3.5 w-3.5" />
+            <span>Messages</span>
+          </Link>
+
+          <Link
+            href={`/contracts/${contract.id}/invoice`}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          >
+            <Receipt className="h-3.5 w-3.5 text-zinc-400" />
+            <span>Invoice</span>
+          </Link>
+
           <ContractHuddleModal
             contractId={contract.id}
             counterpartName={
@@ -125,22 +135,6 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
             }
             counterpartRole={isClient ? "Freelancer" : "Client"}
           />
-
-          <Link
-            href={conversationUrl}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 shadow-xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-          >
-            <MessageSquare className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
-            <span>Messages</span>
-          </Link>
-
-          <Link
-            href={`/contracts/${contract.id}/invoice`}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/90 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 shadow-xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-          >
-            <Receipt className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
-            <span>Official Invoice</span>
-          </Link>
 
           {canDispute && !activeDispute && (
             <OpenDisputeModal
@@ -157,80 +151,67 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
 
       {/* Dispute Alert Banner */}
       {activeDispute && (
-        <div className="flex items-start gap-3 rounded-2xl border border-red-500/20 bg-red-50 p-6 text-red-900 dark:bg-red-950/20 dark:text-red-200">
-          <AlertCircle className="h-6 w-6 flex-shrink-0 text-red-600 dark:text-red-400" />
+        <div className="flex items-start gap-3 rounded-2xl border border-red-500/20 bg-red-50 p-5 text-red-900 dark:bg-red-950/20 dark:text-red-200">
+          <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400 mt-0.5" />
           <div>
-            <h3 className="font-bold">Contract Disputed & Payouts Paused</h3>
+            <h3 className="font-bold text-sm">Contract Disputed & Payouts Paused</h3>
             <p className="mt-1 text-xs text-red-800 dark:text-red-300">
               A dispute was filed by{" "}
               <span className="font-semibold">{activeDispute.openedBy.name}</span>: &quot;
-              {activeDispute.reason}&quot;. Our platform compliance team is reviewing deliverable
-              logs and milestone submissions.
+              {activeDispute.reason}&quot;. Compliance team is reviewing deliverable logs and
+              milestone submissions.
             </p>
           </div>
         </div>
       )}
 
-      {/* Contract Banner */}
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
+      {/* Contract Hero Banner */}
+      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-7">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-3">
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-xs font-bold text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 rounded-md border border-zinc-200/60 dark:border-zinc-700/60">
+                #{formatContractRef(contract.id)}
+              </span>
               <Badge
                 variant={getContractStatusVariant(contract.status)}
                 dot={contract.status === "ACTIVE"}
               >
                 {contract.status}
               </Badge>
-              <span className="text-xs text-zinc-500">
-                Created {new Date(contract.createdAt).toLocaleDateString()}
+              <span className="text-xs text-zinc-400">
+                Started {new Date(contract.createdAt).toLocaleDateString()}
               </span>
             </div>
 
-            <h1 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
               {contract.job.title}
             </h1>
 
             <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
-              <div className="flex items-center gap-1.5 font-semibold text-zinc-700 dark:text-zinc-300">
-                <Building2 className="h-4 w-4 text-zinc-400" />
+              <div className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
+                <Building2 className="h-3.5 w-3.5 text-zinc-400" />
                 <span>
                   Client: {contract.client.clientProfile?.companyName ?? contract.client.name}
                 </span>
               </div>
               <span>•</span>
-              <div className="flex items-center gap-1.5 font-semibold text-zinc-700 dark:text-zinc-300">
-                <User className="h-4 w-4 text-zinc-400" />
+              <div className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
+                <User className="h-3.5 w-3.5 text-zinc-400" />
                 <span>Freelancer: {contract.freelancer.name}</span>
               </div>
             </div>
           </div>
 
-          <div className="text-left sm:text-right">
-            <span className="font-mono text-3xl font-black text-zinc-900 dark:text-zinc-100">
-              ${(Number(contract.totalCents) / 100).toFixed(0)}
+          <div className="text-left sm:text-right shrink-0">
+            <span className="font-mono text-2xl sm:text-3xl font-black text-zinc-900 dark:text-zinc-100">
+              $
+              {(Number(contract.totalCents) / 100).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </span>
-            <div className="mt-1 text-xs text-zinc-500">Total Contract Escrow (USD)</div>
-          </div>
-        </div>
-
-        {/* Milestone Progress Indicator */}
-        <div className="mt-6 pt-6 border-t border-zinc-100 dark:border-zinc-800">
-          <div className="flex items-center justify-between text-xs mb-2">
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-              <Lock className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Escrow Progress</span>
-            </span>
-            <span className="font-bold text-zinc-900 dark:text-zinc-100">
-              {completedMilestones} of {contract.milestones.length} milestones released (
-              {progressPct}%)
-            </span>
-          </div>
-          <div className="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full transition-all duration-300"
-              style={{ width: `${progressPct}%` }}
-            />
+            <div className="mt-0.5 text-xs text-zinc-400">Total Contract Value (USD)</div>
           </div>
         </div>
       </div>
@@ -333,10 +314,10 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
       )}
 
       {/* Financial Ledger Audit Trail */}
-      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 text-sm font-bold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
-          <Receipt className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-          <span>Cryptographic Escrow Ledger Trail</span>
+          <Receipt className="h-4 w-4 text-zinc-400" />
+          <span>Audited Escrow & Payment Activity</span>
         </div>
         <div className="mt-4 divide-y divide-zinc-100 text-xs dark:divide-zinc-800">
           {contract.ledgerEntries.map((l) => (

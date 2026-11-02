@@ -36,10 +36,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
                   Work<span className="text-indigo-600 dark:text-indigo-400">Wasl</span>
                 </span>
-                <span className="hidden lg:inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live Vault
-                </span>
               </div>
             </Link>
 
