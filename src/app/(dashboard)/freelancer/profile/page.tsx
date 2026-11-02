@@ -1,10 +1,11 @@
 import { auth } from "@/server/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { ProfileService } from "@/server/services/profile.service";
 import { FreelancerProfileForm } from "@/components/forms/freelancer-profile-form";
 import { PortfolioList } from "@/components/forms/portfolio-list";
 import { ProfileCompletenessCard } from "@/components/ui/profile-completeness-card";
-import { Sparkles, FolderGit2 } from "lucide-react";
+import { Sparkles, FolderGit2, ExternalLink } from "lucide-react";
 
 export default async function FreelancerProfilePage() {
   const session = await auth();
@@ -39,13 +40,23 @@ export default async function FreelancerProfilePage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Professional Profile Settings
-        </h1>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Showcase your skills, set your hourly rate, and manage your portfolio to win contracts.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Professional Profile Settings
+          </h1>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            Showcase your skills, set your hourly rate, and manage your portfolio to win contracts.
+          </p>
+        </div>
+        <Link
+          href={`/freelancers/${session.user.id}`}
+          target="_blank"
+          className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 transition"
+        >
+          <ExternalLink className="h-3.5 w-3.5 text-indigo-500" />
+          <span>Preview Public Profile</span>
+        </Link>
       </div>
 
       {/* Profile Completeness Score Card */}

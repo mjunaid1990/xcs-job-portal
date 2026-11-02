@@ -4,6 +4,7 @@ import { Prisma, UserStatus } from "@prisma/client";
 
 export interface UpdateFreelancerInput {
   name?: string;
+  imageUrl?: string;
   headline?: string;
   bio?: string;
   hourlyRateCents?: number;
@@ -21,6 +22,7 @@ export interface UpdateFreelancerInput {
 
 export interface UpdateClientInput {
   name?: string;
+  imageUrl?: string;
   companyName?: string;
   website?: string;
   companySize?: string;
@@ -163,10 +165,13 @@ export class ProfileService {
    */
   static async updateFreelancerProfile(userId: string, input: UpdateFreelancerInput) {
     return prisma.$transaction(async (tx) => {
-      if (input.name) {
+      if (input.name || input.imageUrl) {
         await tx.user.update({
           where: { id: userId },
-          data: { name: input.name.trim() },
+          data: {
+            ...(input.name ? { name: input.name.trim() } : {}),
+            ...(input.imageUrl ? { imageUrl: input.imageUrl.trim() } : {}),
+          },
         });
       }
 
@@ -302,10 +307,13 @@ export class ProfileService {
    */
   static async updateClientProfile(userId: string, input: UpdateClientInput) {
     return prisma.$transaction(async (tx) => {
-      if (input.name) {
+      if (input.name || input.imageUrl) {
         await tx.user.update({
           where: { id: userId },
-          data: { name: input.name.trim() },
+          data: {
+            ...(input.name ? { name: input.name.trim() } : {}),
+            ...(input.imageUrl ? { imageUrl: input.imageUrl.trim() } : {}),
+          },
         });
       }
 

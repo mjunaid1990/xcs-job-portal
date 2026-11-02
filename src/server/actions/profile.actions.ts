@@ -3,6 +3,7 @@
 import { auth } from "@/server/lib/auth";
 import { ProfileService } from "@/server/services/profile.service";
 import { VALIDATION_RULES, isValidUrl } from "@/server/lib/validation-rules";
+import { uploadFile } from "@/server/lib/storage";
 import { revalidatePath } from "next/cache";
 
 export interface ProfileActionResult {
@@ -145,9 +146,23 @@ export async function updateFreelancerProfileAction(
     return { success: false, error: "Please provide a valid portfolio or personal website URL." };
   }
 
+  let imageUrl: string | undefined;
+  const avatarFile = formData.get("avatarFile") as File | null;
+  if (avatarFile && avatarFile.size > 0 && typeof avatarFile.arrayBuffer === "function") {
+    try {
+      const buffer = Buffer.from(await avatarFile.arrayBuffer());
+      const res = await uploadFile(avatarFile.name, buffer, avatarFile.type || "image/png");
+      imageUrl = res.url;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to upload avatar.";
+      return { success: false, error: msg };
+    }
+  }
+
   try {
     await ProfileService.updateFreelancerProfile(session.user.id, {
       name,
+      imageUrl,
       headline,
       bio,
       hourlyRateCents: Math.round(hourlyRateDollars * 100),
@@ -225,9 +240,23 @@ export async function updateClientProfileAction(
     return { success: false, error: "Please enter a valid LinkedIn URL." };
   }
 
+  let imageUrl: string | undefined;
+  const logoFile = formData.get("logoFile") as File | null;
+  if (logoFile && logoFile.size > 0 && typeof logoFile.arrayBuffer === "function") {
+    try {
+      const buffer = Buffer.from(await logoFile.arrayBuffer());
+      const res = await uploadFile(logoFile.name, buffer, logoFile.type || "image/png");
+      imageUrl = res.url;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to upload company logo.";
+      return { success: false, error: msg };
+    }
+  }
+
   try {
     await ProfileService.updateClientProfile(session.user.id, {
       name,
+      imageUrl,
       companyName,
       website,
       companySize,
@@ -259,7 +288,19 @@ export async function addPortfolioItemAction(
   const title = formData.get("title")?.toString();
   const description = formData.get("description")?.toString();
   const url = formData.get("url")?.toString();
-  const imageUrl = formData.get("imageUrl")?.toString();
+  let imageUrl = formData.get("imageUrl")?.toString();
+
+  const imageFile = formData.get("imageFile") as File | null;
+  if (imageFile && imageFile.size > 0 && typeof imageFile.arrayBuffer === "function") {
+    try {
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      const res = await uploadFile(imageFile.name, buffer, imageFile.type || "image/png");
+      imageUrl = res.url;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to upload project screenshot.";
+      return { success: false, error: msg };
+    }
+  }
 
   if (!title) {
     return { success: false, error: "Title is required." };

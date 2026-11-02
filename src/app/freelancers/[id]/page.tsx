@@ -132,9 +132,20 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             <div className="flex flex-col sm:flex-row items-start gap-5 sm:gap-6 flex-1 min-w-0">
               {/* Avatar with Live Presence Dot */}
               <div className="relative shrink-0">
-                <div className="flex h-20 w-20 sm:h-22 sm:w-22 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-indigo-700 text-2xl font-black text-white shadow-md shadow-indigo-500/20 ring-4 ring-white dark:ring-zinc-800">
-                  {profile.user.name.slice(0, 2).toUpperCase()}
-                </div>
+                {profile.user.imageUrl ? (
+                  <div className="relative h-20 w-20 sm:h-22 sm:w-22 overflow-hidden rounded-2xl border-2 border-indigo-500/40 shadow-md ring-4 ring-white dark:ring-zinc-800">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={profile.user.imageUrl}
+                      alt={profile.user.name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex h-20 w-20 sm:h-22 sm:w-22 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-indigo-700 text-2xl font-black text-white shadow-md shadow-indigo-500/20 ring-4 ring-white dark:ring-zinc-800">
+                    {profile.user.name.slice(0, 2).toUpperCase()}
+                  </div>
+                )}
                 <span
                   title="Available for immediate contract"
                   className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white dark:bg-zinc-900"
@@ -378,20 +389,21 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             )}
 
             {/* 4. Featured Portfolio Case Studies */}
-            {profile.portfolioItems.length > 0 && (
-              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Layers className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                      Featured Work & Case Studies
-                    </h2>
-                  </div>
-                  <span className="text-[11px] font-medium text-zinc-400">
-                    {profile.portfolioItems.length} items
-                  </span>
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Layers className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Featured Work & Case Studies
+                  </h2>
                 </div>
+                <span className="text-[11px] font-medium text-zinc-400">
+                  {profile.portfolioItems.length}{" "}
+                  {profile.portfolioItems.length === 1 ? "item" : "items"}
+                </span>
+              </div>
 
+              {profile.portfolioItems.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {profile.portfolioItems.map((item) => (
                     <div
@@ -435,24 +447,33 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-xl border border-dashed border-zinc-200 p-8 text-center text-xs text-zinc-500 dark:border-zinc-800">
+                  <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+                    Portfolio case studies in progress
+                  </p>
+                  <p className="mt-1 text-zinc-400">
+                    Live production demonstrations and verified client outcomes will appear here.
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* 5. Verified Client Reviews & Work History */}
-            {reviews.length > 0 && (
-              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                    <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                      Verified Client Feedback & Work History
-                    </h2>
-                  </div>
-                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                    100% Verified Escrow
-                  </span>
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Verified Client Feedback & Work History
+                  </h2>
                 </div>
+                <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                  100% Verified Escrow
+                </span>
+              </div>
 
+              {reviews.length > 0 ? (
                 <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
                   {reviews.map((r) => (
                     <div key={r.id} className="py-4 first:pt-0 last:pb-0 space-y-2">
@@ -502,8 +523,18 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-xl border border-dashed border-zinc-200 p-8 text-center text-xs text-zinc-500 dark:border-zinc-800">
+                  <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+                    No client reviews recorded yet
+                  </p>
+                  <p className="mt-1 text-zinc-400">
+                    Ratings and verified feedback are automatically generated upon milestone
+                    release.
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* 6. Milestone Escrow Protection Banner */}
             <div className="rounded-2xl border border-indigo-200/70 bg-gradient-to-r from-indigo-50/60 via-purple-50/40 to-white p-6 dark:border-indigo-900/50 dark:bg-zinc-900">

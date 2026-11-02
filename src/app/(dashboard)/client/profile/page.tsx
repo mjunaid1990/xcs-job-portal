@@ -1,11 +1,12 @@
 import { auth } from "@/server/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { ProfileService } from "@/server/services/profile.service";
 import { OrganizationService } from "@/server/services/organization.service";
 import { ClientProfileForm } from "@/components/forms/client-profile-form";
 import { OrganizationTeamCard } from "@/components/forms/organization-team-card";
 import { ProfileCompletenessCard } from "@/components/ui/profile-completeness-card";
-import { Building, ShieldCheck, Users } from "lucide-react";
+import { Building, ShieldCheck, Users, ExternalLink } from "lucide-react";
 
 export default async function ClientProfilePage() {
   const session = await auth();
@@ -40,14 +41,24 @@ export default async function ClientProfilePage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Company Profile & Team Workspace
-        </h1>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Manage your organization details, corporate team seats, hiring identity, and payment
-          verification status.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Company Profile & Team Workspace
+          </h1>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            Manage your organization details, corporate team seats, hiring identity, and payment
+            verification status.
+          </p>
+        </div>
+        <Link
+          href={`/clients/${session.user.id}`}
+          target="_blank"
+          className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 transition"
+        >
+          <ExternalLink className="h-3.5 w-3.5 text-blue-500" />
+          <span>Preview Public Page</span>
+        </Link>
       </div>
 
       {/* Profile Completeness Score Card */}

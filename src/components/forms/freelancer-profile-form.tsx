@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { updateFreelancerProfileAction } from "@/server/actions/profile.actions";
 import {
   Loader2,
@@ -13,6 +13,10 @@ import {
   Sparkles,
   Award,
   Search,
+  Camera,
+  Upload,
+  AlertCircle,
+  Layers,
 } from "lucide-react";
 
 function GithubIcon({ className = "h-4 w-4" }: { className?: string }) {
@@ -39,7 +43,12 @@ interface Skill {
 
 interface ProfileFormProps {
   profile: {
-    user: { name: string; country?: string | null; timezone?: string | null };
+    user: {
+      name: string;
+      country?: string | null;
+      timezone?: string | null;
+      imageUrl?: string | null;
+    };
     headline: string | null;
     bio: string | null;
     hourlyRateCents: number | null;
@@ -77,6 +86,13 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Avatar State
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(
+    profile.user.imageUrl ?? null,
+  );
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
   // Core Fields
   const [name, setName] = useState(profile.user.name ?? "");
   const [headline, setHeadline] = useState(profile.headline ?? "");
@@ -108,6 +124,37 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
   );
   const [skillFilter, setSkillFilter] = useState("");
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file (PNG, JPG, WebP).");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Avatar image must not exceed 5MB.");
+      return;
+    }
+
+    setAvatarFile(file);
+    const objectUrl = URL.createObjectURL(file);
+    setAvatarPreviewUrl(objectUrl);
+  };
+
+  const handleResetAvatar = () => {
+    setAvatarFile(null);
+    if (avatarPreviewUrl && avatarPreviewUrl !== profile.user.imageUrl) {
+      URL.revokeObjectURL(avatarPreviewUrl);
+    }
+    setAvatarPreviewUrl(profile.user.imageUrl ?? null);
+    if (avatarInputRef.current) {
+      avatarInputRef.current.value = "";
+    }
+  };
+
   const handleAddTag = (tagToAdd?: string) => {
     const val = (tagToAdd || tagInput)
       .trim()
@@ -133,6 +180,15 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
   const handleClearSkills = () => {
     setSelectedSkills([]);
   };
+
+  const initials =
+    name
+      .trim()
+      .split(/\s+/)
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "NO";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,6 +250,10 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
     formData.append("linkedinUrl", linkedinUrl.trim());
     formData.append("websiteUrl", websiteUrl.trim());
 
+    if (avatarFile) {
+      formData.append("avatarFile", avatarFile);
+    }
+
     // Append custom tags
     for (const t of tags) {
       formData.append("tags", t);
@@ -229,16 +289,81 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
       )}
 
       {error && (
-        <div className="rounded-xl bg-red-500/10 p-4 text-xs font-semibold text-red-700 dark:text-red-400 border border-red-500/20">
-          {error}
+        <div className="flex items-center gap-2 rounded-xl bg-red-500/10 p-4 text-xs font-semibold text-red-700 dark:text-red-400 border border-red-500/20">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
-      {/* SECTION 1: CORE IDENTITY & RATE */}
-      <div className="space-y-4">
+      {/* SECTION 1: AVATAR & IDENTITY */}
+      <div className="space-y-5">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
           <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
-          <span>Core Identity & Compensation</span>
+          <span>Profile Photo & Identity</span>
+        </div>
+
+        {/* Avatar Uploader Card */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-950/40">
+          <div className="relative group shrink-0">
+            {avatarPreviewUrl ? (
+              <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-indigo-500/40 shadow-sm">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={avatarPreviewUrl}
+                  alt={name || "Profile avatar"}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-indigo-700 text-2xl font-black text-white shadow-md shadow-indigo-500/20 ring-2 ring-white dark:ring-zinc-800">
+                {initials}
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-white shadow-md hover:bg-indigo-600 transition dark:bg-white dark:text-zinc-900 dark:hover:bg-indigo-500 dark:hover:text-white"
+              title="Change avatar photo"
+            >
+              <Camera className="h-3.5 w-3.5" />
+            </button>
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              onChange={handleAvatarChange}
+              className="hidden"
+            />
+          </div>
+
+          <div className="flex-1 space-y-1">
+            <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              Profile Photo & Headshot
+            </h4>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Upload a clear professional photo. A verified headshot gives clients 40% higher
+              contract confidence.
+            </p>
+            <div className="flex items-center gap-2 pt-1.5">
+              <button
+                type="button"
+                onClick={() => avatarInputRef.current?.click()}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 transition"
+              >
+                <Upload className="h-3 w-3" />
+                <span>Upload Photo</span>
+              </button>
+              {(avatarFile || (avatarPreviewUrl && avatarPreviewUrl !== profile.user.imageUrl)) && (
+                <button
+                  type="button"
+                  onClick={handleResetAvatar}
+                  className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-500 hover:text-red-500 transition"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -268,7 +393,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               <DollarSign className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
               <input
                 type="number"
-                min="10"
+                min="5"
                 max="1000"
                 required
                 value={hourlyRate}
@@ -276,6 +401,10 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
+            <p className="mt-1 text-[11px] text-zinc-400">
+              You receive 100% of approved escrow payouts. Platform charges a flat $1 transaction
+              fee.
+            </p>
           </div>
         </div>
 
@@ -397,7 +526,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             </span>
           </div>
           <textarea
-            rows={8}
+            rows={7}
             required
             minLength={30}
             maxLength={5000}
@@ -407,8 +536,8 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
           />
           <p className="mt-1 text-[11px] text-zinc-400">
-            Plaintext format supported: multi-line paragraphs, numbered lists, markdown, links, and
-            emojis are preserved.
+            Pro tip: High-converting bios highlight past outcomes (e.g. &quot;Architected system
+            handling $10M+ in volume&quot;) and core technologies.
           </p>
         </div>
       </div>
@@ -544,7 +673,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
 
           <div>
             <label className="block text-xs font-semibold capitalize text-zinc-700 dark:text-zinc-300">
-              Personal Portfolio / Website
+              Personal Site / Portfolio URL
             </label>
             <div className="relative mt-1.5">
               <Globe className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
@@ -552,7 +681,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 type="url"
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
-                placeholder="https://yourname.dev"
+                placeholder="https://yourdomain.dev"
                 className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
@@ -560,71 +689,78 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
         </div>
       </div>
 
-      {/* SECTION 5: SKILLS TAXONOMY PICKER */}
+      {/* SECTION 5: VERIFIED SKILLS MULTI-PICKER */}
       <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-            <Award className="h-3.5 w-3.5 text-indigo-500" />
-            <span>Marketplace Skills ({skills.length} Available)</span>
+            <Layers className="h-3.5 w-3.5 text-indigo-500" />
+            <span>
+              Core Technologies & Skills <span className="text-red-500">*</span>
+            </span>
           </div>
-          {selectedSkills.length > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                {selectedSkills.length} Selected
-              </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+              {selectedSkills.length} selected
+            </span>
+            {selectedSkills.length > 0 && (
               <button
                 type="button"
                 onClick={handleClearSkills}
-                className="text-xs text-zinc-400 hover:text-red-500 underline"
+                className="text-[11px] text-zinc-400 hover:text-red-500 transition"
               >
                 Clear all
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
-        {/* Skill Search Filter */}
+        <p className="text-xs text-zinc-500">
+          Select all technologies and methodologies you are comfortable architecting in production
+          environments.
+        </p>
+
+        {/* Filter input */}
         <div className="relative">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"
             value={skillFilter}
             onChange={(e) => setSkillFilter(e.target.value)}
-            placeholder="Search skills by name (e.g. Next.js, PostgreSQL, Docker, Figma)..."
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 shadow-xs focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            placeholder="Search skills by name (e.g. Next.js, PostgreSQL, Docker)..."
+            className="w-full rounded-xl border border-zinc-300 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
           />
         </div>
 
-        {/* Skills Tag Cloud */}
-        <div className="max-h-60 overflow-y-auto rounded-xl border border-zinc-100 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-950/30">
+        {/* Skills Pills */}
+        <div className="max-h-60 overflow-y-auto rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-950/40">
           <div className="flex flex-wrap gap-2">
-            {filteredSkills.length === 0 ? (
-              <span className="text-xs text-zinc-400">No matching skills found.</span>
-            ) : (
-              filteredSkills.map((skill) => {
-                const isSelected = selectedSkills.includes(skill.id);
-                return (
-                  <button
-                    type="button"
-                    key={skill.id}
-                    onClick={() => toggleSkill(skill.id)}
-                    className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
-                      isSelected
-                        ? "bg-indigo-600 text-white shadow-xs dark:bg-indigo-500"
-                        : "border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                    }`}
-                  >
-                    {skill.name}
-                  </button>
-                );
-              })
-            )}
+            {filteredSkills.map((skill) => {
+              const isSelected = selectedSkills.includes(skill.id);
+              return (
+                <button
+                  type="button"
+                  key={skill.id}
+                  onClick={() => toggleSkill(skill.id)}
+                  className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
+                    isSelected
+                      ? "bg-indigo-600 text-white shadow-xs hover:bg-indigo-700"
+                      : "bg-white text-zinc-700 border border-zinc-200/80 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-800 dark:hover:bg-zinc-800"
+                  }`}
+                >
+                  {isSelected && <Check className="h-3 w-3" />}
+                  <span>{skill.name}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
       {/* SUBMIT BUTTON */}
-      <div className="flex justify-end pt-4">
+      <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+        <p className="text-xs text-zinc-400">
+          All changes take effect immediately on your public profile and proposals.
+        </p>
         <button
           type="submit"
           disabled={isPending}
@@ -638,7 +774,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
           ) : (
             <>
               <Check className="h-4 w-4" />
-              <span>Save & Publish Profile</span>
+              <span>Save & Update Profile</span>
             </>
           )}
         </button>
