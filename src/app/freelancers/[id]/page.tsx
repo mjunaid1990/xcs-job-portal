@@ -5,6 +5,8 @@ import { prisma } from "@/server/db/prisma";
 import { ProfileService } from "@/server/services/profile.service";
 import { MessageFreelancerButton } from "@/components/chat/message-freelancer-button";
 import { PublicHeader } from "@/components/layout/public-header";
+import { StarRating } from "@/components/profile/star-rating";
+import { ProfileVerificationBadge } from "@/components/profile/profile-verification-badge";
 import {
   Star,
   ExternalLink,
@@ -18,12 +20,12 @@ import {
   MapPin,
   CheckCircle2,
   Calendar,
-  Sparkles,
   Zap,
   Layers,
   Code2,
   Award,
   FolderGit2,
+  GraduationCap,
 } from "lucide-react";
 
 function GithubIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
@@ -92,7 +94,9 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
   const hourlyRate = profile.hourlyRateCents
     ? (Number(profile.hourlyRateCents) / 100).toFixed(0)
     : "85";
-  const jss = profile.jobSuccessScore ? `${profile.jobSuccessScore}%` : "100%";
+  const reviewCount = reviews.length;
+  const avgRating =
+    reviewCount > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount : 5.0;
   const totalContractsCount = Math.max(contracts.length, 1);
   const yearsExp = profile.yearsOfExperience ?? 8;
   const memberSinceYear = new Date(profile.user.createdAt).getFullYear();
@@ -161,17 +165,8 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                   <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
                     {profile.user.name}
                   </h1>
-                  <span
-                    className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300"
-                    title="WorkWasl Verified Specialist"
-                  >
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                    <span>Verified</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
-                    <Sparkles className="h-3 w-3" />
-                    <span>Top Rated Plus</span>
-                  </span>
+                  <ProfileVerificationBadge label="Verified Specialist" />
+                  <StarRating rating={avgRating} reviewCount={reviewCount} showCount={true} />
                 </div>
 
                 <p className="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400">
@@ -283,12 +278,16 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
                 <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
-                <span>Job Success Score</span>
+                <span>Client Rating</span>
               </div>
               <p className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100">
-                {jss} Top Rated
+                {avgRating.toFixed(1)} / 5.0
               </p>
-              <p className="text-[10px] text-zinc-400">Verified client satisfaction</p>
+              <p className="text-[10px] text-zinc-400">
+                {reviewCount > 0
+                  ? `${reviewCount} verified ${reviewCount === 1 ? "review" : "reviews"}`
+                  : "Verified client reviews"}
+              </p>
             </div>
 
             <div className="space-y-1">
@@ -472,7 +471,55 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
               )}
             </div>
 
-            {/* 5. Verified Client Reviews & Work History */}
+            {/* 5. Education & Academic Qualifications */}
+            {profile.educationItems && profile.educationItems.length > 0 && (
+              <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                      Education & Academic Credentials
+                    </h2>
+                  </div>
+                  <span className="text-[11px] font-medium text-zinc-400">
+                    {profile.educationItems.length}{" "}
+                    {profile.educationItems.length === 1 ? "degree" : "degrees"}
+                  </span>
+                </div>
+
+                <div className="space-y-4 divide-y divide-zinc-100 dark:divide-zinc-800/80">
+                  {profile.educationItems.map((edu) => (
+                    <div key={edu.id} className="pt-4 first:pt-0 space-y-1.5">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                          {edu.degree}
+                        </h3>
+                        {(edu.startYear || edu.endYear) && (
+                          <span className="font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                            {edu.startYear ?? ""}
+                            {edu.startYear && edu.endYear ? " – " : ""}
+                            {edu.endYear ?? (edu.startYear ? "Present" : "")}
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                        {edu.institution}
+                        {edu.fieldOfStudy ? ` · ${edu.fieldOfStudy}` : ""}
+                      </p>
+
+                      {edu.description && (
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed pt-0.5">
+                          {edu.description}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 6. Verified Client Reviews & Work History */}
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -607,7 +654,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
 
               {/* Flat $1 Fee Tagline */}
               <div className="rounded-xl border border-emerald-500/20 bg-emerald-50/70 p-3.5 text-xs text-emerald-900 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-200 flex items-start gap-2.5">
-                <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <div className="text-[11px] leading-relaxed">
                   <span className="font-bold">Transparent $1 Platform Fee:</span> No 10%–20% cuts.
                   You pay only for agreed milestone deliverables.

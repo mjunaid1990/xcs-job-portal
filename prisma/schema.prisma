@@ -260,6 +260,7 @@ model FreelancerProfile {
   user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   skills          FreelancerSkill[]
   portfolioItems  PortfolioItem[]
+  educationItems  EducationItem[]
 
   @@map("freelancer_profiles")
 }
@@ -337,6 +338,24 @@ model PortfolioItem {
 
   @@index([freelancerId])
   @@map("portfolio_items")
+}
+
+model EducationItem {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  freelancerId String   @map("freelancer_id") @db.Uuid
+  institution  String
+  degree       String
+  fieldOfStudy String?  @map("field_of_study")
+  startYear    Int?     @map("start_year")
+  endYear      Int?     @map("end_year")
+  description  String?
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  freelancer FreelancerProfile @relation(fields: [freelancerId], references: [userId], onDelete: Cascade)
+
+  @@index([freelancerId])
+  @@map("education_items")
 }
 
 model Job {

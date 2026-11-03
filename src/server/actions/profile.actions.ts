@@ -334,8 +334,75 @@ export async function deletePortfolioItemAction(itemId: string): Promise<Profile
   try {
     await ProfileService.deletePortfolioItem(session.user.id, itemId);
     revalidatePath("/freelancer/profile");
+    revalidatePath(`/freelancers/${session.user.id}`);
     return { success: true };
   } catch {
     return { success: false, error: "Failed to delete item." };
+  }
+}
+
+export async function addEducationItemAction(
+  prevState: ProfileActionResult | null,
+  formData: FormData,
+): Promise<ProfileActionResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized." };
+  }
+
+  const institution = formData.get("institution")?.toString()?.trim();
+  const degree = formData.get("degree")?.toString()?.trim();
+  const fieldOfStudy = formData.get("fieldOfStudy")?.toString()?.trim();
+  const startYearStr = formData.get("startYear")?.toString()?.trim();
+  const endYearStr = formData.get("endYear")?.toString()?.trim();
+  const description = formData.get("description")?.toString()?.trim();
+
+  if (!institution) {
+    return { success: false, error: "School or University name is required." };
+  }
+  if (!degree) {
+    return { success: false, error: "Degree or certification is required." };
+  }
+
+  const startYear = startYearStr && !isNaN(Number(startYearStr)) ? Number(startYearStr) : undefined;
+  const endYear = endYearStr && !isNaN(Number(endYearStr)) ? Number(endYearStr) : undefined;
+
+  try {
+    await ProfileService.addEducationItem(session.user.id, {
+      institution,
+      degree,
+      fieldOfStudy,
+      startYear,
+      endYear,
+      description,
+    });
+
+    revalidatePath("/freelancer/profile");
+    revalidatePath(`/freelancers/${session.user.id}`);
+    return { success: true };
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "message" in error) {
+      return { success: false, error: String((error as { message: string }).message) };
+    }
+    return { success: false, error: "Failed to add education credential." };
+  }
+}
+
+export async function deleteEducationItemAction(itemId: string): Promise<ProfileActionResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized." };
+  }
+
+  try {
+    await ProfileService.deleteEducationItem(session.user.id, itemId);
+    revalidatePath("/freelancer/profile");
+    revalidatePath(`/freelancers/${session.user.id}`);
+    return { success: true };
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "message" in error) {
+      return { success: false, error: String((error as { message: string }).message) };
+    }
+    return { success: false, error: "Failed to delete education credential." };
   }
 }

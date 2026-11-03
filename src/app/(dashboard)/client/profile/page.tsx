@@ -5,7 +5,10 @@ import { ProfileService } from "@/server/services/profile.service";
 import { OrganizationService } from "@/server/services/organization.service";
 import { ClientProfileForm } from "@/components/forms/client-profile-form";
 import { OrganizationTeamCard } from "@/components/forms/organization-team-card";
-import { ProfileCompletenessCard } from "@/components/ui/profile-completeness-card";
+import {
+  ProfileCompletenessCard,
+  ProfileSectionStatus,
+} from "@/components/ui/profile-completeness-card";
 import { Building, ShieldCheck, Users, ExternalLink } from "lucide-react";
 
 export default async function ClientProfilePage() {
@@ -19,25 +22,22 @@ export default async function ClientProfilePage() {
     OrganizationService.getOrganization(session.user.id),
   ]);
 
-  let score = 0;
-  const missingItems: string[] = [];
-  if (profile.companyName) score += 20;
-  else missingItems.push("Company Name");
+  const sections: ProfileSectionStatus[] = [
+    { name: "Company Name", completed: Boolean(profile.companyName?.trim()) },
+    { name: "Primary Industry", completed: Boolean(profile.industry?.trim()) },
+    { name: "Company Size", completed: Boolean(profile.companySize?.trim()) },
+    {
+      name: "About Brief (30+ chars)",
+      completed: Boolean(profile.about && profile.about.trim().length >= 30),
+    },
+    { name: "Website URL", completed: Boolean(profile.website?.trim()) },
+    { name: "Payment Verified", completed: Boolean(profile.paymentVerified) },
+  ];
 
-  if (profile.website) score += 15;
-  else missingItems.push("Website URL");
-
-  if (profile.industry) score += 15;
-  else missingItems.push("Primary Industry");
-
-  if (profile.about && profile.about.length >= 30) score += 20;
-  else missingItems.push("About Brief (min 30 chars)");
-
-  if (profile.companySize) score += 15;
-  else missingItems.push("Company Size");
-
-  if (profile.paymentVerified) score += 15;
-  else missingItems.push("Payment Method Verification");
+  const completedCount = sections.filter((s) => s.completed).length;
+  const totalCount = sections.length;
+  const score =
+    completedCount === totalCount ? 100 : Math.round((completedCount / totalCount) * 100);
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
@@ -62,7 +62,13 @@ export default async function ClientProfilePage() {
       </div>
 
       {/* Profile Completeness Score Card */}
-      <ProfileCompletenessCard score={score} missingItems={missingItems} role="CLIENT" />
+      <ProfileCompletenessCard
+        score={score}
+        completedCount={completedCount}
+        totalCount={totalCount}
+        sections={sections}
+        role="CLIENT"
+      />
 
       {/* Verification Status Pill */}
       <div className="flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">

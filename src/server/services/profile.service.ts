@@ -38,6 +38,15 @@ export interface AddPortfolioItemInput {
   imageUrl?: string;
 }
 
+export interface AddEducationItemInput {
+  institution: string;
+  degree: string;
+  fieldOfStudy?: string;
+  startYear?: number;
+  endYear?: number;
+  description?: string;
+}
+
 export class ProfileService {
   /**
    * Retrieves all categories (with hierarchy) and skills for taxonomy navigation, pickers, and filters.
@@ -88,6 +97,9 @@ export class ProfileService {
           },
         },
         portfolioItems: {
+          orderBy: { createdAt: "desc" },
+        },
+        educationItems: {
           orderBy: { createdAt: "desc" },
         },
       },
@@ -143,6 +155,9 @@ export class ProfileService {
             },
           },
           portfolioItems: {
+            orderBy: { createdAt: "desc" },
+          },
+          educationItems: {
             orderBy: { createdAt: "desc" },
           },
         },
@@ -377,6 +392,55 @@ export class ProfileService {
     }
 
     return prisma.portfolioItem.delete({
+      where: { id: itemId },
+    });
+  }
+
+  /**
+   * Adds an education credential for a freelancer.
+   */
+  static async addEducationItem(freelancerId: string, input: AddEducationItemInput) {
+    if (!input.institution?.trim() || !input.degree?.trim()) {
+      throw new AppError(
+        "INVALID_INPUT",
+        "Institution and degree are required.",
+        HTTP_STATUS.BAD_REQUEST,
+      );
+    }
+
+    return prisma.educationItem.create({
+      data: {
+        freelancerId,
+        institution: input.institution.trim(),
+        degree: input.degree.trim(),
+        fieldOfStudy: input.fieldOfStudy?.trim() || null,
+        startYear: input.startYear ? Number(input.startYear) : null,
+        endYear: input.endYear ? Number(input.endYear) : null,
+        description: input.description?.trim() || null,
+      } as Prisma.EducationItemUncheckedCreateInput,
+    });
+  }
+
+  /**
+   * Removes an education credential.
+   */
+  static async deleteEducationItem(freelancerId: string, itemId: string) {
+    const item = await prisma.educationItem.findFirst({
+      where: {
+        id: itemId,
+        freelancerId,
+      },
+    });
+
+    if (!item) {
+      throw new AppError(
+        "ITEM_NOT_FOUND",
+        "Education credential not found or unauthorized.",
+        HTTP_STATUS.NOT_FOUND,
+      );
+    }
+
+    return prisma.educationItem.delete({
       where: { id: itemId },
     });
   }

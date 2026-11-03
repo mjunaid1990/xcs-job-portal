@@ -646,6 +646,40 @@ export async function seedDatabase() {
     ],
   });
 
+  // Education items for Noah (freelancer1)
+  await prisma.educationItem.deleteMany({ where: { freelancerId: freelancer1.id } });
+  await prisma.educationItem.createMany({
+    data: [
+      {
+        freelancerId: freelancer1.id,
+        institution: "Massachusetts Institute of Technology (MIT)",
+        degree: "B.S. in Computer Science & Engineering",
+        fieldOfStudy: "Distributed Systems & Cryptography",
+        startYear: 2014,
+        endYear: 2018,
+        description:
+          "Focus on concurrent database internals, consensus protocols, and ledger verification.",
+      },
+    ],
+  });
+
+  // Education items for Alex (freelancer2)
+  await prisma.educationItem.deleteMany({ where: { freelancerId: freelancer2.id } });
+  await prisma.educationItem.createMany({
+    data: [
+      {
+        freelancerId: freelancer2.id,
+        institution: "Rhode Island School of Design (RISD)",
+        degree: "B.F.A. in Graphic & Interaction Design",
+        fieldOfStudy: "Design Systems & Human-Computer Interaction",
+        startYear: 2015,
+        endYear: 2019,
+        description:
+          "Specialized in component token architecture, accessible typography, and WCAG AAA compliance.",
+      },
+    ],
+  });
+
   // Platform Settings
   await prisma.platformSetting.upsert({
     where: { key: "platform_fee_bps" },
