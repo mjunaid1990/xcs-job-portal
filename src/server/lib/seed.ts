@@ -619,6 +619,14 @@ export async function seedDatabase() {
         imageUrl:
           "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
       },
+      {
+        freelancerId: freelancer1.id,
+        title: "High-Throughput WebSocket Financial Feed Architecture",
+        description:
+          "Zero-latency streaming order-book gateway processing 50k events/sec with automated failover and backpressure handling.",
+        url: "https://github.com/noah-freelancer/orderbook-gateway",
+        imageUrl: null,
+      },
     ],
   });
 

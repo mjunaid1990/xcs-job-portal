@@ -14,6 +14,7 @@ import {
   X,
   ImageIcon,
   AlertCircle,
+  FolderGit2,
 } from "lucide-react";
 
 interface PortfolioItem {
@@ -305,8 +306,16 @@ export function PortfolioList({ items }: PortfolioListProps) {
                   />
                 </div>
               ) : (
-                <div className="flex aspect-video w-full items-center justify-center rounded-xl bg-zinc-100 text-zinc-400 dark:bg-zinc-800 mb-3.5 border border-zinc-200/60 dark:border-zinc-700/60">
-                  <ImageIcon className="h-8 w-8 opacity-40" />
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-200/60 dark:from-zinc-900 dark:via-zinc-900/60 dark:to-zinc-800/80 mb-3.5 border border-zinc-200/80 dark:border-zinc-800 flex flex-col items-center justify-center p-4 text-center transition group-hover:border-indigo-300 dark:group-hover:border-zinc-700">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-2xs border border-zinc-200/70 text-zinc-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
+                    <FolderGit2 className="h-5 w-5" />
+                  </div>
+                  <span className="mt-2 text-[11px] font-semibold tracking-tight text-zinc-600 dark:text-zinc-400 truncate max-w-[85%]">
+                    {item.title}
+                  </span>
+                  <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">
+                    Project Deliverable
+                  </span>
                 </div>
               )}
 

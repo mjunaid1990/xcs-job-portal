@@ -379,15 +379,20 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
             </div>
 
             {/* Verified Contractor Reviews */}
-            {reviews.length > 0 && (
-              <div className="rounded-3xl border border-zinc-200/90 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+            <div className="rounded-3xl border border-zinc-200/90 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Verified Freelancer Feedback ({reviews.length})
                   </h2>
                 </div>
+                <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                  100% Verified Contracts
+                </span>
+              </div>
 
+              {reviews.length > 0 ? (
                 <div className="space-y-4">
                   {reviews.map((rev) => (
                     <div
@@ -440,8 +445,18 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-2xl border border-dashed border-zinc-200 p-8 text-center text-xs text-zinc-500 dark:border-zinc-800">
+                  <p className="font-semibold text-zinc-700 dark:text-zinc-300">
+                    No contractor feedback recorded yet
+                  </p>
+                  <p className="mt-1 text-zinc-400">
+                    Freelancer ratings and reviews will appear here once contracts are completed and
+                    milestones are released.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Sidebar Column (1 span) */}

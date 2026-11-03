@@ -9,7 +9,15 @@ import { ContractSidebar } from "@/components/contracts/contract-sidebar";
 import { ContractReviewForm } from "@/components/forms/contract-review-form";
 import { Badge } from "@/components/ui/badge";
 import { formatContractRef } from "@/lib/format";
-import { ArrowLeft, AlertCircle, Star, ExternalLink, ShieldCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  AlertCircle,
+  Star,
+  ExternalLink,
+  ShieldCheck,
+  Clock,
+  UserCheck,
+} from "lucide-react";
 
 interface ContractPageProps {
   params: Promise<{ id: string }>;
@@ -37,7 +45,8 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
   const activeDispute = contract.disputes.find(
     (d) => d.status === "OPEN" || d.status === "UNDER_REVIEW",
   );
-  const userReview = contract.reviews.find((r) => r.reviewerId === session.user.id);
+  const clientReview = contract.reviews.find((r) => r.reviewerId === contract.clientId);
+  const freelancerReview = contract.reviews.find((r) => r.reviewerId === contract.freelancerId);
 
   let conversationUrl = "/messages";
   try {
@@ -155,31 +164,142 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
             isFreelancer={isFreelancer}
           />
 
-          {/* 2. Contract Completion & Reviews */}
+          {/* 2. Contract Completion & Mutual Reviews */}
           {contract.status === "COMPLETED" && (
-            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
-              <div className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                <Star className="h-4 w-4 text-amber-500" />
-                <span>Contract Feedback & Rating</span>
+            <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-800">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
+                  <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                    Mutual Contract Reviews & Feedback
+                  </h2>
+                </div>
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                  <span>Contract Completed</span>
+                </span>
               </div>
 
-              {!userReview ? (
-                <ContractReviewForm
-                  contractId={contract.id}
-                  counterpartRole={isClient ? "Freelancer" : "Client"}
-                />
-              ) : (
-                <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-800/40 space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                    <span>✓ Feedback Submitted ({userReview.rating}/5 Stars)</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Client Review of Freelancer */}
+                <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-4.5 dark:border-zinc-800/80 dark:bg-zinc-800/40 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                        <UserCheck className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                        <span>Client Review of Freelancer</span>
+                      </div>
+                      <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                        {contract.client.name}
+                      </span>
+                    </div>
+
+                    {clientReview ? (
+                      <div className="space-y-2 pt-1">
+                        <div className="flex items-center gap-1 text-amber-500">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-3.5 w-3.5 ${
+                                i < clientReview.rating
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "text-zinc-300 dark:text-zinc-700"
+                              }`}
+                            />
+                          ))}
+                          <span className="ml-1 text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                            {clientReview.rating}.0
+                          </span>
+                          <span className="ml-auto text-[10px] text-zinc-400">
+                            {new Date(clientReview.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {clientReview.comment ? (
+                          <p className="text-xs text-zinc-700 dark:text-zinc-300 italic leading-relaxed">
+                            &quot;{clientReview.comment}&quot;
+                          </p>
+                        ) : (
+                          <p className="text-[11px] text-zinc-400 italic">
+                            Client submitted a rating without written comments.
+                          </p>
+                        )}
+                      </div>
+                    ) : isClient ? (
+                      <div className="pt-1">
+                        <ContractReviewForm
+                          contractId={contract.id}
+                          counterpartRole="Freelancer"
+                          counterpartName={contract.freelancer.name}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 rounded-lg border border-dashed border-zinc-200 p-4 text-xs text-zinc-400 dark:border-zinc-700">
+                        <Clock className="h-4 w-4 shrink-0 text-zinc-400" />
+                        <span>Awaiting client feedback from {contract.client.name}...</span>
+                      </div>
+                    )}
                   </div>
-                  {userReview.comment && (
-                    <p className="text-xs text-zinc-700 dark:text-zinc-300 italic">
-                      &quot;{userReview.comment}&quot;
-                    </p>
-                  )}
                 </div>
-              )}
+
+                {/* Freelancer Review of Client */}
+                <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-4.5 dark:border-zinc-800/80 dark:bg-zinc-800/40 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                        <UserCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                        <span>Freelancer Review of Client</span>
+                      </div>
+                      <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                        {contract.freelancer.name}
+                      </span>
+                    </div>
+
+                    {freelancerReview ? (
+                      <div className="space-y-2 pt-1">
+                        <div className="flex items-center gap-1 text-amber-500">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-3.5 w-3.5 ${
+                                i < freelancerReview.rating
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "text-zinc-300 dark:text-zinc-700"
+                              }`}
+                            />
+                          ))}
+                          <span className="ml-1 text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                            {freelancerReview.rating}.0
+                          </span>
+                          <span className="ml-auto text-[10px] text-zinc-400">
+                            {new Date(freelancerReview.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {freelancerReview.comment ? (
+                          <p className="text-xs text-zinc-700 dark:text-zinc-300 italic leading-relaxed">
+                            &quot;{freelancerReview.comment}&quot;
+                          </p>
+                        ) : (
+                          <p className="text-[11px] text-zinc-400 italic">
+                            Freelancer submitted a rating without written comments.
+                          </p>
+                        )}
+                      </div>
+                    ) : isFreelancer ? (
+                      <div className="pt-1">
+                        <ContractReviewForm
+                          contractId={contract.id}
+                          counterpartRole="Client"
+                          counterpartName={contract.client.name}
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 rounded-lg border border-dashed border-zinc-200 p-4 text-xs text-zinc-400 dark:border-zinc-700">
+                        <Clock className="h-4 w-4 shrink-0 text-zinc-400" />
+                        <span>Awaiting freelancer feedback from {contract.freelancer.name}...</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

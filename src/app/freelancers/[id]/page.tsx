@@ -23,6 +23,7 @@ import {
   Layers,
   Code2,
   Award,
+  FolderGit2,
 } from "lucide-react";
 
 function GithubIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
@@ -411,7 +412,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                       className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition group overflow-hidden"
                     >
                       <div>
-                        {item.imageUrl && (
+                        {item.imageUrl ? (
                           <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800 mb-3 border border-zinc-200/60 dark:border-zinc-700/60">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
@@ -419,6 +420,18 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                               alt={item.title}
                               className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
                             />
+                          </div>
+                        ) : (
+                          <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-200/60 dark:from-zinc-900 dark:via-zinc-900/60 dark:to-zinc-800/80 mb-3 border border-zinc-200/80 dark:border-zinc-800 flex flex-col items-center justify-center p-4 text-center transition group-hover:border-indigo-300 dark:group-hover:border-zinc-700">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-2xs border border-zinc-200/70 text-zinc-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:scale-105 transition">
+                              <FolderGit2 className="h-5 w-5" />
+                            </div>
+                            <span className="mt-2 text-[11px] font-semibold tracking-tight text-zinc-600 dark:text-zinc-400 truncate max-w-[85%]">
+                              {item.title}
+                            </span>
+                            <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">
+                              Verified Deliverable
+                            </span>
                           </div>
                         )}
                         <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">

@@ -1,15 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { submitReviewAction } from "@/server/actions/review.actions";
 import { Star, Loader2, CheckCircle2 } from "lucide-react";
 
 interface ContractReviewFormProps {
   contractId: string;
   counterpartRole: "Client" | "Freelancer";
+  counterpartName?: string;
 }
 
-export function ContractReviewForm({ contractId, counterpartRole }: ContractReviewFormProps) {
+export function ContractReviewForm({
+  contractId,
+  counterpartRole,
+  counterpartName,
+}: ContractReviewFormProps) {
+  const router = useRouter();
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -33,6 +40,7 @@ export function ContractReviewForm({ contractId, counterpartRole }: ContractRevi
       setError(res.error || "Failed to submit review.");
     } else {
       setSubmitted(true);
+      router.refresh();
     }
   }
 
@@ -41,8 +49,10 @@ export function ContractReviewForm({ contractId, counterpartRole }: ContractRevi
       <div className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-50/50 p-5 text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-300">
         <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400" />
         <div>
-          <p className="font-semibold">Review submitted!</p>
-          <p className="text-xs">Thank you for rating your experience on this contract.</p>
+          <p className="font-semibold text-xs sm:text-sm">Review submitted successfully!</p>
+          <p className="text-xs text-emerald-700 dark:text-emerald-400">
+            Thank you for rating your experience with {counterpartName ?? counterpartRole}.
+          </p>
         </div>
       </div>
     );
@@ -55,10 +65,11 @@ export function ContractReviewForm({ contractId, counterpartRole }: ContractRevi
     >
       <div>
         <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-          Leave a Review for {counterpartRole}
+          Leave a Review for{" "}
+          {counterpartName ? `${counterpartName} (${counterpartRole})` : counterpartRole}
         </h4>
         <p className="text-xs text-zinc-500">
-          Your feedback helps build trust in the WorkWasl community.
+          Your feedback contributes directly to community reputation and verified work history.
         </p>
       </div>
 
@@ -101,7 +112,7 @@ export function ContractReviewForm({ contractId, counterpartRole }: ContractRevi
           rows={3}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Share details about communication, deliverables, and quality..."
+          placeholder={`Share details about communication, deliverables, and quality working with ${counterpartName ?? counterpartRole}...`}
           className="mt-1 w-full rounded-lg border border-zinc-300 bg-zinc-50 p-2.5 text-xs text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
         />
       </div>
