@@ -28,7 +28,7 @@ export interface ActivityItem {
   amount?: string;
   timestamp: Date;
   statusBadge?: string;
-  badgeColor?: "green" | "blue" | "amber" | "red" | "purple" | "zinc";
+  badgeColor?: "green" | "blue" | "amber" | "red" | "emerald" | "zinc";
 }
 
 interface ContractActivityTimelineProps {
@@ -154,7 +154,7 @@ export function ContractActivityTimeline({ contract }: ContractActivityTimelineP
           title: "Dispute Resolution Finalized",
           description: `Dispute closed with status: ${d.status}.`,
           timestamp: new Date(d.resolvedAt),
-          badgeColor: "purple",
+          badgeColor: "green",
         });
       }
     });
@@ -192,7 +192,7 @@ export function ContractActivityTimeline({ contract }: ContractActivityTimelineP
       case "CONTRACT_CREATED":
         return <FileText className="h-4 w-4 text-zinc-500" />;
       case "ESCROW_FUNDED":
-        return <ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
+        return <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "DELIVERABLE_SUBMITTED":
         return <ArrowUpRight className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
       case "MILESTONE_RELEASED":
@@ -200,7 +200,7 @@ export function ContractActivityTimeline({ contract }: ContractActivityTimelineP
       case "DISPUTE_OPENED":
         return <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />;
       case "DISPUTE_RESOLVED":
-        return <CheckCircle2 className="h-4 w-4 text-purple-600 dark:text-purple-400" />;
+        return <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "CONTRACT_COMPLETED":
         return <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "REVIEW_LEFT":

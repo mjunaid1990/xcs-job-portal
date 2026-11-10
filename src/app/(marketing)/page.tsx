@@ -20,14 +20,14 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen overflow-hidden flex flex-col justify-between">
       {/* Background glow and ambient light */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[650px] w-[1000px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/15 to-pink-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 h-[650px] w-[1000px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-emerald-500/10 via-teal-500/10 to-zinc-500/5 blur-3xl" />
 
       {/* Hero Section */}
       <main className="mx-auto w-full max-w-7xl px-6 pt-12 pb-24 lg:px-8 lg:pt-16 flex-1 space-y-24">
         <div className="mx-auto max-w-4xl text-center space-y-6">
           <h1 className="text-5xl font-black tracking-tight sm:text-7xl leading-tight">
             Hire elite talent.{" "}
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-emerald-600 dark:text-emerald-400">
               Guaranteed escrow.
             </span>
           </h1>
@@ -41,14 +41,14 @@ export default function HomePage() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row pt-2">
             <Link
               href="/register"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-500/25 transition hover:bg-indigo-500 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-6 py-3.5 text-base font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 sm:w-auto"
             >
               <span>Join as Client or Freelancer</span>
               <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
               href="/login"
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-6 py-3.5 text-base font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-6 py-3.5 text-base font-semibold text-zinc-800 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 sm:w-auto"
             >
               <span>Explore Demo Accounts</span>
             </Link>
@@ -61,7 +61,7 @@ export default function HomePage() {
               <span>Zero Upfront Risk</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Lock className="h-4 w-4 text-indigo-500" />
+              <Lock className="h-4 w-4 text-emerald-600" />
               <span>Double-Entry Escrow</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -87,7 +87,7 @@ export default function HomePage() {
                 <CheckCircle className="h-3 w-3" />
                 <span>Escrow Verified</span>
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-indigo-100 px-2.5 py-0.5 text-[11px] font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-bold text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
                 <Video className="h-3 w-3" />
                 <span>WebRTC Ready</span>
               </span>
@@ -126,17 +126,17 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-indigo-200/80 bg-indigo-50/50 p-4 dark:border-indigo-900/40 dark:bg-indigo-950/20 space-y-1">
+              <div className="rounded-2xl border border-zinc-200/90 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-800/40 space-y-1">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-indigo-900 dark:text-indigo-200">
+                  <span className="font-bold text-zinc-900 dark:text-zinc-200">
                     Milestone 2: GitHub PR Verification
                   </span>
-                  <span className="font-bold text-indigo-600">IN ESCROW</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">IN ESCROW</span>
                 </div>
-                <div className="font-mono text-sm font-semibold text-indigo-800 dark:text-indigo-300">
+                <div className="font-mono text-sm font-semibold text-zinc-800 dark:text-zinc-300">
                   $5,000.00 &middot; PR #42 (+640 / -18 lines)
                 </div>
-                <p className="text-[11px] text-indigo-700/80 dark:text-indigo-400/80">
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
                   Passing CI check badge verified by platform engine.
                 </p>
               </div>
@@ -160,7 +160,7 @@ export default function HomePage() {
               <thead className="border-b border-zinc-200/80 bg-zinc-50/80 dark:border-zinc-800 dark:bg-zinc-800/50 text-xs font-bold uppercase tracking-wider text-zinc-500">
                 <tr>
                   <th className="p-4 px-6">Capability & Protocol</th>
-                  <th className="p-4 px-6 text-indigo-600 dark:text-indigo-400">WorkWasl</th>
+                  <th className="p-4 px-6 text-emerald-600 dark:text-emerald-400 font-black">WorkWasl</th>
                   <th className="p-4 px-6 text-zinc-400">Upwork</th>
                   <th className="p-4 px-6 text-zinc-400">Fiverr Pro</th>
                 </tr>
@@ -231,9 +231,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <Link
               href="/jobs?q=fullstack"
-              className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs hover:border-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 transition space-y-3"
+              className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs hover:border-emerald-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 transition space-y-3"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
                 <Code2 className="h-6 w-6" />
               </div>
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -246,9 +246,9 @@ export default function HomePage() {
 
             <Link
               href="/jobs?q=ai"
-              className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs hover:border-purple-500 dark:border-zinc-800 dark:bg-zinc-900 transition space-y-3"
+              className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs hover:border-emerald-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 transition space-y-3"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
                 <Cpu className="h-6 w-6" />
               </div>
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">

@@ -30,7 +30,7 @@ export function PersonaSwitcher({ isClient, isFreelancer }: PersonaSwitcherProps
           }`}
           title="Switch to Client Hiring Mode"
         >
-          <Briefcase className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
+          <Briefcase className="h-3 w-3 text-zinc-800 dark:text-zinc-200" />
           <span>Client</span>
         </Link>
       )}

@@ -27,7 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ]);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 antialiased selection:bg-purple-500 selection:text-white">
+    <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 antialiased selection:bg-emerald-500 selection:text-white">
       {/* Desktop Fixed Left Sidebar */}
       <AdminSidebar
         user={session.user}

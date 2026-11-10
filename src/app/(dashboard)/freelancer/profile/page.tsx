@@ -66,7 +66,7 @@ export default async function FreelancerProfilePage() {
           target="_blank"
           className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 transition"
         >
-          <ExternalLink className="h-3.5 w-3.5 text-indigo-500" />
+          <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
           <span>Preview Public Profile</span>
         </Link>
       </div>
@@ -86,7 +86,7 @@ export default async function FreelancerProfilePage() {
       {/* Portfolio Showcase Card */}
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
         <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
-          <FolderGit2 className="h-4 w-4 text-purple-500" />
+          <FolderGit2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           <span>Portfolio & Work Deliverables</span>
         </div>
         <div className="mt-6">
@@ -97,7 +97,7 @@ export default async function FreelancerProfilePage() {
       {/* Education & Academic Credentials Card */}
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
         <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
-          <GraduationCap className="h-4 w-4 text-indigo-500" />
+          <GraduationCap className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           <span>Education & Academic Credentials</span>
         </div>
         <div className="mt-6">

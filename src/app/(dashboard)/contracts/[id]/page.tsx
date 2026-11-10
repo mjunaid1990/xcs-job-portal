@@ -71,7 +71,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
       case "ACTIVE":
         return "success";
       case "COMPLETED":
-        return "purple";
+        return "success";
       case "DISPUTED":
         return "destructive";
       default:
@@ -120,7 +120,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                   <span>•</span>
                   <Link
                     href={`/jobs/${contract.jobId}`}
-                    className="inline-flex items-center gap-1 text-indigo-600 hover:underline dark:text-indigo-400 font-medium"
+                    className="inline-flex items-center gap-1 text-emerald-700 hover:underline dark:text-emerald-400 font-medium"
                   >
                     <span>Original Job Scope</span>
                     <ExternalLink className="h-3 w-3" />
@@ -185,10 +185,10 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                        <UserCheck className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                        <UserCheck className="h-3.5 w-3.5 text-zinc-700 dark:text-zinc-300" />
                         <span>Client Review of Freelancer</span>
                       </div>
-                      <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                         {contract.client.name}
                       </span>
                     </div>

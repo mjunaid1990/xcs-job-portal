@@ -131,8 +131,8 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
                   />
                 </div>
               ) : (
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-2xl font-black text-white shadow-md shadow-blue-500/20">
-                  <Building2 className="h-9 w-9 text-white" />
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs">
+                  <Building2 className="h-9 w-9" />
                 </div>
               )}
 
@@ -176,7 +176,7 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
                       href={profile.website}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-indigo-600 hover:border-indigo-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-indigo-400 transition"
+                      className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-emerald-700 hover:border-emerald-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-emerald-400 transition"
                     >
                       <Globe className="h-3 w-3" />
                       <span>{profile.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}</span>
@@ -242,7 +242,7 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
                 Active Job Openings
               </span>
               <div className="mt-1 flex items-baseline gap-1">
-                <span className="text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400">
+                <span className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-zinc-50">
                   {openJobs.length}
                 </span>
                 <span className="text-xs font-semibold text-zinc-400">openings</span>
@@ -289,14 +289,14 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
             <div className="rounded-3xl border border-zinc-200/90 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Briefcase className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <Briefcase className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Active Job Openings ({openJobs.length})
                   </h2>
                 </div>
                 <Link
                   href="/jobs"
-                  className="text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                  className="text-xs font-semibold text-emerald-600 hover:underline dark:text-emerald-400"
                 >
                   Browse all marketplace &rarr;
                 </Link>
@@ -313,12 +313,12 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
                     return (
                       <div
                         key={job.id}
-                        className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition"
+                        className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 hover:border-emerald-500/50 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition"
                       >
                         <div className="space-y-1.5 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
                             {job.category && (
-                              <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                              <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
                                 {job.category.name}
                               </span>
                             )}
@@ -334,7 +334,7 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
 
                           <Link
                             href={getJobUrl(job)}
-                            className="block text-sm font-bold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition"
+                            className="block text-sm font-bold text-zinc-900 group-hover:text-emerald-600 dark:text-zinc-100 dark:group-hover:text-emerald-400 transition"
                           >
                             {job.title}
                           </Link>
@@ -355,7 +355,7 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
 
                         <Link
                           href={`${getJobUrl(job)}/apply`}
-                          className="inline-flex items-center justify-center gap-1.5 self-start sm:self-auto rounded-xl bg-zinc-900 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-600 dark:bg-white dark:text-zinc-900 dark:hover:bg-indigo-500 dark:hover:text-white transition shrink-0 shadow-xs"
+                          className="inline-flex items-center justify-center gap-1.5 self-start sm:self-auto rounded-xl bg-zinc-900 px-4 py-2 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200 transition shrink-0 shadow-xs"
                         >
                           <span>Apply</span>
                           <ChevronRight className="h-3.5 w-3.5" />
@@ -501,7 +501,7 @@ export default async function PublicClientPage({ params }: PublicClientPageProps
             {/* Organization Metadata Card */}
             <div className="rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                <Layers className="h-4 w-4 text-indigo-500" />
+                <Layers className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Company Footprint</span>
               </div>
 

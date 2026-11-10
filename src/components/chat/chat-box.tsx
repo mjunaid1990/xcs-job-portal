@@ -272,7 +272,7 @@ export function ChatBox({
       {showQuickChips && (
         <div className="flex flex-wrap items-center gap-1.5 border-b border-zinc-100 bg-zinc-50/80 px-4 py-2.5 dark:border-zinc-800 dark:bg-zinc-950/60 animate-in fade-in duration-150">
           <span className="text-[11px] font-semibold text-zinc-500 mr-1 flex items-center gap-1">
-            <Sparkles className="h-3 w-3 text-indigo-500" />
+            <Sparkles className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
             Quick Prompts:
           </span>
           {CANNED_RESPONSES.map((chip, idx) => (
@@ -283,7 +283,7 @@ export function ChatBox({
                 handleSend(chip);
                 setShowQuickChips(false);
               }}
-              className="rounded-full border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-700 shadow-2xs hover:border-indigo-400 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:text-indigo-400 transition"
+              className="rounded-full border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-700 shadow-2xs hover:border-emerald-500 hover:text-emerald-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:text-emerald-400 transition"
             >
               {chip}
             </button>
@@ -347,7 +347,7 @@ export function ChatBox({
                 <div
                   className={`max-w-[78%] px-3.5 py-2 text-xs leading-relaxed shadow-2xs ${
                     isMe
-                      ? `bg-indigo-600 text-white rounded-2xl ${
+                      ? `bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded-2xl ${
                           isSameSenderAsPrev ? "rounded-tr-md" : ""
                         } ${isSameSenderAsNext ? "rounded-br-md" : "rounded-br-xs"}`
                       : `bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100 border border-zinc-200/50 dark:border-zinc-700/50 rounded-2xl ${
@@ -367,7 +367,7 @@ export function ChatBox({
                           <Loader2 className="h-2.5 w-2.5 animate-spin text-zinc-400" />
                         ) : isRead ? (
                           <span
-                            className="inline-flex items-center text-indigo-500 dark:text-indigo-400"
+                            className="inline-flex items-center text-emerald-500 dark:text-emerald-400"
                             title="Read"
                           >
                             <CheckCheck className="h-3 w-3" />
@@ -417,7 +417,7 @@ export function ChatBox({
               onKeyDown={handleKeyDown}
               placeholder="Type your message... (Enter to send, Shift+Enter for newline)"
               maxLength={2000}
-              className="w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-100 transition"
+              className="w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50/50 p-2.5 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-100 transition"
             />
             <div className="absolute bottom-2 right-2 text-[10px] text-zinc-400">
               {text.length}/2000
@@ -437,7 +437,7 @@ export function ChatBox({
             <button
               type="submit"
               disabled={!text.trim() || isPending}
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs transition hover:bg-indigo-500 disabled:opacity-40"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-white shadow-xs transition hover:bg-zinc-800 disabled:opacity-40 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
               title="Send Message"
             >
               {isPending ? (

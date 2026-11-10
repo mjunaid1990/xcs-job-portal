@@ -90,7 +90,7 @@ export default async function ClientProfilePage() {
       {/* Enterprise Multi-Seat Team Workspace Card */}
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
         <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
-          <Users className="h-4 w-4 text-indigo-500" />
+          <Users className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           <span>Multi-Seat Team Workspace & Compliance</span>
         </div>
         <div className="mt-6">

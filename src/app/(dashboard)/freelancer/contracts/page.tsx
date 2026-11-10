@@ -23,7 +23,7 @@ export default async function FreelancerContractsPage() {
       case "ACTIVE":
         return "success";
       case "COMPLETED":
-        return "purple";
+        return "emerald";
       case "DISPUTED":
         return "destructive";
       default:
@@ -59,7 +59,7 @@ export default async function FreelancerContractsPage() {
                     </span>
                     <Link
                       href={`/contracts/${c.id}`}
-                      className="font-bold text-zinc-900 hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400 transition"
+                      className="font-bold text-zinc-900 hover:text-emerald-600 dark:text-zinc-100 dark:hover:text-emerald-400 transition"
                     >
                       {c.job.title}
                     </Link>
@@ -104,7 +104,7 @@ export default async function FreelancerContractsPage() {
 
                   <Link
                     href={`/contracts/${c.id}`}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-purple-50 px-3.5 py-2 text-xs font-semibold text-purple-700 shadow-xs transition hover:bg-purple-100 dark:bg-purple-950/60 dark:text-purple-300 dark:hover:bg-purple-900/60"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                   >
                     <Eye className="h-3.5 w-3.5" />
                     <span>Open Contract Room</span>

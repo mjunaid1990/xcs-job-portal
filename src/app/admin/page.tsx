@@ -94,7 +94,7 @@ export default async function AdminDashboardPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
               Welcome back, {session.user.name?.split(" ")[0] ?? "Admin"}
             </h1>
-            <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-[11px] font-bold text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
+            <span className="rounded-full bg-zinc-900 px-2.5 py-0.5 text-[11px] font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
               Super Admin
             </span>
           </div>
@@ -108,12 +108,12 @@ export default async function AdminDashboardPage() {
             href="/admin/disputes"
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
-            <Scale className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+            <Scale className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Arbitration Desk</span>
           </Link>
           <Link
             href="/admin/ledger"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:from-purple-500 hover:to-indigo-500"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Receipt className="h-3.5 w-3.5" />
             <span>Ledger Audit</span>
@@ -167,7 +167,7 @@ export default async function AdminDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Total Settled Volume
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
@@ -175,7 +175,7 @@ export default async function AdminDashboardPage() {
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
               ${totalGMV.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </span>
-            <span className="inline-flex items-center rounded-md bg-indigo-50 px-1.5 py-0.5 text-[11px] font-bold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400">
+            <span className="inline-flex items-center rounded-md bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
               +100% Succeeded
             </span>
           </div>
@@ -192,7 +192,7 @@ export default async function AdminDashboardPage() {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
-                className="text-indigo-500"
+                className="text-emerald-500"
               />
             </svg>
           </div>
@@ -205,7 +205,7 @@ export default async function AdminDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
               Platform Directory
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
               <Users className="h-4 w-4" />
             </div>
           </div>
@@ -215,7 +215,7 @@ export default async function AdminDashboardPage() {
             </span>
             <Link
               href="/admin/users"
-              className="text-[11px] font-bold text-purple-600 hover:underline dark:text-purple-400"
+              className="text-[11px] font-bold text-emerald-600 hover:underline dark:text-emerald-400"
             >
               Inspect Directory &rarr;
             </Link>
@@ -226,7 +226,7 @@ export default async function AdminDashboardPage() {
             <div className="flex h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
               <div style={{ width: "50%" }} className="bg-blue-500" title="Clients" />
               <div style={{ width: "40%" }} className="bg-emerald-500" title="Freelancers" />
-              <div style={{ width: "10%" }} className="bg-purple-500" title="Admins" />
+              <div style={{ width: "10%" }} className="bg-zinc-900 dark:bg-zinc-100" title="Admins" />
             </div>
             <div className="flex justify-between text-[10px] text-zinc-400 font-medium">
               <span>Clients / Employers</span>
@@ -289,7 +289,7 @@ export default async function AdminDashboardPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800 gap-2">
             <div>
               <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <Receipt className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                <Receipt className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Escrow Liquidity & Financial Performance</span>
               </h3>
               <p className="text-xs text-zinc-500">
@@ -298,7 +298,7 @@ export default async function AdminDashboardPage() {
             </div>
             <Link
               href="/admin/ledger"
-              className="text-xs font-semibold text-purple-600 hover:underline dark:text-purple-400 flex items-center gap-1"
+              className="text-xs font-semibold text-emerald-600 hover:underline dark:text-emerald-400 flex items-center gap-1"
             >
               <span>Audit Ledger</span>
               <ExternalLink className="h-3 w-3" />
@@ -318,7 +318,7 @@ export default async function AdminDashboardPage() {
             <div className="flex h-3.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800 shadow-inner">
               <div
                 style={{ width: `${pctReleased}%` }}
-                className="bg-indigo-500 transition-all duration-500"
+                className="bg-zinc-900 dark:bg-zinc-100 transition-all duration-500"
                 title={`Released: ${pctReleased}%`}
               />
               <div
@@ -335,7 +335,7 @@ export default async function AdminDashboardPage() {
 
             <div className="flex flex-wrap items-center gap-4 pt-1 text-[11px] text-zinc-500 font-medium">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />
+                <span className="h-2.5 w-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100" />
                 Released to Talent ({pctReleased}%)
               </span>
               <span className="flex items-center gap-1.5">
@@ -364,10 +364,10 @@ export default async function AdminDashboardPage() {
 
             <div className="rounded-xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
               <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500">
-                <Receipt className="h-3.5 w-3.5 text-purple-500" />
+                <Receipt className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span>Platform Commission</span>
               </div>
-              <div className="mt-1 font-mono text-xl font-extrabold text-purple-600 dark:text-purple-400">
+              <div className="mt-1 font-mono text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
                 ${platformFees.toLocaleString("en-US", { minimumFractionDigits: 2 })}
               </div>
               <span className="text-[10px] text-zinc-400">10% Platform Take Rate</span>
@@ -391,7 +391,7 @@ export default async function AdminDashboardPage() {
           <div>
             <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800">
               <div className="flex items-center gap-2">
-                <Scale className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                <Scale className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
                 <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                   Priority Action Desk
                 </h3>
@@ -464,7 +464,7 @@ export default async function AdminDashboardPage() {
                     className="flex items-center justify-between rounded-lg border border-zinc-200/60 bg-zinc-50/70 p-2 text-xs dark:border-zinc-800 dark:bg-zinc-800/50"
                   >
                     <div className="min-w-0 flex-1 pr-2">
-                      <span className="font-mono text-[10px] font-bold text-purple-600 dark:text-purple-400">
+                      <span className="font-mono text-[10px] font-bold text-zinc-900 dark:text-zinc-100">
                         {report.targetType}
                       </span>
                       <p className="text-[11px] text-zinc-700 dark:text-zinc-300 truncate">
@@ -502,7 +502,7 @@ export default async function AdminDashboardPage() {
             </div>
             <Link
               href="/admin/ledger"
-              className="text-xs font-semibold text-purple-600 hover:underline dark:text-purple-400"
+              className="text-xs font-semibold text-emerald-600 hover:underline dark:text-emerald-400"
             >
               View Full Stream &rarr;
             </Link>
@@ -544,7 +544,7 @@ export default async function AdminDashboardPage() {
                                 : entry.type === "ESCROW_RELEASE"
                                   ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
                                   : entry.type === "PLATFORM_FEE"
-                                    ? "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300"
+                                    ? "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                                     : "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
                             }`}
                           >
@@ -599,7 +599,7 @@ export default async function AdminDashboardPage() {
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 border-b border-zinc-100 pb-4 dark:border-zinc-800">
-              <Sliders className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <Sliders className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
               <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                 Governance & Infrastructure
               </h3>
@@ -614,7 +614,7 @@ export default async function AdminDashboardPage() {
                   <span className="font-mono text-zinc-600 dark:text-zinc-400 font-medium">
                     {setting.key}
                   </span>
-                  <span className="rounded-md bg-white px-2 py-0.5 font-mono font-bold text-purple-700 shadow-sm dark:bg-zinc-800 dark:text-purple-300">
+                  <span className="rounded-md bg-white px-2 py-0.5 font-mono font-bold text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100">
                     {JSON.stringify(setting.value)}
                   </span>
                 </div>

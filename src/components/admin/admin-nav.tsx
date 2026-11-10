@@ -28,7 +28,7 @@ export function AdminNav() {
               href={link.href}
               className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition ${
                 isActive
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20"
+                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs font-bold"
                   : "bg-white text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 border border-zinc-200/60 dark:border-zinc-800/60"
               }`}
             >

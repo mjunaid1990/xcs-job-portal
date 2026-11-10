@@ -64,7 +64,7 @@ export function OrganizationTeamCard({
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
       case "OWNER":
-        return "purple";
+        return "emerald";
       case "MANAGER":
         return "info";
       case "AUDITOR":
@@ -79,7 +79,7 @@ export function OrganizationTeamCard({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-100 pb-4 dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2">
-            <Building className="h-4 w-4 text-blue-500" />
+            <Building className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               {organizationName} &middot; Enterprise Workspace
             </h3>
@@ -93,7 +93,7 @@ export function OrganizationTeamCard({
           <button
             type="button"
             onClick={() => setShowInviteModal(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 transition"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
           >
             <UserPlus className="h-3.5 w-3.5" />
             <span>Invite Colleague</span>
@@ -118,7 +118,7 @@ export function OrganizationTeamCard({
         </div>
         <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"
+            className="h-full rounded-full bg-emerald-500"
             style={{ width: `${(members.length / seatsLimit) * 100}%` }}
           />
         </div>
@@ -179,7 +179,7 @@ export function OrganizationTeamCard({
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 placeholder="colleague@yourcompany.com"
-                className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
 
@@ -190,7 +190,7 @@ export function OrganizationTeamCard({
               <select
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value as "MANAGER" | "AUDITOR")}
-                className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               >
                 <option value="MANAGER">
                   Hiring Manager (Post jobs, fund escrow, approve deliverables)
@@ -212,7 +212,7 @@ export function OrganizationTeamCard({
               <button
                 type="submit"
                 disabled={isSubmitting || !inviteEmail.trim()}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60 transition"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />

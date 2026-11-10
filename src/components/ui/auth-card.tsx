@@ -11,7 +11,7 @@ export function AuthCard({ title, subtitle, children }: AuthCardProps) {
     <div className="relative flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-950">
       {/* Background ambient lighting */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 blur-3xl" />
+        <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-emerald-500/10 to-teal-500/10 blur-3xl" />
       </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">

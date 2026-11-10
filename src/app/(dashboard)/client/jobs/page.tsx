@@ -23,7 +23,7 @@ export default async function ClientJobsPage() {
       case "IN_PROGRESS":
         return "info";
       case "COMPLETED":
-        return "purple";
+        return "emerald";
       case "CLOSED":
       case "CANCELLED":
         return "secondary";
@@ -58,7 +58,7 @@ export default async function ClientJobsPage() {
                 <div className="flex items-center gap-2.5">
                   <Link
                     href={`/jobs/${job.id}`}
-                    className="font-bold text-zinc-900 hover:text-purple-600 dark:text-zinc-100 dark:hover:text-purple-400 transition"
+                    className="font-bold text-zinc-900 hover:text-emerald-600 dark:text-zinc-100 dark:hover:text-emerald-400 transition"
                   >
                     {job.title}
                   </Link>
@@ -73,7 +73,7 @@ export default async function ClientJobsPage() {
                   <span>•</span>
                   <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
                   <span>•</span>
-                  <span className="font-semibold text-purple-600 dark:text-purple-400">
+                  <span className="font-semibold text-emerald-700 dark:text-emerald-400">
                     {job._count.proposals} proposals received
                   </span>
                 </div>
@@ -82,7 +82,7 @@ export default async function ClientJobsPage() {
               <div className="flex items-center gap-2.5 shrink-0">
                 <Link
                   href={`/client/jobs/${job.id}/proposals`}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-purple-50 px-3.5 py-2 text-xs font-semibold text-purple-700 shadow-xs transition hover:bg-purple-100 dark:bg-purple-950/60 dark:text-purple-300 dark:hover:bg-purple-900/60"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3.5 py-2 text-xs font-semibold text-emerald-800 shadow-xs transition hover:bg-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900/60"
                 >
                   <Users className="h-3.5 w-3.5" />
                   <span>Review Proposals ({job._count.proposals})</span>

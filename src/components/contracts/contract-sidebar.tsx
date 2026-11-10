@@ -102,7 +102,7 @@ export function ContractSidebar({
         <div className="space-y-2 pt-1">
           <Link
             href={conversationUrl}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
           >
             <MessageSquare className="h-4 w-4" />
             <span>Open Workroom Chat</span>
@@ -193,10 +193,10 @@ export function ContractSidebar({
 
           <div className="flex items-center justify-between">
             <span className="text-zinc-500 flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-indigo-500" />
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
               <span>Secured in Escrow</span>
             </span>
-            <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">
+            <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
               ${inEscrowAmount.toFixed(2)}
             </span>
           </div>
@@ -239,7 +239,7 @@ export function ContractSidebar({
             {isFreelancer && (
               <Link
                 href={conversationUrl}
-                className="text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                className="text-xs font-semibold text-emerald-700 hover:underline dark:text-emerald-400"
               >
                 Chat
               </Link>
@@ -249,7 +249,7 @@ export function ContractSidebar({
           {/* Freelancer */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 font-bold text-xs">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 font-bold text-xs">
                 <User className="h-4 w-4" />
               </div>
               <div>
@@ -262,7 +262,7 @@ export function ContractSidebar({
             {isClient && (
               <Link
                 href={conversationUrl}
-                className="text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                className="text-xs font-semibold text-emerald-700 hover:underline dark:text-emerald-400"
               >
                 Chat
               </Link>

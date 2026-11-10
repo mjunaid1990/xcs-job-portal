@@ -271,7 +271,7 @@ export function CommandPalette() {
                       onMouseEnter={() => setSelectedIndex(idx)}
                       className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-semibold transition ${
                         isSelected
-                          ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300"
+                          ? "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
                           : "text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900"
                       }`}
                     >
@@ -279,7 +279,7 @@ export function CommandPalette() {
                         <div
                           className={`flex h-7 w-7 items-center justify-center rounded-lg ${
                             isSelected
-                              ? "bg-indigo-600 text-white"
+                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
                               : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                           }`}
                         >

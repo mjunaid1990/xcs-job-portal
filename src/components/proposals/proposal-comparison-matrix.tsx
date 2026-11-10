@@ -93,9 +93,9 @@ export function ProposalComparisonMatrix({
 
   return (
     <>
-      <div className="flex items-center justify-between rounded-2xl border border-purple-200/80 bg-gradient-to-r from-purple-50/70 via-indigo-50/50 to-white p-4 shadow-xs dark:border-purple-900/50 dark:bg-zinc-900">
+      <div className="flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600 text-white shadow-xs">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs">
             <SlidersHorizontal className="h-4 w-4" />
           </div>
           <div>
@@ -112,7 +112,7 @@ export function ProposalComparisonMatrix({
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-purple-500/20 hover:bg-purple-500 transition"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
         >
           <Sparkles className="h-3.5 w-3.5" />
           <span>Compare Candidates ({selectedIds.length})</span>
@@ -125,7 +125,7 @@ export function ProposalComparisonMatrix({
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-zinc-100 p-5 px-6 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/60">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-600/10 text-purple-600 dark:text-purple-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
                   <SlidersHorizontal className="h-4 w-4" />
                 </div>
                 <div>
@@ -150,7 +150,7 @@ export function ProposalComparisonMatrix({
                         onClick={() => toggleSelect(p.id)}
                         className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition ${
                           isSelected
-                            ? "bg-purple-600 text-white"
+                            ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300"
                         }`}
                       >
@@ -198,7 +198,7 @@ export function ProposalComparisonMatrix({
                             <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                               {p.freelancer.name}
                             </span>
-                            <Badge variant="purple">
+                            <Badge variant="emerald">
                               {p.freelancer.freelancerProfile?.experienceLevel ?? "EXPERT"}
                             </Badge>
                           </div>
@@ -216,7 +216,7 @@ export function ProposalComparisonMatrix({
                             </span>
                           )}
                           {isFastest && (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-indigo-100 px-2 py-0.5 text-xs font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-bold text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">
                               <Zap className="h-3 w-3" />
                               <span>Fastest Turnaround</span>
                             </span>
@@ -261,7 +261,7 @@ export function ProposalComparisonMatrix({
                       <div className="mt-5 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center gap-2">
                         <Link
                           href={`/client/contracts/new?jobId=${jobId}&freelancerId=${p.freelancer.id}&bid=${bidDollars}`}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-3 py-2 text-xs font-bold text-white shadow-xs hover:from-purple-500 hover:to-indigo-500 transition"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-zinc-900 px-3 py-2 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
                         >
                           <span>Hire Candidate</span>
                           <ArrowRight className="h-3 w-3" />
@@ -274,9 +274,9 @@ export function ProposalComparisonMatrix({
                           title="Message Freelancer"
                         >
                           {isPending && chatLoadingId === p.freelancer.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin text-purple-600" />
+                            <Loader2 className="h-4 w-4 animate-spin text-zinc-600" />
                           ) : (
-                            <MessageSquare className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                            <MessageSquare className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                           )}
                         </button>
                       </div>

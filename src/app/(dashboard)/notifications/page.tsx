@@ -20,17 +20,17 @@ import {
 function getNotificationIcon(category: string) {
   switch (category) {
     case "proposal":
-      return <Briefcase className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />;
+      return <Briefcase className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />;
     case "contract":
-      return <FileCheck className="h-5 w-5 text-purple-600 dark:text-purple-400" />;
+      return <FileCheck className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />;
     case "payment":
       return <DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />;
     case "review":
       return <Star className="h-5 w-5 text-amber-500" />;
     case "dispute":
-      return <AlertCircle className="h-5 w-5 text-red-500" />;
+      return <AlertCircle className="h-5 w-5 text-rose-500" />;
     case "message":
-      return <MessageSquare className="h-5 w-5 text-blue-500" />;
+      return <MessageSquare className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />;
     default:
       return <ShieldCheck className="h-5 w-5 text-zinc-500" />;
   }
@@ -47,7 +47,7 @@ export default async function NotificationsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header without Extra Badge Noise */}
+      {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -67,15 +67,10 @@ export default async function NotificationsPage() {
           {notifications.map((n) => {
             const formatted = formatNotification(n.type, n.payload);
             const isUnread = !n.readAt;
+            const hasLink = Boolean(formatted.href);
 
-            return (
-              <Link
-                key={n.id}
-                href={formatted.href}
-                className={`group flex items-start justify-between gap-4 p-5 sm:p-6 transition hover:bg-zinc-50 dark:hover:bg-zinc-800/40 ${
-                  isUnread ? "bg-indigo-50/20 dark:bg-indigo-950/20" : ""
-                }`}
-              >
+            const content = (
+              <>
                 <div className="flex items-start gap-4 flex-1 min-w-0">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60 group-hover:scale-105 transition">
                     {getNotificationIcon(formatted.category)}
@@ -83,11 +78,17 @@ export default async function NotificationsPage() {
 
                   <div className="space-y-1 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-bold text-sm text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition">
+                      <h2
+                        className={`font-bold text-sm text-zinc-900 dark:text-zinc-100 transition ${
+                          hasLink
+                            ? "group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
+                            : ""
+                        }`}
+                      >
                         {formatted.title}
                       </h2>
                       {isUnread && (
-                        <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                        <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
                           Unread
                         </span>
                       )}
@@ -109,10 +110,37 @@ export default async function NotificationsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center self-center shrink-0 text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 transition">
-                  <ChevronRight className="h-4 w-4" />
-                </div>
-              </Link>
+                {hasLink && (
+                  <div className="flex items-center self-center shrink-0 text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
+                )}
+              </>
+            );
+
+            if (formatted.href) {
+              return (
+                <Link
+                  key={n.id}
+                  href={formatted.href}
+                  className={`group flex items-start justify-between gap-4 p-5 sm:p-6 transition hover:bg-zinc-50 dark:hover:bg-zinc-800/40 ${
+                    isUnread ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""
+                  }`}
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <div
+                key={n.id}
+                className={`flex items-start justify-between gap-4 p-5 sm:p-6 ${
+                  isUnread ? "bg-emerald-50/20 dark:bg-emerald-950/15" : ""
+                }`}
+              >
+                {content}
+              </div>
             );
           })}
 

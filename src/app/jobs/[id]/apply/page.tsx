@@ -54,7 +54,7 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
         {/* Navigation Breadcrumb */}
         <Link
           href={getJobUrl(job)}
-          className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition"
+          className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-emerald-600 dark:text-zinc-400 dark:hover:text-emerald-400 transition"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to job details</span>
@@ -64,7 +64,7 @@ export default async function ApplyPage({ params }: ApplyPageProps) {
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-6">
           {/* Header Area */}
           <div className="space-y-2 border-b border-zinc-100 pb-5 dark:border-zinc-800">
-            <span className="inline-block rounded-md bg-indigo-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+            <span className="inline-block rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
               Submit Proposal
             </span>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">

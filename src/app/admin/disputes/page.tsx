@@ -46,7 +46,7 @@ export default async function AdminDisputesPage({ searchParams }: DisputesPagePr
             href="/admin/disputes"
             className={`rounded-xl px-3 py-1.5 transition ${
               !statusFilter
-                ? "bg-purple-600 text-white shadow-sm"
+                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs font-bold"
                 : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800"
             }`}
           >
@@ -56,7 +56,7 @@ export default async function AdminDisputesPage({ searchParams }: DisputesPagePr
             href="/admin/disputes?status=OPEN"
             className={`rounded-xl px-3 py-1.5 transition ${
               statusFilter === "OPEN"
-                ? "bg-purple-600 text-white shadow-sm"
+                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs font-bold"
                 : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800"
             }`}
           >
@@ -136,7 +136,7 @@ export default async function AdminDisputesPage({ searchParams }: DisputesPagePr
                           <>
                             {" "}
                             &bull; Contested Milestone:{" "}
-                            <span className="font-semibold text-purple-600 dark:text-purple-400">
+                            <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                               {dispute.milestone.title}
                             </span>{" "}
                             (${(Number(dispute.milestone.amountCents) / 100).toFixed(2)})
@@ -152,11 +152,11 @@ export default async function AdminDisputesPage({ searchParams }: DisputesPagePr
                       </div>
 
                       {dispute.resolutionNote && (
-                        <div className="mt-2 rounded-xl border border-purple-200/60 bg-purple-50/70 p-3.5 text-xs text-purple-900 dark:border-purple-900/40 dark:bg-purple-950/30 dark:text-purple-300">
+                        <div className="mt-2 rounded-xl border border-emerald-200/60 bg-emerald-50/70 p-3.5 text-xs text-emerald-950 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-300">
                           <span className="font-bold">Official Arbitration Ruling: </span>
                           {dispute.resolutionNote}
                           {dispute.resolvedBy && (
-                            <span className="block mt-1 text-[11px] text-purple-600 dark:text-purple-400 font-semibold">
+                            <span className="block mt-1 text-xs text-emerald-700 dark:text-emerald-400 font-semibold">
                               Executed by Admin {dispute.resolvedBy.name}
                             </span>
                           )}

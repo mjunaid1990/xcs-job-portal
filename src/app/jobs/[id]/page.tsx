@@ -162,7 +162,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
         <div className="flex items-center justify-between border-b border-zinc-200/60 pb-4 dark:border-zinc-800">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition"
+            className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-emerald-600 dark:text-zinc-400 dark:hover:text-emerald-400 transition"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to all opportunities</span>
@@ -179,7 +179,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
               {/* Header: Category Eyebrow, Title, then Client & Meta below */}
               <div className="space-y-2.5">
                 <div>
-                  <span className="inline-block rounded-md bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                  <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
                     {job.category?.name ?? "General Opportunity"}
                   </span>
                 </div>
@@ -272,8 +272,8 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
               {/* Structured Deliverables (Rendered only when defined) */}
               {job.deliverables && (
-                <div className="space-y-3 rounded-xl border border-indigo-100/80 bg-indigo-50/20 p-4.5 dark:border-indigo-950 dark:bg-indigo-950/10">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
+                <div className="space-y-3 rounded-xl border border-emerald-200/60 bg-emerald-50/30 p-4.5 dark:border-emerald-950 dark:bg-emerald-950/20">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
                     <CheckCircle2 className="h-4 w-4" />
                     <span>Milestone Deliverables & Acceptance Criteria</span>
                   </div>
@@ -319,7 +319,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                     {job.skills.map((s) => (
                       <span
                         key={s.skill.id}
-                        className="rounded-xl border border-zinc-200/90 bg-zinc-50/80 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-indigo-600 transition"
+                        className="rounded-xl border border-zinc-200/90 bg-zinc-50/80 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:border-emerald-500/50 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-emerald-500/50 transition"
                       >
                         {s.skill.name}
                       </span>
@@ -361,7 +361,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
                   <div className="space-y-2">
                     <Link
                       href={`${getJobUrl(job)}/apply`}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-xs font-bold text-white shadow-md shadow-emerald-500/20 hover:from-emerald-500 hover:to-teal-500 transition"
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-3 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
                     >
                       <Send className="h-4 w-4" />
                       <span>Submit Proposal</span>
@@ -450,15 +450,15 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
               </div>
               <ul className="space-y-2 text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 <li className="flex items-start gap-1.5">
-                  <span className="text-indigo-600 font-bold">•</span>
+                  <span className="text-emerald-600 font-bold">•</span>
                   <span>Reference the specific tech stack and deliverables requested.</span>
                 </li>
                 <li className="flex items-start gap-1.5">
-                  <span className="text-indigo-600 font-bold">•</span>
+                  <span className="text-emerald-600 font-bold">•</span>
                   <span>Propose realistic milestone breakdowns with acceptance criteria.</span>
                 </li>
                 <li className="flex items-start gap-1.5">
-                  <span className="text-indigo-600 font-bold">•</span>
+                  <span className="text-emerald-600 font-bold">•</span>
                   <span>Keep all chat and milestones on WorkWasl to remain covered by escrow.</span>
                 </li>
               </ul>

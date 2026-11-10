@@ -80,7 +80,7 @@ export function DisputeResolver({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:from-purple-500 hover:to-indigo-500 hover:shadow"
+        className="flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         <Gavel className="h-3.5 w-3.5" />
         <span>Arbitrate & Resolve</span>
@@ -96,8 +96,8 @@ export function DisputeResolver({
               <X className="h-5 w-5" />
             </button>
 
-            <div className="flex items-center gap-2.5 text-purple-600 dark:text-purple-400">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-950/60">
+            <div className="flex items-center gap-2.5 text-emerald-600 dark:text-emerald-400">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/60">
                 <Scale className="h-5 w-5" />
               </div>
               <div>
@@ -128,7 +128,7 @@ export function DisputeResolver({
               {parsedAmount > 0 && (
                 <div className="flex justify-between mt-1 pt-1 border-t border-zinc-200/60 dark:border-zinc-700/60 font-semibold">
                   <span className="text-zinc-500">Escrow Value:</span>
-                  <span className="text-purple-600 dark:text-purple-400">
+                  <span className="text-emerald-600 dark:text-emerald-400">
                     ${parsedAmount.toFixed(2)} {currency}
                   </span>
                 </div>
@@ -152,7 +152,7 @@ export function DisputeResolver({
                     onClick={() => setResolution("RESOLVED_CLIENT")}
                     className={`rounded-xl border p-3 text-left transition ${
                       resolution === "RESOLVED_CLIENT"
-                        ? "border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-600/20 dark:bg-purple-950/40 dark:text-purple-300"
+                        ? "border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/20 dark:bg-emerald-950/40 dark:text-emerald-300"
                         : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
                     }`}
                   >
@@ -165,7 +165,7 @@ export function DisputeResolver({
                     onClick={() => setResolution("RESOLVED_FREELANCER")}
                     className={`rounded-xl border p-3 text-left transition ${
                       resolution === "RESOLVED_FREELANCER"
-                        ? "border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-600/20 dark:bg-purple-950/40 dark:text-purple-300"
+                        ? "border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/20 dark:bg-emerald-950/40 dark:text-emerald-300"
                         : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
                     }`}
                   >
@@ -178,7 +178,7 @@ export function DisputeResolver({
                     onClick={() => setResolution("RESOLVED_SPLIT")}
                     className={`rounded-xl border p-3 text-left transition ${
                       resolution === "RESOLVED_SPLIT"
-                        ? "border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-600/20 dark:bg-purple-950/40 dark:text-purple-300"
+                        ? "border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/20 dark:bg-emerald-950/40 dark:text-emerald-300"
                         : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
                     }`}
                   >
@@ -205,7 +205,7 @@ export function DisputeResolver({
                     max="99"
                     value={splitPercent}
                     onChange={(e) => setSplitPercent(Number(e.target.value))}
-                    className="mt-2 w-full accent-purple-600"
+                    className="mt-2 w-full accent-emerald-600"
                   />
                 </div>
               )}
@@ -221,7 +221,7 @@ export function DisputeResolver({
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="Detail findings from deliverable inspection, communication records, and the rationale for this ruling..."
-                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-zinc-50 p-3 text-xs text-zinc-900 focus:border-purple-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-zinc-50 p-3 text-xs text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                 />
               </div>
 
@@ -236,7 +236,7 @@ export function DisputeResolver({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50"
                 >
                   {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>Execute Ruling</span>

@@ -31,7 +31,7 @@ export default async function AdminLedgerPage({ searchParams }: LedgerPageProps)
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-600 dark:text-purple-400">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="h-4 w-4" />
             <span>Cryptographic Idempotency & Balance Invariants</span>
           </div>
@@ -89,7 +89,7 @@ export default async function AdminLedgerPage({ searchParams }: LedgerPageProps)
                               : entry.type === "REFUND"
                                 ? "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200/60 dark:border-amber-900/40"
                                 : entry.type === "PLATFORM_FEE"
-                                  ? "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300 border border-purple-200/60 dark:border-purple-900/40"
+                                  ? "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200/60 dark:border-zinc-700/60"
                                   : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                         }`}
                       >

@@ -288,7 +288,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
                 maxLength={60}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -312,7 +312,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="e.g. Acme Technologies Inc."
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -323,7 +323,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
         <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
               <Briefcase className="h-4 w-4" />
             </div>
             <div>
@@ -346,7 +346,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
               <select
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
-                className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 {INDUSTRY_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>
@@ -366,7 +366,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
               <select
                 value={companySize}
                 onChange={(e) => setCompanySize(e.target.value)}
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 {COMPANY_SIZE_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>
@@ -391,7 +391,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
                 placeholder="https://acme.com"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -407,7 +407,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
                 placeholder="https://linkedin.com/company/acme"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -418,7 +418,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
         <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
               <FileText className="h-4 w-4" />
             </div>
             <div>
@@ -447,7 +447,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             placeholder="Describe your company's mission, engineering products, core tech stack, and what contractors can expect when collaborating with your teams..."
-            className="w-full rounded-2xl border border-zinc-300 bg-white p-4 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed"
+            className="w-full rounded-2xl border border-zinc-300 bg-white p-4 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed"
           />
           <p className="mt-2 text-[11px] text-zinc-400">
             Tip: Top-rated contractors evaluate mission, code quality standards, and team velocity
@@ -467,7 +467,7 @@ export function ClientProfileForm({ profile }: ClientProfileFormProps) {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-3 text-xs font-bold text-white shadow-md shadow-blue-500/20 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-60 transition"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-zinc-900 px-8 py-3 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60 transition"
         >
           {isPending ? (
             <>

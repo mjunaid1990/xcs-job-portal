@@ -51,7 +51,7 @@ export function NavLinks({ items, className = "", mobile = false, onItemClick }:
               <span
                 className={`flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold ${
                   isActive
-                    ? "bg-indigo-600 text-white"
+                    ? "bg-emerald-600 text-white"
                     : "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
                 }`}
               >
@@ -59,7 +59,7 @@ export function NavLinks({ items, className = "", mobile = false, onItemClick }:
               </span>
             )}
             {!mobile && isActive && (
-              <span className="absolute bottom-0 left-2.5 right-2.5 h-[2px] rounded-full bg-indigo-600 dark:bg-indigo-400" />
+              <span className="absolute bottom-0 left-2.5 right-2.5 h-[2px] rounded-full bg-emerald-600 dark:bg-emerald-400" />
             )}
           </Link>
         );

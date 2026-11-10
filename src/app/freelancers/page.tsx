@@ -62,7 +62,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
                 <Sparkles className="h-3.5 w-3.5" />
                 Verified Talent Directory
               </span>
@@ -101,7 +101,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
                   name="q"
                   defaultValue={params.q ?? ""}
                   placeholder="Search by specialty, skill tag, or name (e.g. React, Solidity, Rust)..."
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 pl-10 pr-4 py-2 text-xs sm:text-sm text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 pl-10 pr-4 py-2 text-xs sm:text-sm text-zinc-900 placeholder-zinc-400 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                 />
               </div>
 
@@ -110,7 +110,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
                 <select
                   name="skill"
                   defaultValue={params.skill ?? ""}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs sm:text-sm text-zinc-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs sm:text-sm text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                 >
                   <option value="">All Core Skills</option>
                   {taxonomy.skills.map((s) => (
@@ -126,7 +126,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
                 <select
                   name="level"
                   defaultValue={params.level ?? ""}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs sm:text-sm text-zinc-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs sm:text-sm text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                 >
                   <option value="">Any Seniority</option>
                   <option value="EXPERT">Senior / Staff</option>
@@ -140,7 +140,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
                 <select
                   name="rate"
                   defaultValue={params.rate ?? ""}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs sm:text-sm text-zinc-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2 text-xs sm:text-sm text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-100"
                 >
                   <option value="">Any Hourly Rate</option>
                   <option value="50">Up to $50/hr</option>
@@ -153,7 +153,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
               <div className="flex items-center gap-2">
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
                 >
                   <Filter className="h-3.5 w-3.5" />
                   <span>Filter</span>
@@ -196,17 +196,17 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
                   {/* Header: Avatar, Name, Country, Verified Badge */}
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 font-bold text-sm text-white shadow-sm">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-900 font-bold text-sm text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs">
                         {initials}
                       </div>
                       <div>
                         <Link
                           href={`/freelancers/${freelancer.userId}`}
-                          className="font-bold text-sm sm:text-base text-zinc-900 hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400 transition"
+                          className="font-bold text-sm sm:text-base text-zinc-900 hover:text-emerald-600 dark:text-zinc-100 dark:hover:text-emerald-400 transition"
                         >
                           {freelancer.user.name}
                         </Link>
-                        <div className="flex items-center gap-2 text-[11px] text-zinc-500 mt-0.5">
+                        <div className="flex items-center gap-2 text-xs text-zinc-500 mt-0.5">
                           {freelancer.user.country && (
                             <span className="flex items-center gap-1">
                               <MapPin className="h-3 w-3" />
@@ -251,7 +251,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
                     {freelancer.tags?.slice(0, 2).map((tag, idx) => (
                       <span
                         key={idx}
-                        className="rounded-lg bg-indigo-50 px-2 py-0.5 text-[10px] font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300"
+                        className="rounded-lg bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                       >
                         #{tag}
                       </span>
@@ -304,7 +304,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
             <div className="mt-6">
               <Link
                 href="/freelancers"
-                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition"
+                className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 transition"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 <span>Reset All Filters</span>

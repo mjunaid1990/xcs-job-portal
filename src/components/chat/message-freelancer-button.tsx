@@ -47,9 +47,9 @@ export function MessageFreelancerButton({
       title={`Send a direct message to ${freelancerName}`}
     >
       {isPending ? (
-        <Loader2 className="h-4 w-4 animate-spin text-purple-600" />
+        <Loader2 className="h-4 w-4 animate-spin text-zinc-700 dark:text-zinc-300" />
       ) : (
-        <MessageSquare className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+        <MessageSquare className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
       )}
       <span>Message Specialist</span>
     </button>

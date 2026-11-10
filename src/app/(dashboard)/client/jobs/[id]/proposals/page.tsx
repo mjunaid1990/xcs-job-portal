@@ -69,14 +69,14 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 font-bold text-white text-xs shadow-xs">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-zinc-900 font-bold text-white text-xs dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs">
                       {initials}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/freelancers/${proposal.freelancer.id}`}
-                          className="font-bold text-base text-zinc-900 hover:text-purple-600 dark:text-zinc-100 dark:hover:text-purple-400 transition"
+                          className="font-bold text-base text-zinc-900 hover:text-emerald-600 dark:text-zinc-100 dark:hover:text-emerald-400 transition"
                         >
                           {proposal.freelancer.name}
                         </Link>
@@ -85,7 +85,7 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
                             proposal.status === "ACCEPTED"
                               ? "success"
                               : proposal.status === "SHORTLISTED"
-                                ? "purple"
+                                ? "emerald"
                                 : proposal.status === "REJECTED"
                                   ? "destructive"
                                   : "secondary"
@@ -143,9 +143,9 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
                 proposal.screeningAnswers.length > 0 &&
                 job.screeningQuestions &&
                 job.screeningQuestions.length > 0 && (
-                  <div className="mt-4 rounded-xl border border-indigo-100 bg-indigo-50/30 p-4 dark:border-indigo-950/40 dark:bg-indigo-950/20 space-y-3">
-                    <h5 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-indigo-800 dark:text-indigo-300">
-                      <HelpCircle className="h-3.5 w-3.5" />
+                  <div className="mt-4 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-900/40 space-y-3">
+                    <h5 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
+                      <HelpCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                       <span>Screening Question Responses</span>
                     </h5>
                     <div className="space-y-2.5 pt-1">
@@ -157,7 +157,7 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
                             className="rounded-lg bg-white p-3 text-xs border border-zinc-200/70 dark:border-zinc-800 dark:bg-zinc-900 space-y-1"
                           >
                             <div className="flex items-start gap-2 font-semibold text-zinc-900 dark:text-zinc-100">
-                              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[9px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-[9px] font-bold text-white dark:bg-zinc-100 dark:text-zinc-900">
                                 {idx + 1}
                               </span>
                               <span>{q}</span>

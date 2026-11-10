@@ -38,17 +38,17 @@ interface NotificationPopoverProps {
 function getNotificationIcon(category: string) {
   switch (category) {
     case "proposal":
-      return <Briefcase className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />;
+      return <Briefcase className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
     case "contract":
-      return <FileCheck className="h-4 w-4 text-purple-600 dark:text-purple-400" />;
+      return <FileCheck className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />;
     case "payment":
       return <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
     case "review":
       return <Star className="h-4 w-4 text-amber-500" />;
     case "dispute":
-      return <AlertCircle className="h-4 w-4 text-red-500" />;
+      return <AlertCircle className="h-4 w-4 text-rose-500" />;
     case "message":
-      return <MessageSquare className="h-4 w-4 text-blue-500" />;
+      return <MessageSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
     default:
       return <ShieldCheck className="h-4 w-4 text-zinc-500" />;
   }
@@ -111,8 +111,7 @@ export function NotificationPopover({
     });
   };
 
-  const handleNotificationClick = async (notif: SerializedNotification, href: string) => {
-    setIsOpen(false);
+  const handleNotificationClick = async (notif: SerializedNotification, href?: string) => {
     if (!notif.readAt) {
       startTransition(async () => {
         await markNotificationReadAction(notif.id);
@@ -123,7 +122,11 @@ export function NotificationPopover({
         router.refresh();
       });
     }
-    router.push(href);
+
+    if (href) {
+      setIsOpen(false);
+      router.push(href);
+    }
   };
 
   return (
@@ -138,7 +141,7 @@ export function NotificationPopover({
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[10px] font-bold text-white shadow-xs ring-2 ring-white dark:ring-zinc-950 animate-in zoom-in-75 duration-150">
+          <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white shadow-xs ring-2 ring-white dark:ring-zinc-950 animate-in zoom-in-75 duration-150">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -152,7 +155,7 @@ export function NotificationPopover({
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">Notifications</h3>
               {unreadCount > 0 && (
-                <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
                   {unreadCount} new
                 </span>
               )}
@@ -163,7 +166,7 @@ export function NotificationPopover({
                 type="button"
                 onClick={handleMarkAllRead}
                 disabled={isPending}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300 transition"
               >
                 {isPending ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
@@ -181,15 +184,18 @@ export function NotificationPopover({
               notifications.slice(0, 5).map((n) => {
                 const formatted = formatNotification(n.type, n.payload);
                 const isUnread = !n.readAt;
+                const hasLink = Boolean(formatted.href);
 
                 return (
                   <button
                     key={n.id}
                     type="button"
                     onClick={() => handleNotificationClick(n, formatted.href)}
-                    className={`w-full text-left flex items-start gap-3 p-3.5 sm:p-4 transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${
-                      isUnread ? "bg-indigo-50/20 dark:bg-indigo-950/20" : ""
-                    }`}
+                    className={`w-full text-left flex items-start gap-3 p-3.5 sm:p-4 transition ${
+                      hasLink
+                        ? "cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                        : "cursor-default hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30"
+                    } ${isUnread ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""}`}
                   >
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
                       {getNotificationIcon(formatted.category)}
@@ -200,7 +206,7 @@ export function NotificationPopover({
                         <p className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
                           {formatted.title}
                         </p>
-                        <span className="text-[11px] text-zinc-400 shrink-0">
+                        <span className="text-xs text-zinc-400 shrink-0">
                           {formatRelativeTime(n.createdAt)}
                         </span>
                       </div>
@@ -210,9 +216,11 @@ export function NotificationPopover({
                       </p>
                     </div>
 
-                    {isUnread && (
-                      <span className="h-2 w-2 rounded-full bg-indigo-600 shrink-0 mt-1.5" />
-                    )}
+                    {hasLink ? (
+                      <ChevronRight className="h-4 w-4 shrink-0 text-zinc-400 self-center" />
+                    ) : isUnread ? (
+                      <span className="h-2 w-2 rounded-full bg-emerald-600 shrink-0 mt-1.5" />
+                    ) : null}
                   </button>
                 );
               })
@@ -234,7 +242,7 @@ export function NotificationPopover({
             <Link
               href="/notifications"
               onClick={() => setIsOpen(false)}
-              className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-zinc-700 hover:text-indigo-600 dark:text-zinc-300 dark:hover:text-indigo-400 transition"
+              className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-zinc-700 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400 transition"
             >
               <span>View all notifications</span>
               <ChevronRight className="h-3.5 w-3.5" />

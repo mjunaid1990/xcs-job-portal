@@ -4,7 +4,7 @@ import { type LucideIcon } from "lucide-react";
 export interface PageHeaderProps {
   badge?: string;
   badgeIcon?: LucideIcon;
-  badgeVariant?: "default" | "success" | "warning" | "destructive" | "purple" | "info";
+  badgeVariant?: "default" | "success" | "warning" | "destructive" | "emerald" | "info";
   title: string;
   description?: string;
   children?: React.ReactNode;

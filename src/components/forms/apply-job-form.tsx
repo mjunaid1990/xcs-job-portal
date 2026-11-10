@@ -84,7 +84,7 @@ export function ApplyJobForm({
                 value={bid}
                 onChange={(e) => setBid(e.target.value)}
                 placeholder="500"
-                className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 transition"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 transition"
               />
             </div>
             <p className="mt-1 text-[11px] text-zinc-400">
@@ -105,7 +105,7 @@ export function ApplyJobForm({
                 value={estimatedDays}
                 onChange={(e) => setEstimatedDays(e.target.value)}
                 placeholder="14"
-                className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 transition"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3.5 text-sm font-semibold text-zinc-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 transition"
               />
             </div>
             <p className="mt-1 text-[11px] text-zinc-400">
@@ -143,12 +143,12 @@ export function ApplyJobForm({
 
       {/* Screening Questions from Client (if specified) */}
       {screeningQuestions.length > 0 && (
-        <div className="space-y-4 rounded-2xl border border-indigo-100 bg-indigo-50/30 p-5 dark:border-indigo-950/40 dark:bg-indigo-950/20">
-          <div className="flex items-center gap-2 text-xs font-bold text-indigo-950 dark:text-indigo-200">
-            <HelpCircle className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+        <div className="space-y-4 rounded-2xl border border-emerald-100 bg-emerald-50/30 p-5 dark:border-emerald-950/40 dark:bg-emerald-950/20">
+          <div className="flex items-center gap-2 text-xs font-bold text-emerald-950 dark:text-emerald-200">
+            <HelpCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             <span>Client Screening Questions ({screeningQuestions.length})</span>
           </div>
-          <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             The client has requested responses to these specific questions. Please provide your
             answers in the fields below:
           </p>
@@ -159,7 +159,7 @@ export function ApplyJobForm({
                 className="space-y-2 rounded-xl border border-zinc-200/80 bg-white p-4 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900"
               >
                 <div className="flex items-start gap-2.5 text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                     {i + 1}
                   </span>
                   <span className="pt-0.5 leading-snug">{question}</span>
@@ -170,7 +170,7 @@ export function ApplyJobForm({
                   value={answers[i] ?? ""}
                   onChange={(e) => setAnswers((prev) => ({ ...prev, [i]: e.target.value }))}
                   placeholder={`Type your answer to question #${i + 1}...`}
-                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50/60 p-2.5 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-100 transition"
+                  className="w-full resize-none rounded-lg border border-zinc-200 bg-zinc-50/60 p-2.5 text-xs leading-relaxed text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-100 transition"
                 />
               </div>
             ))}
@@ -206,7 +206,7 @@ export function ApplyJobForm({
           value={coverLetter}
           onChange={(e) => setCoverLetter(e.target.value)}
           placeholder="Explain your approach to the project, how you will tackle the milestone deliverables, and highlight past relevant experience..."
-          className="w-full rounded-xl border border-zinc-200 bg-white p-3.5 text-xs leading-relaxed text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 whitespace-pre-wrap transition"
+          className="w-full rounded-xl border border-zinc-200 bg-white p-3.5 text-xs leading-relaxed text-zinc-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 whitespace-pre-wrap transition"
         />
         <p className="text-[11px] text-zinc-400">
           Markdown formatting, bullet points, and code links are fully supported.
@@ -226,7 +226,7 @@ export function ApplyJobForm({
         <button
           type="submit"
           disabled={isPending || coverLetter.trim().length < 20}
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-2.5 text-xs font-bold text-white shadow-md shadow-emerald-500/20 transition hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-6 py-2.5 text-xs font-bold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50"
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />

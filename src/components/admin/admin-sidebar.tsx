@@ -154,7 +154,7 @@ export function AdminSidebar({
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-white text-base tracking-tight">WorkWasl</span>
-              <span className="rounded bg-purple-500/20 px-1.5 py-0.5 text-[10px] font-bold text-purple-300 uppercase tracking-wider">
+              <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300 uppercase tracking-wider">
                 Admin
               </span>
             </div>
@@ -195,7 +195,7 @@ export function AdminSidebar({
                     href={item.href}
                     className={`group flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all duration-150 ${
                       isActive
-                        ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 font-bold"
+                        ? "bg-emerald-600 text-white shadow-xs font-bold"
                         : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
                     }`}
                   >
@@ -222,7 +222,7 @@ export function AdminSidebar({
                         <ExternalLink className="h-3 w-3 text-zinc-600 group-hover:text-zinc-400" />
                       )}
                       {isActive && !item.badge && (
-                        <ChevronRight className="h-3.5 w-3.5 text-purple-200" />
+                        <ChevronRight className="h-3.5 w-3.5 text-emerald-200" />
                       )}
                     </div>
                   </Link>
@@ -237,7 +237,7 @@ export function AdminSidebar({
       <div className="border-t border-zinc-800/80 p-3">
         <div className="flex items-center justify-between rounded-xl border border-zinc-800/60 bg-zinc-900/60 p-2.5">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 font-bold text-white text-xs shadow-sm">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-800 font-bold text-white text-xs shadow-2xs">
               {initials}
             </div>
             <div className="min-w-0 flex-1">

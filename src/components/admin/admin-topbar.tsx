@@ -150,7 +150,7 @@ export function AdminTopbar({
                       onClick={() => setMobileOpen(false)}
                       className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-semibold ${
                         isActive
-                          ? "bg-purple-600 text-white"
+                          ? "bg-emerald-600 text-white font-bold"
                           : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
                       }`}
                     >

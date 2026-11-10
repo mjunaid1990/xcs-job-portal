@@ -119,11 +119,11 @@ export function EducationList({ items }: EducationListProps) {
       {showAddForm && (
         <form
           onSubmit={handleAdd}
-          className="rounded-2xl border border-indigo-200/80 bg-indigo-50/30 p-5 dark:border-indigo-900/60 dark:bg-indigo-950/20 space-y-4 animate-in fade-in-50 duration-200"
+          className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5 dark:border-emerald-500/20 dark:bg-emerald-950/20 space-y-4 animate-in fade-in-50 duration-200"
         >
-          <div className="flex items-center justify-between border-b border-indigo-100 pb-3 dark:border-indigo-900/40">
+          <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3 dark:border-emerald-500/10">
             <div className="flex items-center gap-2">
-              <GraduationCap className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              <GraduationCap className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                 Add Education Credential
               </h4>
@@ -155,7 +155,7 @@ export function EducationList({ items }: EducationListProps) {
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
                 placeholder="e.g. Stanford University or MIT"
-                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
 
@@ -169,7 +169,7 @@ export function EducationList({ items }: EducationListProps) {
                 value={degree}
                 onChange={(e) => setDegree(e.target.value)}
                 placeholder="e.g. B.S. in Computer Science"
-                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
 
@@ -182,7 +182,7 @@ export function EducationList({ items }: EducationListProps) {
                 value={fieldOfStudy}
                 onChange={(e) => setFieldOfStudy(e.target.value)}
                 placeholder="e.g. Software Engineering & Distributed Systems"
-                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
 
@@ -198,7 +198,7 @@ export function EducationList({ items }: EducationListProps) {
                   value={startYear}
                   onChange={(e) => setStartYear(e.target.value)}
                   placeholder="2016"
-                  className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 />
               </div>
 
@@ -213,7 +213,7 @@ export function EducationList({ items }: EducationListProps) {
                   value={endYear}
                   onChange={(e) => setEndYear(e.target.value)}
                   placeholder="2020"
-                  className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 />
               </div>
             </div>
@@ -228,7 +228,7 @@ export function EducationList({ items }: EducationListProps) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="e.g. Magna Cum Laude, capstone thesis on high-concurrency consensus..."
-              className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="mt-1 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             />
           </div>
 
@@ -244,7 +244,7 @@ export function EducationList({ items }: EducationListProps) {
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 transition"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Education</span>
@@ -258,10 +258,10 @@ export function EducationList({ items }: EducationListProps) {
         {items.map((item) => (
           <div
             key={item.id}
-            className="group flex flex-col sm:flex-row sm:items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition"
+            className="group flex flex-col sm:flex-row sm:items-start justify-between gap-3 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 hover:border-emerald-500/40 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition"
           >
             <div className="flex items-start gap-3.5">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
                 <GraduationCap className="h-5 w-5" />
               </div>
 
@@ -320,7 +320,7 @@ export function EducationList({ items }: EducationListProps) {
 
         {items.length === 0 && !showAddForm && (
           <div className="rounded-2xl border border-dashed border-zinc-200 p-8 sm:p-10 text-center dark:border-zinc-800">
-            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
               <GraduationCap className="h-5 w-5" />
             </div>
             <h4 className="mt-3 text-sm font-bold text-zinc-900 dark:text-zinc-100">

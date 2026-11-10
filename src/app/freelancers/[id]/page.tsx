@@ -115,7 +115,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
         <div className="flex items-center justify-between border-b border-zinc-200/60 pb-4 dark:border-zinc-800">
           <Link
             href="/freelancers"
-            className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition"
+            className="inline-flex items-center gap-2 rounded-lg text-xs font-semibold text-zinc-600 hover:text-emerald-600 dark:text-zinc-400 dark:hover:text-emerald-400 transition"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to verified specialists</span>
@@ -138,7 +138,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
               {/* Avatar with Live Presence Dot */}
               <div className="relative shrink-0">
                 {profile.user.imageUrl ? (
-                  <div className="relative h-20 w-20 sm:h-22 sm:w-22 overflow-hidden rounded-2xl border-2 border-indigo-500/40 shadow-md ring-4 ring-white dark:ring-zinc-800">
+                  <div className="relative h-20 w-20 sm:h-22 sm:w-22 overflow-hidden rounded-2xl border-2 border-zinc-200 shadow-md ring-4 ring-white dark:border-zinc-700 dark:ring-zinc-800">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={profile.user.imageUrl}
@@ -147,7 +147,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                     />
                   </div>
                 ) : (
-                  <div className="flex h-20 w-20 sm:h-22 sm:w-22 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-indigo-700 text-2xl font-black text-white shadow-md shadow-indigo-500/20 ring-4 ring-white dark:ring-zinc-800">
+                  <div className="flex h-20 w-20 sm:h-22 sm:w-22 items-center justify-center rounded-2xl bg-zinc-900 text-2xl font-black text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs ring-4 ring-white dark:ring-zinc-800">
                     {profile.user.name.slice(0, 2).toUpperCase()}
                   </div>
                 )}
@@ -169,7 +169,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                   <StarRating rating={avgRating} reviewCount={reviewCount} showCount={true} />
                 </div>
 
-                <p className="text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                <p className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                   {profile.headline ?? "Senior Independent Specialist"}
                 </p>
 
@@ -303,7 +303,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
 
             <div className="space-y-1">
               <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400">
-                <Zap className="h-3.5 w-3.5 text-indigo-500" />
+                <Zap className="h-3.5 w-3.5 text-zinc-400" />
                 <span>Response Time</span>
               </div>
               <p className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-100">
@@ -333,7 +333,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             {profile.bio && (
               <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3.5">
                 <div className="flex items-center gap-2">
-                  <Award className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <Award className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Executive Overview & Expertise
                   </h2>
@@ -348,7 +348,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             {profile.skills.length > 0 && (
               <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
                 <div className="flex items-center gap-2">
-                  <Code2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <Code2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Verified Core Skills & Technologies
                   </h2>
@@ -357,7 +357,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                   {profile.skills.map((s) => (
                     <span
                       key={s.skill.id}
-                      className="rounded-xl border border-zinc-200/90 bg-zinc-50/80 px-3.5 py-1.5 text-xs font-semibold text-zinc-800 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-indigo-600 transition"
+                      className="rounded-xl border border-zinc-200/90 bg-zinc-50/80 px-3.5 py-1.5 text-xs font-semibold text-zinc-800 hover:border-emerald-500/50 hover:bg-white dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-emerald-500/50 transition"
                     >
                       {s.skill.name}
                     </span>
@@ -392,7 +392,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Layers className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <Layers className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                   <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Featured Work & Case Studies
                   </h2>
@@ -408,7 +408,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                   {profile.portfolioItems.map((item) => (
                     <div
                       key={item.id}
-                      className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 hover:border-indigo-300 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition group overflow-hidden"
+                      className="flex flex-col justify-between rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-4 hover:border-emerald-500/50 hover:bg-white dark:border-zinc-800 dark:bg-zinc-950/40 dark:hover:border-zinc-700 transition group overflow-hidden"
                     >
                       <div>
                         {item.imageUrl ? (
@@ -421,8 +421,8 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                             />
                           </div>
                         ) : (
-                          <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-200/60 dark:from-zinc-900 dark:via-zinc-900/60 dark:to-zinc-800/80 mb-3 border border-zinc-200/80 dark:border-zinc-800 flex flex-col items-center justify-center p-4 text-center transition group-hover:border-indigo-300 dark:group-hover:border-zinc-700">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-2xs border border-zinc-200/70 text-zinc-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:scale-105 transition">
+                          <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-200/60 dark:from-zinc-900 dark:via-zinc-900/60 dark:to-zinc-800/80 mb-3 border border-zinc-200/80 dark:border-zinc-800 flex flex-col items-center justify-center p-4 text-center transition group-hover:border-emerald-500/40 dark:group-hover:border-zinc-700">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-2xs border border-zinc-200/70 text-zinc-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:scale-105 transition">
                               <FolderGit2 className="h-5 w-5" />
                             </div>
                             <span className="mt-2 text-[11px] font-semibold tracking-tight text-zinc-600 dark:text-zinc-400 truncate max-w-[85%]">
@@ -433,7 +433,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                             </span>
                           </div>
                         )}
-                        <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
+                        <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
                           {item.title}
                         </h3>
                         {item.description && (
@@ -449,7 +449,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                             href={item.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 hover:underline dark:text-emerald-400"
                           >
                             <span>Inspect Deliverable</span>
                             <ExternalLink className="h-3 w-3" />
@@ -476,7 +476,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
               <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                    <GraduationCap className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                       Education & Academic Credentials
                     </h2>
@@ -503,7 +503,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
                         )}
                       </div>
 
-                      <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                      <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                         {edu.institution}
                         {edu.fieldOfStudy ? ` · ${edu.fieldOfStudy}` : ""}
                       </p>
@@ -597,10 +597,10 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
             </div>
 
             {/* 6. Milestone Escrow Protection Banner */}
-            <div className="rounded-2xl border border-indigo-200/70 bg-gradient-to-r from-indigo-50/60 via-purple-50/40 to-white p-6 dark:border-indigo-900/50 dark:bg-zinc-900">
+            <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
               <div className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
-                  <ShieldCheck className="h-5 w-5" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs">
+                  <ShieldCheck className="h-5 w-5 text-emerald-500" />
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-50">

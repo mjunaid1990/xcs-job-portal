@@ -26,7 +26,7 @@ export function JobFitBadge({ jobSkills, userSkills = [], compact = false }: Job
           matchPct >= 75
             ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
             : matchPct >= 50
-              ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300"
+              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
               : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
         }`}
       >
@@ -37,21 +37,21 @@ export function JobFitBadge({ jobSkills, userSkills = [], compact = false }: Job
   }
 
   return (
-    <div className="rounded-xl border border-indigo-200/80 bg-indigo-50/50 p-3.5 dark:border-indigo-900/40 dark:bg-indigo-950/20 space-y-2">
+    <div className="rounded-xl border border-emerald-200/80 bg-emerald-50/40 p-3.5 dark:border-emerald-900/40 dark:bg-emerald-950/20 space-y-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-600 text-white text-xs font-bold">
+          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-600 text-white text-xs font-bold">
             <Sparkles className="h-3.5 w-3.5" />
           </div>
           <div>
             <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-              AI Skill Suitability Match:
+              Verified Skill Suitability:
             </span>{" "}
             <span
               className={`font-mono text-xs font-black ${
                 matchPct >= 75
                   ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-indigo-600 dark:text-indigo-400"
+                  : "text-zinc-700 dark:text-zinc-300"
               }`}
             >
               {matchPct}% Match

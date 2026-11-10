@@ -46,7 +46,7 @@ export default async function AdminReportsPage({ searchParams }: ReportsPageProp
             href="/admin/reports"
             className={`rounded-xl px-3 py-1.5 transition ${
               !statusFilter
-                ? "bg-purple-600 text-white shadow-sm"
+                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs font-bold"
                 : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800"
             }`}
           >
@@ -56,7 +56,7 @@ export default async function AdminReportsPage({ searchParams }: ReportsPageProp
             href="/admin/reports?status=OPEN"
             className={`rounded-xl px-3 py-1.5 transition ${
               statusFilter === "OPEN"
-                ? "bg-purple-600 text-white shadow-sm"
+                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs font-bold"
                 : "bg-white text-zinc-600 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800"
             }`}
           >

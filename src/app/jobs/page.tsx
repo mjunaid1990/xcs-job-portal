@@ -61,7 +61,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
           {/* Hero Header */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200/60 pb-6 dark:border-zinc-800">
             <div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-1">
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
                 <Briefcase className="h-4 w-4" />
                 <span>Marketplace Opportunities</span>
               </div>
@@ -76,7 +76,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
             {isClient && (
               <Link
                 href="/client/jobs/new"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition shrink-0 self-start sm:self-auto"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition shrink-0 self-start sm:self-auto"
               >
                 <PlusCircle className="h-4 w-4" />
                 <span>Post a Job</span>
@@ -98,7 +98,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                   name="q"
                   defaultValue={params.q ?? ""}
                   placeholder="Title, skills, or keywords..."
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 pl-9 pr-3 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 pl-9 pr-3 text-xs text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
                 />
               </div>
 
@@ -107,7 +107,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                 <select
                   name="category"
                   defaultValue={params.category ?? ""}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 px-3 text-xs text-zinc-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 px-3 text-xs text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
                 >
                   <option value="">All Categories</option>
                   {taxonomy.categories.map((c) => (
@@ -123,7 +123,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                 <select
                   name="type"
                   defaultValue={params.type ?? ""}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 px-3 text-xs text-zinc-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 px-3 text-xs text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
                 >
                   <option value="">All Budgets</option>
                   <option value="FIXED">Fixed Price</option>
@@ -136,7 +136,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                 <select
                   name="level"
                   defaultValue={params.level ?? ""}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 px-3 text-xs text-zinc-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
+                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 px-3 text-xs text-zinc-900 focus:border-emerald-600 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 transition"
                 >
                   <option value="">All Levels</option>
                   <option value="ENTRY">Entry Level</option>
@@ -161,7 +161,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
             <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800 text-xs">
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-[11px] font-semibold text-zinc-400 mr-1 flex items-center gap-1">
-                  <Sparkles className="h-3 w-3 text-indigo-500" />
+                  <Sparkles className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                   <span>Popular:</span>
                 </span>
                 {[
@@ -179,7 +179,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                     href={`/jobs?q=${encodeURIComponent(kw)}`}
                     className={`rounded-lg px-2 py-0.5 text-[11px] font-medium transition ${
                       params.q === kw
-                        ? "bg-indigo-600 text-white font-bold"
+                        ? "bg-zinc-900 text-white font-bold dark:bg-zinc-100 dark:text-zinc-900"
                         : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300"
                     }`}
                   >
@@ -191,7 +191,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
               {hasActiveFilters && (
                 <Link
                   href="/jobs"
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:underline dark:text-emerald-400"
                 >
                   <RotateCcw className="h-3 w-3" />
                   <span>Clear All Filters</span>
@@ -222,7 +222,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
             {items.length === 0 && (
               <div className="space-y-6">
                 <div className="rounded-2xl border border-zinc-200/90 bg-white p-10 text-center shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400 mb-3">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 mb-3">
                     <Search className="h-5 w-5" />
                   </div>
                   <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
@@ -247,7 +247,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                     {isClient && (
                       <Link
                         href="/client/jobs/new"
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-indigo-500 transition"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 transition"
                       >
                         <PlusCircle className="h-3.5 w-3.5" />
                         <span>Post a Job</span>
@@ -264,9 +264,9 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                     <Link
                       href="/jobs?q=fullstack"
-                      className="flex items-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3.5 hover:border-indigo-400 hover:bg-white dark:border-zinc-800 dark:bg-zinc-900/40 transition"
+                      className="flex items-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3.5 hover:border-emerald-500/50 hover:bg-white dark:border-zinc-800 dark:bg-zinc-900/40 transition"
                     >
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
                         <Code2 className="h-4 w-4" />
                       </div>
                       <div>
@@ -279,9 +279,9 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
 
                     <Link
                       href="/jobs?q=design"
-                      className="flex items-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3.5 hover:border-purple-400 hover:bg-white dark:border-zinc-800 dark:bg-zinc-900/40 transition"
+                      className="flex items-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/50 p-3.5 hover:border-emerald-500/50 hover:bg-white dark:border-zinc-800 dark:bg-zinc-900/40 transition"
                     >
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
                         <Palette className="h-4 w-4" />
                       </div>
                       <div>

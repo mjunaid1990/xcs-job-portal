@@ -48,7 +48,7 @@ export function ClientProposalActions({
     <div className="flex flex-wrap items-center gap-2">
       <Link
         href={`/client/contracts/new?proposalId=${proposalId}`}
-        className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+        className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         <span>Hire & Fund</span>
         <ArrowRight className="h-3.5 w-3.5" />
@@ -58,9 +58,9 @@ export function ClientProposalActions({
         type="button"
         disabled={isPending}
         onClick={handleMessage}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+        className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
       >
-        <MessageSquare className="h-3.5 w-3.5 text-indigo-500" />
+        <MessageSquare className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
         <span>Chat</span>
       </button>
 

@@ -32,7 +32,7 @@ export default async function AdminCategoriesPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
               Total Categories
             </span>
-            <FolderTree className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            <FolderTree className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           </div>
           <p className="mt-2 text-2xl font-black text-zinc-900 dark:text-zinc-50">
             {taxonomy.categories.length}
@@ -44,7 +44,7 @@ export default async function AdminCategoriesPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
               Parent Sectors
             </span>
-            <Layers className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+            <Layers className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
           </div>
           <p className="mt-2 text-2xl font-black text-zinc-900 dark:text-zinc-50">
             {parentCategoriesCount}

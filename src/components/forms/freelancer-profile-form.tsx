@@ -303,7 +303,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
         <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
               <Sparkles className="h-4 w-4" />
             </div>
             <div>
@@ -321,7 +321,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-950/40">
           <div className="relative group shrink-0">
             {avatarPreviewUrl ? (
-              <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-indigo-500/40 shadow-sm">
+              <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-zinc-200 dark:border-zinc-700 shadow-sm">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={avatarPreviewUrl}
@@ -330,14 +330,14 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 />
               </div>
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-indigo-700 text-2xl font-black text-white shadow-md shadow-indigo-500/20 ring-2 ring-white dark:ring-zinc-800">
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-zinc-900 text-2xl font-black text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs ring-2 ring-white dark:ring-zinc-800">
                 {initials}
               </div>
             )}
             <button
               type="button"
               onClick={() => avatarInputRef.current?.click()}
-              className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-white shadow-md hover:bg-indigo-600 transition dark:bg-white dark:text-zinc-900 dark:hover:bg-indigo-500 dark:hover:text-white"
+              className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-white shadow-md hover:bg-emerald-600 transition dark:bg-white dark:text-zinc-900 dark:hover:bg-emerald-500 dark:hover:text-white"
               title="Change avatar photo"
             >
               <Camera className="h-3.5 w-3.5" />
@@ -397,7 +397,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               maxLength={60}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
 
@@ -426,7 +426,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
               placeholder="e.g. Senior Full-Stack Engineer | Next.js 15, TypeScript & Escrow Protocols"
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
         </div>
@@ -464,7 +464,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 required
                 value={hourlyRate}
                 onChange={(e) => setHourlyRate(e.target.value)}
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
             <p className="mt-1 text-[11px] text-zinc-400">
@@ -482,7 +482,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value)}
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 <option value="AVAILABLE">Available for Full-time & Part-time Contracts</option>
                 <option value="PART_TIME">Part-time Only (&lt; 20 hrs/week)</option>
@@ -501,7 +501,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             <select
               value={experienceLevel}
               onChange={(e) => setExperienceLevel(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             >
               <option value="ENTRY">Entry Level (1-2 years)</option>
               <option value="INTERMEDIATE">Intermediate (3-5 years)</option>
@@ -520,7 +520,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               max="50"
               value={yearsOfExperience}
               onChange={(e) => setYearsOfExperience(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
 
@@ -533,7 +533,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
               <select
                 value={englishProficiency}
                 onChange={(e) => setEnglishProficiency(e.target.value)}
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 <option value="NATIVE">Native or Bilingual</option>
                 <option value="FLUENT">Full Professional / Fluent</option>
@@ -548,7 +548,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
         <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
               <Award className="h-4 w-4" />
             </div>
             <div>
@@ -588,10 +588,10 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             placeholder="Describe your architecture experience, past production deliverables, technical strengths, and preferred engagement models. Line breaks, bullet lists, markdown, and URLs are preserved..."
-            className="mt-1.5 w-full rounded-2xl border border-zinc-300 bg-white p-4 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
+            className="mt-1.5 w-full rounded-2xl border border-zinc-300 bg-white p-4 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
           />
-          <div className="mt-3 rounded-xl bg-indigo-50/50 p-3 text-[11px] text-zinc-600 dark:bg-indigo-950/20 dark:text-zinc-400 border border-indigo-100 dark:border-indigo-900/30">
-            <span className="font-bold text-indigo-700 dark:text-indigo-300">
+          <div className="mt-3 rounded-xl bg-emerald-50/50 p-3 text-[11px] text-zinc-600 dark:bg-emerald-950/20 dark:text-zinc-400 border border-emerald-200/60 dark:border-emerald-900/30">
+            <span className="font-bold text-emerald-800 dark:text-emerald-300">
               Pro-Tip for High Conversions:
             </span>{" "}
             Clients review your first 3 sentences first. Highlight measurable outcomes (e.g.
@@ -638,7 +638,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 }
               }}
               placeholder="Type tag (e.g. stripe-connect, nextjs15, microservices) and press Enter..."
-              className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
           <button
@@ -658,13 +658,13 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-teal-500/30 bg-teal-50/70 px-3 py-1.5 text-xs font-bold text-teal-700 dark:bg-teal-950/40 dark:text-teal-300 animate-in fade-in duration-150"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-50/70 px-3 py-1.5 text-xs font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 animate-in fade-in duration-150"
               >
                 <span>#{tag}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="rounded-full p-0.5 hover:bg-teal-200/50 dark:hover:bg-teal-900/50 transition"
+                  className="rounded-full p-0.5 hover:bg-emerald-200/50 dark:hover:bg-emerald-900/50 transition"
                   aria-label={`Remove tag ${tag}`}
                 >
                   <X className="h-3 w-3" />
@@ -685,7 +685,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 type="button"
                 key={rt}
                 onClick={() => handleAddTag(rt)}
-                className="inline-flex items-center gap-1 rounded-lg border border-dashed border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:border-indigo-400 hover:text-indigo-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-indigo-500 dark:hover:text-indigo-300 transition"
+                className="inline-flex items-center gap-1 rounded-lg border border-dashed border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] font-medium text-zinc-600 hover:border-emerald-400 hover:text-emerald-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-emerald-500 dark:hover:text-emerald-300 transition"
               >
                 <Plus className="h-2.5 w-2.5" />
                 <span>{rt}</span>
@@ -725,7 +725,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 value={githubUrl}
                 onChange={(e) => setGithubUrl(e.target.value)}
                 placeholder="https://github.com/username"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -741,7 +741,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
                 placeholder="https://linkedin.com/in/username"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -757,7 +757,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
                 placeholder="https://yourdomain.dev"
-                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
             </div>
           </div>
@@ -768,7 +768,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
       <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 space-y-6">
         <div className="border-b border-zinc-100 pb-4 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
               <Layers className="h-4 w-4" />
             </div>
             <div>
@@ -781,7 +781,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
+            <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-bold text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">
               {selectedSkills.length} selected
             </span>
             {selectedSkills.length > 0 && (
@@ -804,7 +804,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
             value={skillFilter}
             onChange={(e) => setSkillFilter(e.target.value)}
             placeholder="Search skills by name (e.g. Next.js, PostgreSQL, Docker)..."
-            className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
           />
         </div>
 
@@ -820,7 +820,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
                   onClick={() => toggleSkill(skill.id)}
                   className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition shadow-2xs ${
                     isSelected
-                      ? "bg-indigo-600 text-white shadow-xs hover:bg-indigo-700"
+                      ? "bg-zinc-900 text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
                       : "bg-white text-zinc-700 border border-zinc-200/80 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-800 dark:hover:bg-zinc-800"
                   }`}
                 >
@@ -836,7 +836,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
       {/* STICKY BOTTOM SAVE ACTION BAR */}
       <div className="sticky bottom-4 z-20 rounded-3xl border border-zinc-200/90 bg-white/95 p-4 sm:p-5 shadow-xl backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-900/95 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-xs text-zinc-500">
-          <Sparkles className="h-4 w-4 text-indigo-500 shrink-0" />
+          <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
           <span>
             Save changes across all sections to update your public profile and active pitches.
           </span>
@@ -844,7 +844,7 @@ export function FreelancerProfileForm({ profile, skills }: ProfileFormProps) {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-3 text-xs font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-60 transition"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-zinc-900 px-8 py-3 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60 transition"
         >
           {isPending ? (
             <>

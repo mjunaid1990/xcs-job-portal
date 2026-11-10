@@ -41,7 +41,7 @@ export function FreelancerProposalItem({ proposal }: FreelancerProposalItemProps
           <div className="flex items-center gap-2">
             <Link
               href={`/jobs/${proposal.job.id}`}
-              className="text-base font-bold text-zinc-900 hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400 transition"
+              className="text-base font-bold text-zinc-900 hover:text-emerald-600 dark:text-zinc-100 dark:hover:text-emerald-400 transition"
             >
               {proposal.job.title}
             </Link>
@@ -50,12 +50,12 @@ export function FreelancerProposalItem({ proposal }: FreelancerProposalItemProps
                 proposal.status === "SHORTLISTED"
                   ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
                   : proposal.status === "ACCEPTED"
-                    ? "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300"
+                    ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
                     : proposal.status === "REJECTED"
                       ? "bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300"
                       : proposal.status === "WITHDRAWN"
                         ? "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-                        : "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"
+                        : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
               }`}
             >
               {proposal.status}
@@ -86,7 +86,7 @@ export function FreelancerProposalItem({ proposal }: FreelancerProposalItemProps
           )}
           <Link
             href={`/jobs/${proposal.job.id}`}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:underline dark:text-emerald-400 dark:hover:text-emerald-300"
           >
             <span>View Job</span>
             <ArrowRight className="h-3.5 w-3.5" />

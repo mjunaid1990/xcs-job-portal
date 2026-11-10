@@ -35,7 +35,7 @@ export function StripeConnectButton({ isConnected, isPayoutsEnabled }: StripeCon
       type="button"
       disabled={isPending}
       onClick={handleConnect}
-      className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-500 disabled:opacity-60"
+      className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60"
     >
       {isPending ? (
         <Loader2 className="h-4 w-4 animate-spin" />

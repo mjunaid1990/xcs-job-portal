@@ -58,7 +58,7 @@ export function JobCard({ job }: JobCardProps) {
   };
 
   return (
-    <div className="group relative rounded-2xl border border-zinc-200/80 bg-white p-5 sm:p-6 shadow-2xs transition-all duration-200 hover:border-indigo-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-400/50">
+    <div className="group relative rounded-2xl border border-zinc-200/80 bg-white p-5 sm:p-6 shadow-2xs transition-all duration-200 hover:border-emerald-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-400/50">
       <Link href={getJobUrl(job)} className="block">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2.5 flex-1 min-w-0 pr-0 sm:pr-4">
@@ -73,7 +73,7 @@ export function JobCard({ job }: JobCardProps) {
             </div>
 
             {/* Title */}
-            <h2 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition-colors">
+            <h2 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 group-hover:text-emerald-600 dark:text-zinc-100 dark:group-hover:text-emerald-400 transition-colors">
               {job.title}
             </h2>
 
@@ -100,7 +100,7 @@ export function JobCard({ job }: JobCardProps) {
               {job.skills.slice(0, 6).map((s) => (
                 <span
                   key={s.skill.id}
-                  className="rounded-lg bg-zinc-100/80 px-2.5 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 group-hover:bg-indigo-50 group-hover:text-indigo-700 dark:group-hover:bg-indigo-950/40 dark:group-hover:text-indigo-300 transition-colors"
+                  className="rounded-lg bg-zinc-100/80 px-2.5 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 group-hover:bg-emerald-50 group-hover:text-emerald-700 dark:group-hover:bg-emerald-950/40 dark:group-hover:text-emerald-300 transition-colors"
                 >
                   {s.skill.name}
                 </span>
@@ -124,7 +124,7 @@ export function JobCard({ job }: JobCardProps) {
               </div>
             </div>
 
-            <div className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 group-hover:translate-x-1 dark:text-indigo-400 transition-transform mt-3">
+            <div className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 group-hover:translate-x-1 dark:text-emerald-400 transition-transform mt-3">
               <span>View Job</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </div>

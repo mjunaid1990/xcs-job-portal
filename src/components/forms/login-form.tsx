@@ -62,8 +62,8 @@ export function LoginForm() {
   return (
     <div className="w-full space-y-6">
       {/* Quick Demo Login selector */}
-      <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 dark:border-indigo-400/20 dark:bg-indigo-950/20">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+      <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 dark:border-emerald-400/20 dark:bg-emerald-950/20">
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
           <Sparkles className="h-4 w-4" />
           <span>Quick Demo Access (1-Click Fill)</span>
         </div>
@@ -71,23 +71,23 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => handleDemoSelect("admin@worknest.dev")}
-            className="flex flex-col items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-xs font-medium text-zinc-800 shadow-sm transition hover:border-indigo-500 hover:bg-indigo-50/50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-indigo-400 dark:hover:bg-indigo-950/40"
+            className="flex flex-col items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-xs font-medium text-zinc-800 shadow-2xs transition hover:border-emerald-500 hover:bg-emerald-50/50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-emerald-400 dark:hover:bg-emerald-950/40"
           >
-            <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+            <Shield className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             <span className="mt-1 font-semibold">Admin</span>
           </button>
           <button
             type="button"
             onClick={() => handleDemoSelect("client@worknest.dev")}
-            className="flex flex-col items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-xs font-medium text-zinc-800 shadow-sm transition hover:border-indigo-500 hover:bg-indigo-50/50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-indigo-400 dark:hover:bg-indigo-950/40"
+            className="flex flex-col items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-xs font-medium text-zinc-800 shadow-2xs transition hover:border-emerald-500 hover:bg-emerald-50/50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-emerald-400 dark:hover:bg-emerald-950/40"
           >
-            <Briefcase className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Briefcase className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
             <span className="mt-1 font-semibold">Client</span>
           </button>
           <button
             type="button"
             onClick={() => handleDemoSelect("freelancer@worknest.dev")}
-            className="flex flex-col items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-xs font-medium text-zinc-800 shadow-sm transition hover:border-indigo-500 hover:bg-indigo-50/50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-indigo-400 dark:hover:bg-indigo-950/40"
+            className="flex flex-col items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-xs font-medium text-zinc-800 shadow-2xs transition hover:border-emerald-500 hover:bg-emerald-50/50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-emerald-400 dark:hover:bg-emerald-950/40"
           >
             <UserCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             <span className="mt-1 font-semibold">Freelancer</span>
@@ -123,7 +123,7 @@ export function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
-              className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-10 pr-4 text-sm text-zinc-900 transition placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
+              className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-10 pr-4 text-sm text-zinc-900 transition placeholder:text-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
             />
           </div>
         </div>
@@ -138,7 +138,7 @@ export function LoginForm() {
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs text-indigo-600 hover:underline dark:text-indigo-400"
+              className="text-xs text-emerald-600 hover:underline dark:text-emerald-400"
             >
               Forgot password?
             </Link>
@@ -154,7 +154,7 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-10 pr-10 text-sm text-zinc-900 transition placeholder:text-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
+              className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-10 pr-10 text-sm text-zinc-900 transition placeholder:text-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
             />
             <button
               type="button"
@@ -180,7 +180,7 @@ export function LoginForm() {
               value={totpCode}
               onChange={(e) => setTotpCode(e.target.value.trim())}
               placeholder="000000"
-              className="w-full rounded-lg border border-amber-300 bg-white px-3 py-2 text-center text-lg font-mono tracking-widest text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-amber-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-lg border border-amber-300 bg-white px-3 py-2 text-center text-lg font-mono tracking-widest text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-amber-700 dark:bg-zinc-900 dark:text-zinc-100"
             />
           </div>
         )}
@@ -188,7 +188,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="group relative flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-60 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+          className="group relative flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-3 text-sm font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-900 disabled:opacity-60"
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -205,7 +205,7 @@ export function LoginForm() {
         Don&apos;t have an account yet?{" "}
         <Link
           href="/register"
-          className="font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+          className="font-semibold text-emerald-600 hover:underline dark:text-emerald-400"
         >
           Create one now
         </Link>

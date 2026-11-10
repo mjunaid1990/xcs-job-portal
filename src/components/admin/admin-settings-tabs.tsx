@@ -413,7 +413,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
             >
               <Icon
                 className={`h-3.5 w-3.5 ${
-                  isActive ? "text-purple-600 dark:text-purple-400" : "text-zinc-400"
+                  isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"
                 }`}
               />
               <span>{tab.label}</span>
@@ -461,7 +461,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="3000"
                   value={platformFeeBps}
                   onChange={(e) => setPlatformFeeBps(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -480,7 +480,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="1000"
                   value={clientFeeBps}
                   onChange={(e) => setClientFeeBps(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -498,7 +498,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   min="5"
                   value={minEscrowDepositDollars}
                   onChange={(e) => setMinEscrowDepositDollars(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -516,7 +516,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   min="100"
                   value={maxEscrowDepositDollars}
                   onChange={(e) => setMaxEscrowDepositDollars(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -533,7 +533,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   <select
                     value={settlementCurrency}
                     onChange={(e) => setSettlementCurrency(e.target.value)}
-                    className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                   >
                     <option value="USD">USD ($ - United States Dollar)</option>
                   </select>
@@ -554,7 +554,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                     onChange={(e) => setCurrencySymbol(e.target.value)}
                     placeholder="$"
                     maxLength={3}
-                    className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                   />
                 </div>
                 <p className="mt-1 text-[11px] text-zinc-400">
@@ -576,7 +576,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={instantPayoutEnabled}
                 onChange={(e) => setInstantPayoutEnabled(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
           </div>
@@ -586,7 +586,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("financials")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Financial Settings</span>
@@ -617,7 +617,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <select
                   value={stripeEnvironment}
                   onChange={(e) => setStripeEnvironment(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 >
                   <option value="TEST">TEST / Sandbox (Mock & Test Cards)</option>
                   <option value="LIVE">LIVE Production (Real Credit Cards & Stripe Connect)</option>
@@ -636,7 +636,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <select
                   value={stripeConnectType}
                   onChange={(e) => setStripeConnectType(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 >
                   <option value="EXPRESS">Express (Hosted onboarding & automatic payouts)</option>
                   <option value="STANDARD">
@@ -658,7 +658,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <select
                   value={stripePayoutSchedule}
                   onChange={(e) => setStripePayoutSchedule(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 >
                   <option value="DAILY">Daily Rolling Automatic Payouts</option>
                   <option value="WEEKLY">Weekly Batch Payouts (Every Monday)</option>
@@ -679,7 +679,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="14"
                   value={stripePayoutDelayDays}
                   onChange={(e) => setStripePayoutDelayDays(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -698,7 +698,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={statementDescriptor}
                   onChange={(e) => setStatementDescriptor(e.target.value)}
                   placeholder="WORKWASL ESCROW"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono uppercase"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono uppercase"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -716,7 +716,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   min="5"
                   value={minPayoutThresholdDollars}
                   onChange={(e) => setMinPayoutThresholdDollars(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -736,7 +736,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="5"
                   value={instantPayoutFeePercent}
                   onChange={(e) => setInstantPayoutFeePercent(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -755,7 +755,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={acceptedCurrencies}
                   onChange={(e) => setAcceptedCurrencies(e.target.value)}
                   placeholder="USD"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -776,7 +776,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={cryptoUsdcEnabled}
                 onChange={(e) => setCryptoUsdcEnabled(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
 
@@ -793,7 +793,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={autoRetryFailedCharges}
                 onChange={(e) => setAutoRetryFailedCharges(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
           </div>
@@ -803,7 +803,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("payments")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Payment Gateway Settings</span>
@@ -837,7 +837,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="60"
                   value={autoApproveDays}
                   onChange={(e) => setAutoApproveDays(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -857,7 +857,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="30"
                   value={unfundedContractCancelDays}
                   onChange={(e) => setUnfundedContractCancelDays(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -876,7 +876,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="10"
                   value={maxMilestoneRevisions}
                   onChange={(e) => setMaxMilestoneRevisions(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -895,7 +895,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="168"
                   value={disputeGraceHours}
                   onChange={(e) => setDisputeGraceHours(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -917,7 +917,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={splitDisputeRatios}
                 onChange={(e) => setSplitDisputeRatios(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
           </div>
@@ -927,7 +927,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("governance")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Governance Rules</span>
@@ -963,7 +963,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={requireKycForBidding}
                 onChange={(e) => setRequireKycForBidding(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
 
@@ -981,7 +981,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={zeroCommissionProtocol}
                 onChange={(e) => setZeroCommissionProtocol(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
 
@@ -996,7 +996,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="100"
                   value={maxOpenProposals}
                   onChange={(e) => setMaxOpenProposals(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1015,7 +1015,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="90"
                   value={jobAutoCloseDays}
                   onChange={(e) => setJobAutoCloseDays(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1032,7 +1032,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   rows={2}
                   value={restrictedKeywords}
                   onChange={(e) => setRestrictedKeywords(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1046,7 +1046,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("marketplace")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Marketplace Rules</span>
@@ -1077,7 +1077,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <select
                   value={emailProvider}
                   onChange={(e) => setEmailProvider(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 >
                   <option value="RESEND">Resend (Modern developer transactional email API)</option>
                   <option value="SENDGRID">SendGrid by Twilio</option>
@@ -1097,7 +1097,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={emailFromName}
                   onChange={(e) => setEmailFromName(e.target.value)}
                   placeholder="WorkWasl Notifications"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
             </div>
@@ -1112,7 +1112,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={emailFromAddress}
                   onChange={(e) => setEmailFromAddress(e.target.value)}
                   placeholder="notifications@workwasl.com"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1130,7 +1130,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={emailSupportAddress}
                   onChange={(e) => setEmailSupportAddress(e.target.value)}
                   placeholder="support@workwasl.com"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1145,7 +1145,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={emailBillingAddress}
                   onChange={(e) => setEmailBillingAddress(e.target.value)}
                   placeholder="billing@workwasl.com"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1158,7 +1158,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <select
                   value={emailDigestFrequency}
                   onChange={(e) => setEmailDigestFrequency(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 >
                   <option value="INSTANT">Instant Delivery (Triggered immediately on event)</option>
                   <option value="HOURLY">Hourly Bundled Digest</option>
@@ -1177,7 +1177,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={smtpHost}
                   onChange={(e) => setSmtpHost(e.target.value)}
                   placeholder="smtp.resend.com"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1192,7 +1192,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={smtpPort}
                   onChange={(e) => setSmtpPort(Number(e.target.value))}
                   placeholder="587"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1209,7 +1209,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   type="checkbox"
                   checked={notifyOnNewProposal}
                   onChange={(e) => setNotifyOnNewProposal(e.target.checked)}
-                  className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                  className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
                 />
               </div>
 
@@ -1224,7 +1224,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   type="checkbox"
                   checked={notifyOnMilestoneSubmitted}
                   onChange={(e) => setNotifyOnMilestoneSubmitted(e.target.checked)}
-                  className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                  className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
                 />
               </div>
 
@@ -1239,7 +1239,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   type="checkbox"
                   checked={notifyOnEscrowFunded}
                   onChange={(e) => setNotifyOnEscrowFunded(e.target.checked)}
-                  className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                  className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
                 />
               </div>
 
@@ -1254,7 +1254,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   type="checkbox"
                   checked={notifyOnDisputeOpened}
                   onChange={(e) => setNotifyOnDisputeOpened(e.target.checked)}
-                  className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                  className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
                 />
               </div>
             </div>
@@ -1265,7 +1265,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("emails")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Email Configuration</span>
@@ -1301,7 +1301,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={githubAppEnabled}
                 onChange={(e) => setGithubAppEnabled(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
 
@@ -1318,7 +1318,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={aiMilestoneCopilotEnabled}
                 onChange={(e) => setAiMilestoneCopilotEnabled(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
 
@@ -1330,7 +1330,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <select
                   value={aiCopilotModel}
                   onChange={(e) => setAiCopilotModel(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 >
                   <option value="gemini-2.5-pro">Google Gemini 2.5 Pro (Recommended)</option>
                   <option value="gemini-2.5-flash">
@@ -1354,7 +1354,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   step="512"
                   value={aiMaxTokens}
                   onChange={(e) => setAiMaxTokens(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1369,7 +1369,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={slackWebhookUrl}
                   onChange={(e) => setSlackWebhookUrl(e.target.value)}
                   placeholder="https://hooks.slack.com/services/..."
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1387,7 +1387,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={discordWebhookUrl}
                   onChange={(e) => setDiscordWebhookUrl(e.target.value)}
                   placeholder="https://discord.com/api/webhooks/..."
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1402,7 +1402,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   value={githubAllowedOrgs}
                   onChange={(e) => setGithubAllowedOrgs(e.target.value)}
                   placeholder="e.g. acme-corp, my-org (leave blank for all)"
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1418,7 +1418,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="10"
                   value={webhookRetryLimit}
                   onChange={(e) => setWebhookRetryLimit(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1436,7 +1436,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={sentryMonitoringEnabled}
                 onChange={(e) => setSentryMonitoringEnabled(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
           </div>
@@ -1446,7 +1446,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("integrations")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Integrations & AI Settings</span>
@@ -1498,7 +1498,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 type="checkbox"
                 checked={requireEmailVerification}
                 onChange={(e) => setRequireEmailVerification(e.target.checked)}
-                className="h-4 w-4 rounded-sm border-zinc-300 text-purple-600 focus:ring-purple-500 dark:border-zinc-700 dark:bg-zinc-900"
+                className="h-4 w-4 rounded-sm border-zinc-300 text-emerald-600 focus:ring-emerald-500 dark:border-zinc-700 dark:bg-zinc-900"
               />
             </div>
 
@@ -1513,7 +1513,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="1000"
                   value={rateLimitPerMinute}
                   onChange={(e) => setRateLimitPerMinute(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1532,7 +1532,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   max="100"
                   value={maxTeamSeats}
                   onChange={(e) => setMaxTeamSeats(Number(e.target.value))}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
               <p className="mt-1 text-[11px] text-zinc-400">
@@ -1549,7 +1549,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                   type="email"
                   value={supportEmail}
                   onChange={(e) => setSupportEmail(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-purple-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-zinc-900 dark:focus:border-zinc-100 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono"
                 />
               </div>
             </div>
@@ -1560,7 +1560,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
               type="button"
               disabled={isPending}
               onClick={() => handleSaveTab("security")}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 disabled:opacity-50 transition shadow-xs"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition shadow-xs"
             >
               {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Security Policies</span>
@@ -1592,7 +1592,7 @@ export function AdminSettingsTabs({ initialSettings, auditLogs }: AdminSettingsT
                 <div key={log.id} className="py-4 first:pt-0 last:pb-0 space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-purple-600 dark:text-purple-400">
+                      <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
                         {log.action}
                       </span>
                       <span className="text-zinc-400">•</span>

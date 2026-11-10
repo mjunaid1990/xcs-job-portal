@@ -37,7 +37,7 @@ export default async function VerifyEmailPage({ searchParams }: VerifyEmailPageP
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-500"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-2.5 text-sm font-semibold text-white shadow-xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               <span>Continue to Dashboard</span>
               <ArrowRight className="h-4 w-4" />

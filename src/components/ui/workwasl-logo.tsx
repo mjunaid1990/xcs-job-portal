@@ -30,9 +30,9 @@ export function WorkWaslIcon({ className = "h-7 w-7", size = 28 }: WorkWaslIconP
           y2="28"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0%" stopColor="#4f46e5" />
-          <stop offset="60%" stopColor="#7c3aed" />
-          <stop offset="100%" stopColor="#9333ea" />
+          <stop offset="0%" stopColor="#047857" />
+          <stop offset="50%" stopColor="#059669" />
+          <stop offset="100%" stopColor="#10b981" />
         </linearGradient>
         <linearGradient
           id="ww-right-flow"
@@ -42,9 +42,9 @@ export function WorkWaslIcon({ className = "h-7 w-7", size = 28 }: WorkWaslIconP
           y2="28"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0%" stopColor="#06b6d4" />
-          <stop offset="50%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#6366f1" />
+          <stop offset="0%" stopColor="#0f766e" />
+          <stop offset="50%" stopColor="#0d9488" />
+          <stop offset="100%" stopColor="#14b8a6" />
         </linearGradient>
         <linearGradient
           id="ww-core-node"
@@ -54,8 +54,8 @@ export function WorkWaslIcon({ className = "h-7 w-7", size = 28 }: WorkWaslIconP
           y2="24"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0%" stopColor="#818cf8" />
-          <stop offset="100%" stopColor="#c084fc" />
+          <stop offset="0%" stopColor="#34d399" />
+          <stop offset="100%" stopColor="#059669" />
         </linearGradient>
       </defs>
 
@@ -97,7 +97,7 @@ export function WorkWaslLogo({
       <WorkWaslIcon size={iconSize} />
       {showText && (
         <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-          Work<span className="text-indigo-600 dark:text-indigo-400">Wasl</span>
+          Work<span className="text-emerald-600 dark:text-emerald-400">Wasl</span>
         </span>
       )}
     </div>

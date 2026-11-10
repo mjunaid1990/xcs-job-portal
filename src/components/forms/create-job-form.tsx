@@ -231,8 +231,8 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
     <div className="space-y-8">
       {/* AI Scope Decomposer Card (Hidden per user preference) */}
       {SHOW_AI_CO_PILOT && (
-        <div className="relative overflow-hidden rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-50/70 via-white to-purple-50/60 p-6 shadow-sm dark:border-indigo-500/30 dark:from-indigo-950/20 dark:via-zinc-900 dark:to-purple-950/20">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/50 p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
             <Bot className="h-4 w-4" />
             <span>WorkWasl AI Architect & Milestone Co-Pilot</span>
           </div>
@@ -247,13 +247,13 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
               placeholder="e.g. Build a Next.js real-time analytics portal with Stripe billing and Tailwind..."
-              className="flex-1 rounded-xl border border-zinc-200 bg-white/90 px-4 py-2.5 text-xs text-zinc-900 shadow-xs focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="flex-1 rounded-xl border border-zinc-200 bg-white/90 px-4 py-2.5 text-xs text-zinc-900 shadow-xs focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             />
             <button
               type="button"
               disabled={isAiDecomposing}
               onClick={handleAiDecompose}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-60 transition"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60 transition"
             >
               {isAiDecomposing ? (
                 <>
@@ -270,11 +270,11 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
           </div>
 
           {aiResult && (
-            <div className="mt-5 space-y-4 rounded-xl border border-indigo-200/80 bg-white/90 p-5 dark:border-indigo-900/60 dark:bg-zinc-900/90 shadow-sm animate-in fade-in slide-in-from-top-3 duration-300">
+            <div className="mt-5 space-y-4 rounded-xl border border-emerald-200/80 bg-white/90 p-5 dark:border-emerald-900/60 dark:bg-zinc-900/90 shadow-sm animate-in fade-in slide-in-from-top-3 duration-300">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                    AI Recommended Architecture
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                    Recommended Architecture
                   </span>
                   <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     {aiResult.title}
@@ -305,7 +305,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
         {/* SECTION 1: TITLE & CASCADING CATEGORIES */}
         <div className="space-y-5">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-            <Briefcase className="h-3.5 w-3.5 text-indigo-500" />
+            <Briefcase className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Project Scope & Taxonomy</span>
           </div>
 
@@ -334,7 +334,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Build High-Throughput Escrow Protocol with Next.js 15 & Stripe Connect"
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
 
@@ -348,7 +348,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                 <select
                   value={parentCategoryId}
                   onChange={(e) => handleParentCategoryChange(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 >
                   {parentCategories.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -378,7 +378,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                 <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 >
                   {currentSubcategories.length > 0 ? (
                     currentSubcategories.map((sub) => (
@@ -398,7 +398,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
         {/* SECTION 2: SCOPE, DURATION & COMMITMENT */}
         <div className="space-y-5 border-t border-zinc-100 pt-6 dark:border-zinc-800">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-            <Clock className="h-3.5 w-3.5 text-purple-500" />
+            <Clock className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Scope, Seniority & Time Commitment</span>
           </div>
 
@@ -412,7 +412,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                 onClick={() => setScope("LARGE")}
                 className={`rounded-xl border p-3.5 text-left transition ${
                   scope === "LARGE"
-                    ? "border-indigo-600 bg-indigo-50/50 shadow-xs dark:border-indigo-400 dark:bg-indigo-950/30"
+                    ? "border-emerald-600 bg-emerald-50/50 shadow-xs dark:border-emerald-500 dark:bg-emerald-950/30"
                     : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
                 }`}
               >
@@ -429,7 +429,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                 onClick={() => setScope("MEDIUM")}
                 className={`rounded-xl border p-3.5 text-left transition ${
                   scope === "MEDIUM"
-                    ? "border-indigo-600 bg-indigo-50/50 shadow-xs dark:border-indigo-400 dark:bg-indigo-950/30"
+                    ? "border-emerald-600 bg-emerald-50/50 shadow-xs dark:border-emerald-500 dark:bg-emerald-950/30"
                     : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
                 }`}
               >
@@ -446,7 +446,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                 onClick={() => setScope("SMALL")}
                 className={`rounded-xl border p-3.5 text-left transition ${
                   scope === "SMALL"
-                    ? "border-indigo-600 bg-indigo-50/50 shadow-xs dark:border-indigo-400 dark:bg-indigo-950/30"
+                    ? "border-emerald-600 bg-emerald-50/50 shadow-xs dark:border-emerald-500 dark:bg-emerald-950/30"
                     : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
                 }`}
               >
@@ -468,7 +468,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               <select
                 value={experienceLevel}
                 onChange={(e) => setExperienceLevel(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 <option value="ENTRY">Entry Level (Competitive pricing)</option>
                 <option value="INTERMEDIATE">Intermediate (Solid experience)</option>
@@ -483,7 +483,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               <select
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 <option value="Less than 1 month">Less than 1 month</option>
                 <option value="1 to 3 months">1 to 3 months</option>
@@ -499,7 +499,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               <select
                 value={timeCommitment}
                 onChange={(e) => setTimeCommitment(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               >
                 <option value="Milestone-driven / Flexible">Milestone-driven / Flexible</option>
                 <option value="Part-time (< 30 hrs/wk)">Part-time (&lt; 30 hrs/wk)</option>
@@ -569,7 +569,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                   required
                   value={budgetMin}
                   onChange={(e) => setBudgetMin(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
             </div>
@@ -587,7 +587,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                   required
                   value={budgetMax}
                   onChange={(e) => setBudgetMax(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-zinc-300 bg-white py-2.5 pl-9 pr-3.5 text-xs font-semibold text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
             </div>
@@ -606,7 +606,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
         {/* SECTION 4: DETAILED DESCRIPTION & DELIVERABLES */}
         <div className="space-y-5 border-t border-zinc-100 pt-6 dark:border-zinc-800">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-            <ListChecks className="h-3.5 w-3.5 text-indigo-500" />
+            <ListChecks className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Description, Milestones & Screening</span>
           </div>
 
@@ -636,7 +636,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Outline your application goals, target users, technical requirements, integrations (e.g. Stripe, AWS), and architecture constraints. Plaintext format with line breaks, markdown, bullet lists, emojis, and URLs are fully supported..."
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans leading-relaxed whitespace-pre-wrap"
             />
             <p className="mt-1 text-[11px] text-zinc-400">
               Plaintext format supported: multi-line paragraphs, numbered lists, markdown, links,
@@ -663,7 +663,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               value={deliverables}
               onChange={(e) => setDeliverables(e.target.value)}
               placeholder="e.g.&#10;Milestone 1: Database schemas & authentication routes (25%)&#10;Milestone 2: Stripe Connect escrow integration & webhook listeners (50%)&#10;Milestone 3: Production QA, load testing & Vercel deployment (25%)"
-              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono text-[11px] leading-relaxed whitespace-pre-wrap"
+              className="mt-1.5 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-mono text-[11px] leading-relaxed whitespace-pre-wrap"
             />
           </div>
 
@@ -676,7 +676,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                 <HelpCircle className="h-3.5 w-3.5 text-zinc-400" />
               </div>
               {screeningQuestions.length > 0 && (
-                <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                   {screeningQuestions.length}{" "}
                   {screeningQuestions.length === 1 ? "question" : "questions"} added
                 </span>
@@ -691,7 +691,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                     key={idx}
                     className="group flex items-start gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-900/60"
                   >
-                    <span className="flex h-5 w-6 shrink-0 items-center justify-center rounded-md bg-indigo-100 font-mono text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300">
+                    <span className="flex h-5 w-6 shrink-0 items-center justify-center rounded-md bg-zinc-100 font-mono text-[10px] font-bold text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100">
                       Q{idx + 1}
                     </span>
                     <p className="flex-1 text-zinc-800 leading-relaxed dark:text-zinc-200">
@@ -723,7 +723,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                   }
                 }}
                 placeholder="Type a custom screening question and click Add (or press Enter)..."
-                className="flex-1 rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                className="flex-1 rounded-xl border border-zinc-300 bg-white px-3.5 py-2.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
               />
               <button
                 type="button"
@@ -750,7 +750,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                     type="button"
                     onClick={() => handleAddQuestion(sugg)}
                     disabled={screeningQuestions.includes(sugg)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-600 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700 disabled:opacity-40 disabled:pointer-events-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-indigo-500/50 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-300"
+                    className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] text-zinc-600 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:pointer-events-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-emerald-500/50 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
                   >
                     <Plus className="h-3 w-3" />
                     <span className="truncate max-w-xs">{sugg}</span>
@@ -765,11 +765,11 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
         <div className="space-y-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-400">
-              <Sparkles className="h-3.5 w-3.5 text-purple-500" />
+              <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Required Technology Skills ({skills.length} available)</span>
             </div>
             {selectedSkills.length > 0 && (
-              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+              <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
                 {selectedSkills.length} Selected
               </span>
             )}
@@ -783,7 +783,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
               value={skillSearch}
               onChange={(e) => setSkillSearch(e.target.value)}
               placeholder="Search required skills (e.g. TypeScript, Next.js, Stripe, PostgreSQL)..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 shadow-xs focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 shadow-xs focus:border-emerald-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
 
@@ -798,7 +798,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
                     onClick={() => toggleSkill(skill.id)}
                     className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
                       isSelected
-                        ? "bg-indigo-600 text-white shadow-xs dark:bg-indigo-500"
+                        ? "bg-zinc-900 text-white shadow-xs dark:bg-zinc-100 dark:text-zinc-900"
                         : "border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                     }`}
                   >
@@ -815,7 +815,7 @@ export function CreateJobForm({ categories, skills }: CreateJobFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 px-7 py-3 text-xs font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-60 transition"
+            className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-7 py-3 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60 transition"
           >
             {isPending ? (
               <>

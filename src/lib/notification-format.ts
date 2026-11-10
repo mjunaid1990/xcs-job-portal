@@ -1,7 +1,7 @@
 export interface FormattedNotification {
   title: string;
   message: string;
-  href: string;
+  href?: string;
   category: "proposal" | "contract" | "payment" | "review" | "dispute" | "message" | "system";
 }
 
@@ -15,13 +15,17 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
     case "PROPOSAL_RECEIVED":
     case "NEW_PROPOSAL": {
       const freelancer = String(payload.freelancerName ?? "A specialist");
-      const job = String(payload.jobTitle ?? "your job posting");
-      const bid = payload.bidAmount ? ` ($${payload.bidAmount})` : "";
+      const job = String(payload.jobTitle ?? payload.title ?? "your job posting");
+      const bid = payload.bidAmount
+        ? ` ($${payload.bidAmount})`
+        : payload.bidCents
+          ? ` ($${(Number(payload.bidCents) / 100).toFixed(0)})`
+          : "";
       const jobId = payload.jobId ? String(payload.jobId) : undefined;
       return {
         title: "New Proposal Received",
         message: `${freelancer} submitted a bid${bid} on "${job}".`,
-        href: jobId ? `/client/jobs/${jobId}/proposals` : "/client/jobs",
+        href: jobId ? `/client/jobs/${jobId}/proposals` : undefined,
         category: "proposal",
       };
     }
@@ -71,15 +75,45 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       };
     }
 
-    case "MILESTONE_FUNDED": {
-      const milestone = String(payload.milestoneTitle ?? "Milestone");
-      const amount = payload.amountDollars ? ` ($${payload.amountDollars})` : "";
+    case "MILESTONE_FUNDED":
+    case "ESCROW_FUNDED": {
+      const milestone = String(payload.milestoneTitle ?? payload.title ?? "Milestone");
+      const amount = payload.amount
+        ? ` (${payload.amount})`
+        : payload.amountDollars
+          ? ` ($${payload.amountDollars})`
+          : payload.amountCents
+            ? ` ($${(Number(payload.amountCents) / 100).toFixed(0)})`
+            : "";
       const contractId = payload.contractId ? String(payload.contractId) : undefined;
       return {
         title: "Milestone Escrow Funded",
-        message: `Escrow funds for "${milestone}"${amount} have been deposited and verified.`,
-        href: contractId ? `/contracts/${contractId}` : "/contracts",
+        message: `Escrow funds for "${milestone}"${amount} have been deposited and securely locked.`,
+        href: contractId ? `/contracts/${contractId}` : undefined,
         category: "payment",
+      };
+    }
+
+    case "DELIVERABLE_SUBMITTED": {
+      const milestone = String(payload.milestoneTitle ?? "Milestone");
+      const contractId = payload.contractId ? String(payload.contractId) : undefined;
+      return {
+        title: "Deliverable Submitted for Review",
+        message: `Work deliverables for "${milestone}" have been submitted for your approval.`,
+        href: contractId ? `/contracts/${contractId}` : undefined,
+        category: "contract",
+      };
+    }
+
+    case "REVISION_REQUESTED": {
+      const milestone = String(payload.milestoneTitle ?? "Milestone");
+      const reason = payload.reason ? `: "${payload.reason}"` : "";
+      const contractId = payload.contractId ? String(payload.contractId) : undefined;
+      return {
+        title: "Milestone Revision Requested",
+        message: `The client requested adjustments on "${milestone}"${reason}`,
+        href: contractId ? `/contracts/${contractId}` : undefined,
+        category: "contract",
       };
     }
 
@@ -97,7 +131,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
     }
 
     case "REVIEW_RECEIVED": {
-      const reviewer = String(payload.reviewerName ?? "The client");
+      const reviewer = String(payload.reviewerName ?? "A client");
       const rating = payload.rating ? `${payload.rating}-star ` : "";
       const contractId = payload.contractId ? String(payload.contractId) : undefined;
       return {
@@ -114,7 +148,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Contract Dispute Filed",
         message: `A formal mediation request was filed${reason}. Escrow funds are safely held during review.`,
-        href: contractId ? `/contracts/${contractId}` : "/contracts",
+        href: contractId ? `/contracts/${contractId}` : undefined,
         category: "dispute",
       };
     }
@@ -125,7 +159,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Dispute Resolved",
         message: `Dispute review has completed: ${resolution}`,
-        href: contractId ? `/contracts/${contractId}` : "/contracts",
+        href: contractId ? `/contracts/${contractId}` : undefined,
         category: "dispute",
       };
     }
@@ -160,7 +194,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: readableType,
         message: String(textCandidate),
-        href: "/notifications",
+        href: undefined,
         category: "system",
       };
     }

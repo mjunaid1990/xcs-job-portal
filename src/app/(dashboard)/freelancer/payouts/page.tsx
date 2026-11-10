@@ -45,7 +45,7 @@ export default async function FreelancerPayoutsPage() {
       <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400 shadow-xs">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100 shadow-xs">
               <Building2 className="h-6 w-6" />
             </div>
             <div className="space-y-1">
@@ -97,11 +97,11 @@ export default async function FreelancerPayoutsPage() {
           value={user.ledgerEntries.length}
           description="Successful escrow disbursements"
           icon={Receipt}
-          iconColor="text-purple-600 dark:text-purple-400"
-          iconBg="bg-purple-50 dark:bg-purple-950/40"
+          iconColor="text-emerald-600 dark:text-emerald-400"
+          iconBg="bg-emerald-50 dark:bg-emerald-950/40"
           badge={{
             text: "100% Escrow Settled",
-            color: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
+            color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
           }}
         />
       </div>
@@ -133,7 +133,7 @@ export default async function FreelancerPayoutsPage() {
                   <span className="font-bold text-zinc-900 dark:text-zinc-100">
                     Milestone Payout Release
                   </span>
-                  <Badge variant="purple">Transferred</Badge>
+                  <Badge variant="emerald">Transferred</Badge>
                 </div>
                 <div className="text-[11px] font-mono text-zinc-400">{e.idempotencyKey}</div>
               </div>

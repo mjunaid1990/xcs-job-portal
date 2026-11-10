@@ -75,7 +75,7 @@ export function CreateContractForm({ proposalId, bidDollars }: CreateContractFor
           <button
             type="button"
             onClick={addMilestone}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:underline dark:text-emerald-400 dark:hover:text-emerald-300"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>Add Milestone</span>
@@ -96,7 +96,7 @@ export function CreateContractForm({ proposalId, bidDollars }: CreateContractFor
               placeholder="Milestone description"
               value={m.title}
               onChange={(e) => updateMilestone(i, "title", e.target.value)}
-              className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
             />
             <div className="relative w-32 shrink-0">
               <DollarSign className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
@@ -106,7 +106,7 @@ export function CreateContractForm({ proposalId, bidDollars }: CreateContractFor
                 required
                 value={m.amount}
                 onChange={(e) => updateMilestone(i, "amount", e.target.value)}
-                className="w-full rounded-lg border border-zinc-300 bg-white py-1.5 pl-7 pr-2.5 text-xs font-semibold text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-lg border border-zinc-300 bg-white py-1.5 pl-7 pr-2.5 text-xs font-semibold text-zinc-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
             {milestones.length > 1 && (
@@ -123,7 +123,7 @@ export function CreateContractForm({ proposalId, bidDollars }: CreateContractFor
       </div>
 
       {/* Summary with WorkWasl Flat $1 Fee Breakdown */}
-      <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-4 text-xs dark:border-indigo-950 dark:bg-indigo-950/20 space-y-2">
+      <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 text-xs dark:border-emerald-500/20 dark:bg-emerald-950/20 space-y-2">
         <div className="flex justify-between text-zinc-700 dark:text-zinc-300">
           <span>Contract Milestones Sum:</span>
           <span className="font-mono font-semibold">${totalAmount.toFixed(2)}</span>
@@ -134,9 +134,9 @@ export function CreateContractForm({ proposalId, bidDollars }: CreateContractFor
             +$1.00
           </span>
         </div>
-        <div className="flex justify-between border-t border-indigo-200/60 pt-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
+        <div className="flex justify-between border-t border-emerald-500/20 pt-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
           <span>Total Client Escrow Commitment:</span>
-          <span className="font-mono text-indigo-600 dark:text-indigo-400">
+          <span className="font-mono text-emerald-600 dark:text-emerald-400">
             ${(totalAmount + 1).toFixed(2)}
           </span>
         </div>
@@ -150,7 +150,7 @@ export function CreateContractForm({ proposalId, bidDollars }: CreateContractFor
         <button
           type="submit"
           disabled={isPending}
-          className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition hover:bg-indigo-500 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-white shadow-xs transition hover:bg-zinc-800 disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />

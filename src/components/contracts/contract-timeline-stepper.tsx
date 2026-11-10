@@ -58,9 +58,9 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
       case "RELEASED":
         return <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "SUBMITTED":
-        return <Clock className="h-4 w-4 text-indigo-600 dark:text-indigo-400 animate-pulse" />;
+        return <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400 animate-pulse" />;
       case "FUNDED":
-        return <ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
+        return <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
       case "DISPUTED":
         return <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />;
       default:
@@ -73,9 +73,9 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
       case "RELEASED":
         return "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 ring-2 ring-emerald-500/20";
       case "SUBMITTED":
-        return "border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 ring-2 ring-indigo-500/30";
+        return "border-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 ring-2 ring-amber-500/20";
       case "FUNDED":
-        return "border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300";
+        return "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300";
       case "DISPUTED":
         return "border-red-500 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300";
       default:
@@ -148,11 +148,11 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
             <span className="font-bold text-zinc-900 dark:text-zinc-100">
               Contract Lifecycle Progress
             </span>
-            <span className="rounded-md bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
+            <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
               {progressPercent}% Complete
             </span>
           </div>
-          <span className="text-[11px] text-zinc-500">
+          <span className="text-xs text-zinc-500">
             Click any milestone node to jump to actions
           </span>
         </div>
@@ -161,7 +161,7 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
           {/* Background Line */}
           <div className="absolute top-5 left-4 right-4 h-1 bg-zinc-100 dark:bg-zinc-800 rounded-full" />
           <div
-            className="absolute top-5 left-4 h-1 bg-gradient-to-r from-emerald-500 via-indigo-500 to-purple-600 rounded-full transition-all duration-500"
+            className="absolute top-5 left-4 h-1 bg-emerald-500 rounded-full transition-all duration-500"
             style={{ width: `${Math.max(5, progressPercent)}%` }}
           />
 
@@ -183,13 +183,13 @@ export function ContractTimelineStepper({ milestones, totalCents }: ContractTime
                     {getNodeIcon(m.status)}
                   </div>
                   <div className="mt-2 space-y-0.5">
-                    <div className="text-[11px] font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition truncate max-w-[100px]">
+                    <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition truncate max-w-[100px]">
                       M{idx + 1}: {m.title}
                     </div>
-                    <div className="font-mono text-[10px] font-semibold text-zinc-500">
+                    <div className="font-mono text-xs font-semibold text-zinc-600 dark:text-zinc-400">
                       ${amountDollars.toFixed(0)}
                     </div>
-                    <div className="text-[9px] font-bold uppercase tracking-wide text-zinc-400">
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-zinc-400">
                       {m.status.replace("_", " ")}
                     </div>
                   </div>

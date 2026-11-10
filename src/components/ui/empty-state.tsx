@@ -18,8 +18,8 @@ export interface EmptyStateProps {
 
 export function EmptyState({
   icon: Icon,
-  iconColor = "text-purple-600 dark:text-purple-400",
-  iconBg = "bg-purple-50 dark:bg-purple-950/40",
+  iconColor = "text-emerald-700 dark:text-emerald-400",
+  iconBg = "bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/60",
   title,
   description,
   action,
@@ -49,7 +49,7 @@ export function EmptyState({
           {action.href ? (
             <Link
               href={action.href}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition hover:from-purple-500 hover:to-indigo-500"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               {ActionIcon && <ActionIcon className="h-4 w-4" />}
               <span>{action.label}</span>
@@ -57,7 +57,7 @@ export function EmptyState({
           ) : (
             <button
               onClick={action.onClick}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition hover:from-purple-500 hover:to-indigo-500"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               {ActionIcon && <ActionIcon className="h-4 w-4" />}
               <span>{action.label}</span>

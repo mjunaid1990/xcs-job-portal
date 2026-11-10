@@ -21,7 +21,7 @@ export default function TermsOfServicePage() {
         </Link>
 
         <div className="space-y-4">
-          <Badge variant="purple">Legal Agreement</Badge>
+          <Badge variant="emerald">Legal Agreement</Badge>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Terms of Service</h1>
           <p className="text-sm text-zinc-500">
             Last Updated: November 1, 2026 · Effective Immediately
@@ -31,7 +31,7 @@ export default function TermsOfServicePage() {
         <div className="prose prose-zinc dark:prose-invert max-w-none space-y-6 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
           <section className="space-y-3 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="flex items-center gap-2 text-lg font-bold text-zinc-900 dark:text-zinc-100">
-              <FileText className="h-5 w-5 text-indigo-500" />
+              <FileText className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
               1. Acceptance of Terms
             </h2>
             <p>

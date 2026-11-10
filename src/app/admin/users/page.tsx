@@ -46,12 +46,12 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
               name="search"
               defaultValue={search}
               placeholder="Search by name or email..."
-              className="w-64 rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 shadow-sm focus:border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-64 rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs text-zinc-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             />
           </div>
           <button
             type="submit"
-            className="rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Filter
           </button>
@@ -92,7 +92,7 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                   >
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 font-bold text-white text-[11px] shrink-0">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 font-bold text-white text-xs dark:bg-zinc-100 dark:text-zinc-900 shrink-0">
                           {initials}
                         </div>
                         <div>
@@ -108,11 +108,11 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                         {user.roles.map((r) => (
                           <span
                             key={r}
-                            className={`rounded-md px-2 py-0.5 text-[10px] font-semibold ${
+                            className={`rounded-md px-2 py-0.5 text-xs font-semibold ${
                               r === "ADMIN"
-                                ? "bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300"
+                                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
                                 : r === "CLIENT"
-                                  ? "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
+                                  ? "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
                                   : "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                             }`}
                           >

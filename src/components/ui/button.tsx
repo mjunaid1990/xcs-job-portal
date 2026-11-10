@@ -2,7 +2,7 @@ import * as React from "react";
 import { Loader2 } from "lucide-react";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "secondary" | "outline" | "ghost" | "destructive" | "success";
+  variant?: "default" | "secondary" | "outline" | "ghost" | "destructive" | "success" | "emerald";
   size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
 }
@@ -22,16 +22,18 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variantStyles = {
       default:
-        "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm hover:from-purple-500 hover:to-indigo-500 focus-visible:ring-purple-500",
+        "bg-zinc-900 text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 focus-visible:ring-zinc-900",
       secondary:
         "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 focus-visible:ring-zinc-400",
       outline:
-        "border border-zinc-200/90 bg-white text-zinc-800 shadow-sm hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800",
+        "border border-zinc-200/90 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800",
       ghost:
         "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100",
-      destructive: "bg-red-600 text-white shadow-sm hover:bg-red-500 focus-visible:ring-red-500",
+      destructive: "bg-red-600 text-white shadow-2xs hover:bg-red-500 focus-visible:ring-red-500",
       success:
-        "bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 focus-visible:ring-emerald-500",
+        "bg-emerald-600 text-white shadow-2xs hover:bg-emerald-500 focus-visible:ring-emerald-500",
+      emerald:
+        "bg-emerald-600 text-white shadow-2xs hover:bg-emerald-500 focus-visible:ring-emerald-500",
     };
 
     const sizeStyles = {

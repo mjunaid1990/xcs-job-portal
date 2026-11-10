@@ -41,13 +41,13 @@ export function ProfileCompletenessCard({
               className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${
                 isComplete
                   ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-500/20"
-                  : "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 border border-indigo-500/20"
+                  : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700"
               }`}
             >
               {isComplete ? (
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               ) : (
-                <Sparkles className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                <Sparkles className="h-3.5 w-3.5 text-zinc-700 dark:text-zinc-300" />
               )}
               <span>{isComplete ? "100% Profile Complete" : `${score}% Completed`}</span>
             </span>
@@ -80,7 +80,7 @@ export function ProfileCompletenessCard({
           <div className="h-2.5 w-40 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
-                isComplete ? "bg-emerald-500" : score >= 70 ? "bg-indigo-600" : "bg-amber-500"
+                isComplete ? "bg-emerald-500" : score >= 70 ? "bg-emerald-600" : "bg-amber-500"
               }`}
               style={{ width: `${Math.min(100, Math.max(0, score))}%` }}
             />
@@ -125,7 +125,7 @@ export function ProfileCompletenessCard({
                 key={idx}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-zinc-300 bg-white px-2.5 py-1 text-[11px] font-medium text-zinc-600 dark:border-zinc-700 dark:bg-zinc-850 dark:text-zinc-300"
               >
-                <CircleDashed className="h-3 w-3 text-indigo-500" />
+                <CircleDashed className="h-3 w-3 text-zinc-400" />
                 <span>{item}</span>
               </span>
             ))}

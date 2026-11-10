@@ -103,7 +103,7 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
             {/* Client (Billed To) */}
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-zinc-400">
-                <Building className="h-3.5 w-3.5 text-indigo-500" />
+                <Building className="h-3.5 w-3.5 text-zinc-500" />
                 <span>Billed To (Employer)</span>
               </div>
               <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
@@ -118,7 +118,7 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
             {/* Contractor (Payee) */}
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-zinc-400">
-                <User className="h-3.5 w-3.5 text-purple-500" />
+                <User className="h-3.5 w-3.5 text-zinc-500" />
                 <span>Service Provider (Contractor)</span>
               </div>
               <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
@@ -201,7 +201,7 @@ export default async function ContractInvoicePage({ params }: ContractInvoicePag
                   </div>
                   <div className="flex justify-between border-t border-zinc-200 pt-3 text-sm font-black text-zinc-900 dark:text-zinc-50">
                     <span>Total Client Payment:</span>
-                    <span className="font-mono text-indigo-600 dark:text-indigo-400">
+                    <span className="font-mono text-zinc-900 dark:text-zinc-100">
                       {currencySymbol}
                       {(clientTotalCents / 100).toFixed(2)} {currency}
                     </span>

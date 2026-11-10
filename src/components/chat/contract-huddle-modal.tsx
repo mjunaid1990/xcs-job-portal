@@ -120,9 +120,9 @@ export function ContractHuddleModal({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200/90 bg-indigo-50/70 px-3.5 py-2 text-xs font-semibold text-indigo-700 shadow-xs hover:bg-indigo-100 dark:border-indigo-900/60 dark:bg-indigo-950/40 dark:text-indigo-300 transition"
+        className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 transition"
       >
-        <Video className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+        <Video className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
         <span>Workroom Huddle</span>
       </button>
 
@@ -132,7 +132,7 @@ export function ContractHuddleModal({
             {/* Header */}
             <div className="flex items-center justify-between border-b border-zinc-100 p-4 px-6 dark:border-zinc-800">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                   <Video className="h-4 w-4" />
                 </div>
                 <div>
@@ -148,7 +148,7 @@ export function ContractHuddleModal({
 
               <div className="flex items-center gap-2">
                 {inCall && (
-                  <Badge variant="purple" dot={true}>
+                  <Badge variant="emerald" dot={true}>
                     Live &middot; {formatTime(callSeconds)}
                   </Badge>
                 )}
@@ -192,7 +192,7 @@ export function ContractHuddleModal({
                 </>
               ) : (
                 <div className="flex flex-col items-center gap-4 p-8 text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-indigo-600/20 text-indigo-400 ring-8 ring-indigo-500/10">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-emerald-500/10 text-emerald-400 ring-8 ring-emerald-500/10">
                     <PhoneCall className="h-8 w-8 animate-bounce" />
                   </div>
                   <div className="space-y-1">
@@ -204,7 +204,7 @@ export function ContractHuddleModal({
                   </div>
                   <button
                     onClick={startHuddle}
-                    className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2.5 text-xs font-bold text-white shadow-xl shadow-indigo-500/25 hover:from-indigo-500 hover:to-purple-500 transition"
+                    className="inline-flex items-center gap-2 rounded-2xl bg-zinc-900 px-6 py-2.5 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
                   >
                     <PhoneCall className="h-4 w-4" />
                     <span>Join Video Room</span>
@@ -245,7 +245,7 @@ export function ContractHuddleModal({
                     onClick={toggleScreenShare}
                     className={`rounded-xl p-2.5 transition ${
                       isScreenSharing
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-emerald-600 text-white"
                         : "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                     }`}
                     title="Share Screen"

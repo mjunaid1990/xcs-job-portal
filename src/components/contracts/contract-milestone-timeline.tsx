@@ -44,7 +44,7 @@ export function ContractMilestoneTimeline({
       case "RELEASED":
         return {
           icon: <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />,
-          badgeVariant: "purple" as const,
+          badgeVariant: "success" as const,
           label: "Released & Paid",
           bg: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800",
           line: "bg-emerald-400 dark:bg-emerald-600",
@@ -59,11 +59,11 @@ export function ContractMilestoneTimeline({
         };
       case "FUNDED":
         return {
-          icon: <ShieldCheck className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />,
+          icon: <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />,
           badgeVariant: "success" as const,
           label: "Funded in Escrow",
-          bg: "bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800",
-          line: "bg-indigo-300 dark:bg-indigo-700",
+          bg: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800",
+          line: "bg-emerald-300 dark:bg-emerald-700",
         };
       case "DISPUTED":
         return {
@@ -97,7 +97,7 @@ export function ContractMilestoneTimeline({
       {/* Section Header */}
       <div className="flex items-center justify-between pb-5 border-b border-zinc-100 dark:border-zinc-800">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
             <FileCheck2 className="h-4 w-4" />
           </div>
           <div>

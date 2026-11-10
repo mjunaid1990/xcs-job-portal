@@ -142,7 +142,7 @@ export function ContractMilestoneActions({
           type="button"
           disabled={isPending}
           onClick={handleFund}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-emerald-500 disabled:opacity-60"
         >
           {isPending ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -159,7 +159,7 @@ export function ContractMilestoneActions({
             type="button"
             disabled={isPending}
             onClick={() => setShowRevisionModal(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 shadow-xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 shadow-2xs hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200"
           >
             <RotateCcw className="h-3.5 w-3.5" />
             <span>Revision</span>
@@ -169,7 +169,7 @@ export function ContractMilestoneActions({
             type="button"
             disabled={isPending}
             onClick={() => setShowPartialModal(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50/50 px-3 py-1.5 text-xs font-semibold text-indigo-700 shadow-xs hover:bg-indigo-100 dark:border-indigo-900/60 dark:bg-indigo-950/40 dark:text-indigo-300"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 shadow-2xs hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
           >
             <Sliders className="h-3.5 w-3.5" />
             <span>Partial Release</span>
@@ -179,7 +179,7 @@ export function ContractMilestoneActions({
             type="button"
             disabled={isPending}
             onClick={handleApproveFull}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-500 disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs transition hover:bg-emerald-500 disabled:opacity-60"
           >
             {isPending ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -197,7 +197,7 @@ export function ContractMilestoneActions({
           type="button"
           disabled={isPending}
           onClick={() => setShowSubmitModal(true)}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           <Send className="h-3.5 w-3.5" />
           <span>Submit Work</span>
@@ -212,7 +212,7 @@ export function ContractMilestoneActions({
             className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 space-y-4"
           >
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                 <Sliders className="h-4 w-4" />
                 <span>Micro-Escrow Partial Release</span>
               </div>
@@ -240,19 +240,19 @@ export function ContractMilestoneActions({
                 step="5"
                 value={partialAmount}
                 onChange={(e) => setPartialAmount(Number(e.target.value))}
-                className="w-full accent-indigo-600 cursor-pointer"
+                className="w-full accent-emerald-600 cursor-pointer"
               />
 
-              <div className="grid grid-cols-2 gap-2 text-[11px] pt-1">
+              <div className="grid grid-cols-2 gap-2 text-xs pt-1">
                 <div className="rounded-lg bg-white p-2 border border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900">
-                  <span className="text-zinc-400">Transferred to Talent (90%)</span>
+                  <span className="text-zinc-400">Transferred to Talent</span>
                   <p className="font-bold text-zinc-900 dark:text-zinc-100">
-                    ${(partialAmount * 0.9).toFixed(2)}
+                    ${partialAmount.toFixed(2)}
                   </p>
                 </div>
                 <div className="rounded-lg bg-white p-2 border border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900">
                   <span className="text-zinc-400">Retained in Escrow</span>
-                  <p className="font-bold text-indigo-600 dark:text-indigo-400">
+                  <p className="font-bold text-emerald-600 dark:text-emerald-400">
                     ${(amountDollars - partialAmount).toFixed(2)}
                   </p>
                 </div>
@@ -268,7 +268,7 @@ export function ContractMilestoneActions({
                 value={partialNote}
                 onChange={(e) => setPartialNote(e.target.value)}
                 placeholder="e.g. Approved UI components, remaining balance will release after API tests pass..."
-                className="w-full rounded-xl border border-zinc-300 bg-white p-2.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white p-2.5 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
 
@@ -283,7 +283,7 @@ export function ContractMilestoneActions({
               <button
                 type="submit"
                 disabled={isPending || partialAmount <= 0}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-emerald-500 disabled:opacity-60"
               >
                 {isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -316,7 +316,7 @@ export function ContractMilestoneActions({
             {/* Git Artifact URL Input */}
             <div className="rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3.5 dark:border-zinc-800 dark:bg-zinc-950/50 space-y-2">
               <label className="flex items-center gap-1.5 text-xs font-semibold text-zinc-800 dark:text-zinc-200">
-                <GitBranch className="h-3.5 w-3.5 text-indigo-500" />
+                <GitBranch className="h-3.5 w-3.5 text-emerald-600" />
                 <span>GitHub / GitLab Pull Request or Commit (Optional)</span>
               </label>
               <div className="flex gap-2">
@@ -325,7 +325,7 @@ export function ContractMilestoneActions({
                   value={gitUrl}
                   onChange={(e) => setGitUrl(e.target.value)}
                   placeholder="https://github.com/org/repo/pull/42"
-                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
                 />
                 <button
                   type="button"
@@ -390,7 +390,7 @@ export function ContractMilestoneActions({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="e.g. Completed initial design components, wrote unit tests, and deployed preview build..."
-                className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
               />
             </div>
 
@@ -409,7 +409,7 @@ export function ContractMilestoneActions({
               <button
                 type="submit"
                 disabled={isPending}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-4 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-60"
               >
                 {isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -441,7 +441,7 @@ export function ContractMilestoneActions({
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="e.g. Please update the API error handling and add integration tests..."
-              className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-300 bg-white p-3 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             />
             <div className="flex justify-end gap-2">
               <button

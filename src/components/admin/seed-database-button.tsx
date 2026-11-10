@@ -50,12 +50,12 @@ export function SeedDatabaseButton() {
     <button
       onClick={handleSeed}
       disabled={loading}
-      className="inline-flex items-center gap-1.5 rounded-xl border border-purple-200/80 bg-purple-50/80 px-3.5 py-2 text-xs font-semibold text-purple-700 shadow-sm transition hover:bg-purple-100 hover:shadow disabled:opacity-60 dark:border-purple-900/60 dark:bg-purple-950/40 dark:text-purple-300 dark:hover:bg-purple-900/50"
+      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-800 shadow-2xs transition hover:bg-zinc-50 disabled:opacity-60 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
     >
       {loading ? (
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
       ) : (
-        <Sparkles className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+        <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
       )}
       <span>Sync Demo Data</span>
     </button>

@@ -186,7 +186,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
           onClick={() => setActiveTab("categories")}
           className={`inline-flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-bold transition ${
             activeTab === "categories"
-              ? "border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400"
+              ? "border-emerald-600 text-emerald-600 dark:border-emerald-400 dark:text-emerald-400"
               : "border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
           }`}
         >
@@ -198,7 +198,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
           onClick={() => setActiveTab("skills")}
           className={`inline-flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-bold transition ${
             activeTab === "skills"
-              ? "border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400"
+              ? "border-emerald-600 text-emerald-600 dark:border-emerald-400 dark:text-emerald-400"
               : "border-transparent text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
           }`}
         >
@@ -213,7 +213,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
           {/* Add Category Card */}
           <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
             <div className="flex items-center gap-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
-              <Plus className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              <Plus className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <span>Add New Category</span>
             </div>
             <p className="mt-1 text-xs text-zinc-500">
@@ -235,7 +235,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                   value={newCatName}
                   onChange={(e) => setNewCatName(e.target.value)}
                   placeholder="e.g. AI & Machine Learning"
-                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
 
@@ -246,7 +246,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                 <select
                   value={newCatParentId}
                   onChange={(e) => setNewCatParentId(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 >
                   <option value="">None (Top-Level Parent)</option>
                   {parentCategories.map((p) => (
@@ -266,7 +266,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                   value={newCatSlug}
                   onChange={(e) => setNewCatSlug(e.target.value)}
                   placeholder="ai-machine-learning"
-                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
 
@@ -274,7 +274,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                 <button
                   type="submit"
                   disabled={isPending || !newCatName.trim()}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50 transition"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition"
                 >
                   {isPending ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -295,7 +295,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
               value={categorySearch}
               onChange={(e) => setCategorySearch(e.target.value)}
               placeholder="Search categories by name, slug, or parent..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-10 pr-4 text-xs text-zinc-900 shadow-xs focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-10 pr-4 text-xs text-zinc-900 shadow-xs focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             />
           </div>
 
@@ -330,7 +330,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                           <td className="px-5 py-3.5">
                             <div className="flex items-center gap-2">
                               {isParent ? (
-                                <FolderTree className="h-4 w-4 text-indigo-500" />
+                                <FolderTree className="h-4 w-4 text-emerald-600" />
                               ) : (
                                 <>
                                   <span className="text-zinc-400">└─</span>
@@ -345,7 +345,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                               {cat.parent && (
                                 <span className="inline-flex items-center gap-1 text-[10px] text-zinc-400">
                                   <span>under</span>
-                                  <span className="font-medium text-indigo-600 dark:text-indigo-400">
+                                  <span className="font-medium text-emerald-600 dark:text-emerald-400">
                                     {cat.parent.name}
                                   </span>
                                 </span>
@@ -357,7 +357,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                           </td>
                           <td className="px-5 py-3.5">
                             {isParent ? (
-                              <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                              <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                                 Parent
                               </span>
                             ) : (
@@ -401,7 +401,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
           {/* Add Skill Card */}
           <div className="rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
             <div className="flex items-center gap-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
-              <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <Sparkles className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <span>Add New Skill / Keyword</span>
             </div>
             <p className="mt-1 text-xs text-zinc-500">
@@ -423,7 +423,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                   value={newSkillName}
                   onChange={(e) => setNewSkillName(e.target.value)}
                   placeholder="e.g. Next.js 15"
-                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
 
@@ -436,7 +436,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                   value={newSkillSlug}
                   onChange={(e) => setNewSkillSlug(e.target.value)}
                   placeholder="nextjs-15"
-                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+                  className="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3.5 py-2 text-xs text-zinc-900 focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
                 />
               </div>
 
@@ -444,7 +444,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
                 <button
                   type="submit"
                   disabled={isPending || !newSkillName.trim()}
-                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-purple-500 disabled:opacity-50 transition"
+                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 disabled:opacity-50 transition"
                 >
                   {isPending ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -465,7 +465,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
               value={skillSearch}
               onChange={(e) => setSkillSearch(e.target.value)}
               placeholder="Search skills by name or slug..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-10 pr-4 text-xs text-zinc-900 shadow-xs focus:border-indigo-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-10 pr-4 text-xs text-zinc-900 shadow-xs focus:border-emerald-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
             />
           </div>
 
@@ -476,7 +476,7 @@ export function TaxonomyManager({ categories, skills }: TaxonomyManagerProps) {
               return (
                 <div
                   key={s.id}
-                  className="flex items-center justify-between rounded-xl border border-zinc-200/80 bg-white p-2.5 text-xs shadow-xs hover:border-indigo-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 transition"
+                  className="flex items-center justify-between rounded-xl border border-zinc-200/80 bg-white p-2.5 text-xs shadow-xs hover:border-emerald-500/50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 transition"
                 >
                   <div className="min-w-0 pr-1">
                     <p className="truncate font-semibold text-zinc-900 dark:text-zinc-100">

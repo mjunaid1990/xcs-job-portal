@@ -41,12 +41,12 @@ export default async function AdminSettingsPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
               Active Settings
             </span>
-            <Sliders className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+            <Sliders className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
           </div>
           <p className="mt-2 text-2xl font-black text-zinc-900 dark:text-zinc-50">
             {settings.length}
           </p>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Live DB configuration keys</p>
+          <p className="mt-0.5 text-xs text-zinc-500">Live DB configuration keys</p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
@@ -59,7 +59,7 @@ export default async function AdminSettingsPage() {
           <p className="mt-2 text-2xl font-black text-zinc-900 dark:text-zinc-50">
             {(feeBps / 100).toFixed(1)}%
           </p>
-          <p className="mt-0.5 text-[11px] text-zinc-500">{feeBps} bps commission</p>
+          <p className="mt-0.5 text-xs text-zinc-500">{feeBps} bps commission</p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
@@ -67,12 +67,12 @@ export default async function AdminSettingsPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
               Auto-Release
             </span>
-            <Clock className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            <Clock className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
           </div>
           <p className="mt-2 text-2xl font-black text-zinc-900 dark:text-zinc-50">
             {autoApproveDays} Days
           </p>
-          <p className="mt-0.5 text-[11px] text-zinc-500">Inactivity escrow trigger</p>
+          <p className="mt-0.5 text-xs text-zinc-500">Inactivity escrow trigger</p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
