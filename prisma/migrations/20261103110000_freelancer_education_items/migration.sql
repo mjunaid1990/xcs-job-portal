@@ -17,3 +17,4 @@ CREATE TABLE IF NOT EXISTS "education_items" (
 
 -- CreateIndex
 CREATE INDEX IF NOT EXISTS "education_items_freelancer_id_idx" ON "education_items"("freelancer_id");
+

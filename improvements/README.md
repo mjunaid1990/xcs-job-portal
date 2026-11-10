@@ -63,3 +63,12 @@ Explore the comprehensive improvement blueprints contained in this directory:
    - Flat \$1 client + \$1 freelancer platform fee business rules & architecture specification.
    - P0 payment integrity, ledger verification, and server-side security checklist.
    - Low-overhead in-house PostgreSQL architecture roadmap.
+
+7. **[07. Multi-Step Onboarding, Profile Completeness & Natural Human UI](./07-freelancer-step-onboarding-and-natural-human-ui.md)**
+   - 4-step interactive freelancer registration wizard (`Account` → `Rate & Seniority` → `Bio & Tags` → `Skills & Proof`).
+   - Natural human dashboard design (de-AI overhaul, neutral monochrome rigor, solid tactile CTAs).
+   - Transparent field-count 100% profile completeness calculation with interactive checklist pills.
+   - Education & degree credentialing management (`EducationItem` schema, `EducationList` component).
+   - Elimination of gamified "Job Success Score" and "Top Rated Plus" badges in favor of verified identity and genuine review counts.
+   - Mutual two-way reviews on completed contracts with reciprocal public profile showcase.
+   - Grid-aligned aspect-ratio portfolio placeholders for projects without screenshots.
