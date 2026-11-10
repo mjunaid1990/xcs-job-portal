@@ -1,6 +1,6 @@
-# WorkNest Platform Documentation
+# WorkWasl Platform Documentation
 
-Welcome to the technical and operational documentation for the **WorkNest Enterprise Freelance & Job Marketplace Platform**.
+Welcome to the technical and operational documentation for the **WorkWasl Enterprise Freelance & Job Marketplace Platform**.
 
 This documentation is split into dedicated modular guides detailing each architectural subsystem, what has been implemented so far, key codebase references, and detailed real-world use cases.
 
@@ -10,6 +10,7 @@ This documentation is split into dedicated modular guides detailing each archite
 
 | Module Document                                                                         | Focus Area                         | Key Features Covered                                                                                                           |
 | :-------------------------------------------------------------------------------------- | :--------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| [Case Studies & Platform Use Cases](./case-studies/README.md)                           | Real-World Scenarios & ROI         | 15 core functional use cases, FinTech $45k migration case study, Dual-persona studio scaling, Judicial arbitration, and rapid AI hiring. |
 | [01. Architecture Overview](./01-architecture-overview.md)                              | Platform Architecture & Tech Stack | Next.js 15 App Router, Server Actions, Prisma ORM, Neon PostgreSQL, Tailwind v4, Stripe Escrow, Double-Entry Accounting.       |
 | [02. Authentication & Multi-Role RBAC](./02-auth-and-rbac.md)                           | Identity & Access Control          | NextAuth v5, Argon2id, Role-based routing (`CLIENT`, `FREELANCER`, `ADMIN`), Auto-healing Database Seeding, Session Callbacks. |
 | [03. User Profiles & KYC Verification](./03-user-profiles-and-kyc.md)                   | Identity & Reputation              | Client Profiles, Freelancer Portfolios, Skill Tagging, KYC Verification Tiers (`PENDING`, `APPROVED`, `REJECTED`).             |
