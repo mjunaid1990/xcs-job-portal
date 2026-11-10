@@ -75,7 +75,7 @@ export function StatCard({
       {badge && (
         <div className="mt-3">
           <span
-            className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold ${
+            className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ${
               badge.color ?? "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
             }`}
           >

@@ -34,7 +34,7 @@ export default async function NewContractPage({ searchParams }: NewContractPageP
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8">
+    <div className="mx-auto max-w-4xl space-y-8">
       <Link
         href={`/client/jobs/${proposal.job.id}/proposals`}
         className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"

@@ -80,7 +80,7 @@ export default async function FreelancersPage({ searchParams }: FreelancersPageP
             <div className="flex items-center gap-2.5 shrink-0">
               <Link
                 href="/client/jobs/new"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition"
+                className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
               >
                 <Briefcase className="h-4 w-4" />
                 <span>Post a Job</span>

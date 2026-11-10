@@ -197,7 +197,7 @@ export default async function FreelancerDashboardPage() {
                           <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
                             {contract.job.title}
                           </h3>
-                          <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+                          <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
                             Active
                           </span>
                         </div>
@@ -437,13 +437,13 @@ export default async function FreelancerDashboardPage() {
               <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 Earnings & Escrow
               </span>
-              <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                 Stripe Connect
               </span>
             </div>
 
             <div>
-              <div className="text-[11px] text-zinc-500">Available to Withdraw</div>
+              <div className="text-xs text-zinc-500">Available to Withdraw</div>
               <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-0.5">
                 $0.00 <span className="text-xs font-normal text-zinc-400">USD</span>
               </div>

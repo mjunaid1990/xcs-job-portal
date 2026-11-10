@@ -20,6 +20,20 @@ export class NotificationService {
     });
   }
 
+  static async getUnreadCount(userId: string) {
+    return prisma.notification.count({
+      where: { userId, readAt: null },
+    });
+  }
+
+  static async getRecentNotifications(userId: string, limit = 5) {
+    return prisma.notification.findMany({
+      where: { userId },
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
   static async markRead(userId: string, notificationId: string) {
     return prisma.notification.updateMany({
       where: { id: notificationId, userId },

@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/ui/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
-import { CreditCard, DollarSign, Building2, Receipt } from "lucide-react";
+import { DollarSign, Building2, Receipt } from "lucide-react";
 
 export default async function FreelancerPayoutsPage() {
   const session = await auth();
@@ -35,11 +35,8 @@ export default async function FreelancerPayoutsPage() {
   const totalEarnedDollars = Number(user.freelancerProfile?.totalEarnedCents ?? 0) / 100;
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
+    <div className="space-y-8">
       <PageHeader
-        badge="Earnings & Payout Gateway"
-        badgeIcon={CreditCard}
-        badgeVariant="success"
         title="Payouts & Banking"
         description="Direct bank transfers powered by Stripe Connect Express with automatic escrow payouts."
       />

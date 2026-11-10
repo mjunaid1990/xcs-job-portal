@@ -1,6 +1,7 @@
 import { auth } from "@/server/lib/auth";
 import { redirect } from "next/navigation";
 import { MessagingService } from "@/server/services/messaging.service";
+import { NotificationService } from "@/server/services/notification.service";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
 import type { NavItem } from "@/components/layout/nav-links";
 
@@ -18,10 +19,27 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const isAdmin = roles.includes("ADMIN");
 
   let unreadMessagesCount = 0;
+  let unreadNotificationsCount = 0;
+  let recentNotifications: Array<{
+    id: string;
+    type: string;
+    payload: unknown;
+    readAt: Date | null;
+    createdAt: Date;
+  }> = [];
+
   try {
-    unreadMessagesCount = await MessagingService.getUnreadCount(user.id);
+    const [msgCount, notifCount, recent] = await Promise.all([
+      MessagingService.getUnreadCount(user.id),
+      NotificationService.getUnreadCount(user.id),
+      NotificationService.getRecentNotifications(user.id, 5),
+    ]);
+    unreadMessagesCount = msgCount;
+    unreadNotificationsCount = notifCount;
+    recentNotifications = recent;
   } catch {
     unreadMessagesCount = 0;
+    unreadNotificationsCount = 0;
   }
 
   // Top header navigation: Dashboard is strictly first menu item, max 2 words per item, clean neutrals
@@ -57,7 +75,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 flex flex-col justify-between">
       {/* Top Navigation Bar */}
-      <DashboardHeader user={user} navItems={navItems} />
+      <DashboardHeader
+        user={user}
+        navItems={navItems}
+        unreadNotificationsCount={unreadNotificationsCount}
+        recentNotifications={recentNotifications}
+      />
 
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">{children}</main>

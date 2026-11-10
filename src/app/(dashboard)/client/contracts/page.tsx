@@ -34,9 +34,6 @@ export default async function ClientContractsPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        badge="Escrow Contracts"
-        badgeIcon={Briefcase}
-        badgeVariant="info"
         title="Your Active & Completed Engagements"
         description="Monitor milestone execution, inspect submitted deliverables, and authorize cryptographic escrow releases."
       />
@@ -89,7 +86,7 @@ export default async function ClientContractsPage() {
                         style={{ width: `${progressPct}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-bold text-zinc-500 whitespace-nowrap">
+                    <span className="text-xs font-semibold text-zinc-500 whitespace-nowrap">
                       {completedMilestones}/{c.milestones.length} ({progressPct}%)
                     </span>
                   </div>
@@ -100,7 +97,7 @@ export default async function ClientContractsPage() {
                     <span className="font-mono text-lg font-extrabold text-zinc-900 dark:text-zinc-100">
                       ${(Number(c.totalCents) / 100).toFixed(0)}
                     </span>
-                    <div className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+                    <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                       Total Escrow
                     </div>
                   </div>

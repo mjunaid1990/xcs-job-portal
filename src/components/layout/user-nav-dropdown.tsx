@@ -93,7 +93,9 @@ export function UserNavDropdown({ user }: UserNavDropdownProps) {
           <span className="max-w-[110px] truncate text-xs font-medium text-zinc-900 dark:text-zinc-100 leading-tight">
             {user.name}
           </span>
-          <span className="text-[10px] text-zinc-400 leading-tight">{roleLabel}</span>
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 leading-tight">
+            {roleLabel}
+          </span>
         </div>
         <ChevronDown
           className={`h-3.5 w-3.5 text-zinc-400 transition-transform duration-150 ${

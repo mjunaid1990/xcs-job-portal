@@ -96,7 +96,7 @@ export default async function ClientDashboardPage() {
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Active Jobs</span>
           <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">{jobCount}</div>
-          <p className="mt-1 text-[11px] text-zinc-400">Open listings</p>
+          <p className="mt-1 text-xs text-zinc-400">Open listings</p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
@@ -106,7 +106,7 @@ export default async function ClientDashboardPage() {
           <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
             {totalProposalsToReview}
           </div>
-          <p className="mt-1 text-[11px] text-zinc-400">Candidate pitches</p>
+          <p className="mt-1 text-xs text-zinc-400">Candidate pitches</p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
@@ -116,7 +116,7 @@ export default async function ClientDashboardPage() {
           <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
             {contractCount}
           </div>
-          <p className="mt-1 text-[11px] text-zinc-400">Ongoing engagements</p>
+          <p className="mt-1 text-xs text-zinc-400">Ongoing engagements</p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
@@ -130,7 +130,7 @@ export default async function ClientDashboardPage() {
               maximumFractionDigits: 0,
             })}
           </div>
-          <p className="mt-1 text-[11px] text-zinc-400">Protected milestones</p>
+          <p className="mt-1 text-xs text-zinc-400">Protected milestones</p>
         </div>
       </div>
 
@@ -272,7 +272,7 @@ export default async function ClientDashboardPage() {
                               style={{ width: `${progress}%` }}
                             />
                           </div>
-                          <span className="text-[11px] font-medium text-zinc-500">
+                          <span className="text-xs font-medium text-zinc-500">
                             {completedM}/{totalM} milestones approved ({progress}%)
                           </span>
                         </div>
@@ -309,7 +309,7 @@ export default async function ClientDashboardPage() {
             </div>
 
             <div>
-              <div className="text-[11px] text-zinc-500">Active Escrow Funds</div>
+              <div className="text-xs text-zinc-500">Active Escrow Funds</div>
               <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-0.5">
                 $
                 {(escrowLockedCents / 100).toLocaleString(undefined, {
@@ -320,7 +320,7 @@ export default async function ClientDashboardPage() {
               </div>
             </div>
 
-            <p className="text-[11px] text-zinc-500 leading-relaxed">
+            <p className="text-xs text-zinc-500 leading-relaxed">
               Funds stay securely in milestone escrow. You review deliverables and release payments
               only when work meets specifications.
             </p>

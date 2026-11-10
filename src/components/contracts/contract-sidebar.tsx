@@ -174,7 +174,7 @@ export function ContractSidebar({
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <div className="text-[10px] text-zinc-400">
+          <div className="text-xs text-zinc-400">
             {completedCount} of {contract.milestones.length} milestones released
           </div>
         </div>
@@ -209,7 +209,7 @@ export function ContractSidebar({
             <span className="font-mono font-bold text-zinc-500">${pendingAmount.toFixed(2)}</span>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800 text-[11px]">
+          <div className="flex items-center justify-between pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800 text-xs">
             <span className="text-zinc-400">Platform Fee Policy</span>
             <span className="font-semibold text-zinc-600 dark:text-zinc-300">
               Flat $1.00 / contract
@@ -233,13 +233,13 @@ export function ContractSidebar({
                 <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                   {contract.client.clientProfile?.companyName ?? contract.client.name}
                 </div>
-                <div className="text-[10px] text-zinc-400">Client</div>
+                <div className="text-xs text-zinc-400">Client</div>
               </div>
             </div>
             {isFreelancer && (
               <Link
                 href={conversationUrl}
-                className="text-[11px] font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                className="text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
               >
                 Chat
               </Link>
@@ -256,13 +256,13 @@ export function ContractSidebar({
                 <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                   {contract.freelancer.name}
                 </div>
-                <div className="text-[10px] text-zinc-400">Freelancer</div>
+                <div className="text-xs text-zinc-400">Freelancer</div>
               </div>
             </div>
             {isClient && (
               <Link
                 href={conversationUrl}
-                className="text-[11px] font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                className="text-xs font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
               >
                 Chat
               </Link>

@@ -7,7 +7,7 @@ import { adminService } from "@/server/services/admin.service";
 import { PrintButton } from "@/components/ui/print-button";
 import { formatContractRef } from "@/lib/format";
 import { WorkWaslLogo } from "@/components/ui/workwasl-logo";
-import { ShieldCheck, ArrowLeft, CheckCircle2, Lock, Building, User } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Lock, Building, User } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Official Milestone Invoice & Settlement Receipt · WorkWasl",

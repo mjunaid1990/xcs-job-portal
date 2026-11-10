@@ -35,15 +35,12 @@ export default async function ClientJobsPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        badge="Job Postings Manager"
-        badgeIcon={Briefcase}
-        badgeVariant="info"
         title="Your Active & Past Jobs"
         description="Review incoming candidate proposals, track ongoing milestones, and manage postings."
       >
         <Link
           href="/client/jobs/new"
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-purple-500/20 transition hover:from-purple-500 hover:to-indigo-500"
+          className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
         >
           <Plus className="h-4 w-4" />
           <span>Post New Job</span>

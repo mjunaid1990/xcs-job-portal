@@ -210,13 +210,13 @@ export function ProposalComparisonMatrix({
                         {/* Benchmark Indicators */}
                         <div className="flex flex-wrap gap-1.5">
                           {isLowest && (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
                               <Award className="h-3 w-3" />
                               <span>Best Bid Value</span>
                             </span>
                           )}
                           {isFastest && (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-indigo-100 px-2 py-0.5 text-xs font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
                               <Zap className="h-3 w-3" />
                               <span>Fastest Turnaround</span>
                             </span>
@@ -226,7 +226,7 @@ export function ProposalComparisonMatrix({
                         {/* Financials & Timeline */}
                         <div className="grid grid-cols-2 gap-2 rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
                           <div>
-                            <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-0.5">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-0.5">
                               <DollarSign className="h-3 w-3" />
                               <span>Proposed Bid</span>
                             </span>
@@ -236,7 +236,7 @@ export function ProposalComparisonMatrix({
                           </div>
 
                           <div>
-                            <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-0.5">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-0.5">
                               <Calendar className="h-3 w-3" />
                               <span>Est. Time</span>
                             </span>
@@ -248,7 +248,7 @@ export function ProposalComparisonMatrix({
 
                         {/* Pitch Excerpt */}
                         <div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                          <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                             Pitch Summary
                           </span>
                           <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400 line-clamp-4 leading-relaxed bg-zinc-50/50 p-3 rounded-lg dark:bg-zinc-800/30 border border-zinc-100 dark:border-zinc-800">

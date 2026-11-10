@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { WorkWaslLogo } from "@/components/ui/workwasl-logo";
 import { NavLinks, type NavItem } from "@/components/layout/nav-links";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { UserNavDropdown } from "@/components/layout/user-nav-dropdown";
-import { Bell, Menu, X } from "lucide-react";
+import {
+  NotificationPopover,
+  type SerializedNotification,
+} from "@/components/layout/notification-popover";
+import { Menu, X } from "lucide-react";
 
 interface DashboardHeaderProps {
   user: {
@@ -17,9 +20,16 @@ interface DashboardHeaderProps {
     imageUrl?: string | null;
   };
   navItems: NavItem[];
+  unreadNotificationsCount?: number;
+  recentNotifications?: SerializedNotification[];
 }
 
-export function DashboardHeader({ user, navItems }: DashboardHeaderProps) {
+export function DashboardHeader({
+  user,
+  navItems,
+  unreadNotificationsCount = 0,
+  recentNotifications = [],
+}: DashboardHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -39,13 +49,10 @@ export function DashboardHeader({ user, navItems }: DashboardHeaderProps) {
         <div className="flex items-center gap-2.5 sm:gap-3">
           <CommandPalette />
 
-          <Link
-            href="/notifications"
-            aria-label="Notifications"
-            className="relative rounded-xl p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition"
-          >
-            <Bell className="h-4 w-4" />
-          </Link>
+          <NotificationPopover
+            initialNotifications={recentNotifications}
+            initialUnreadCount={unreadNotificationsCount}
+          />
 
           <div className="pl-1 sm:pl-2 border-l border-zinc-200 dark:border-zinc-800">
             <UserNavDropdown user={user} />

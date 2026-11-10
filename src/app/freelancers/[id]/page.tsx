@@ -264,7 +264,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
 
                 <Link
                   href={session ? "/client/jobs/new" : `/login?redirect=/freelancers/${id}`}
-                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-purple-500/20 hover:from-purple-500 hover:to-indigo-500 transition"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
                 >
                   <Briefcase className="h-4 w-4" />
                   <span>Hire Specialist</span>
@@ -638,7 +638,7 @@ export default async function PublicFreelancerPage({ params }: PublicFreelancerP
               <div className="space-y-2.5 pt-1">
                 <Link
                   href={session ? "/client/jobs/new" : `/login?redirect=/freelancers/${id}`}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 text-xs font-bold text-white shadow-md shadow-purple-500/20 hover:from-purple-500 hover:to-indigo-500 transition"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-3 text-xs sm:text-sm font-bold text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition"
                 >
                   <Briefcase className="h-4 w-4" />
                   <span>Hire or Invite to Job</span>

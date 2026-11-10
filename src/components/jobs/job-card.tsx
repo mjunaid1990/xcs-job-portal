@@ -66,7 +66,7 @@ export function JobCard({ job }: JobCardProps) {
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="font-medium text-zinc-400">{postedAgo}</span>
               <span>•</span>
-              <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
                 {job.category?.name ?? "General"}
               </span>
               <JobFitBadge jobSkills={job.skills.map((s) => s.skill.name)} compact />
@@ -100,13 +100,13 @@ export function JobCard({ job }: JobCardProps) {
               {job.skills.slice(0, 6).map((s) => (
                 <span
                   key={s.skill.id}
-                  className="rounded-lg bg-zinc-100/80 px-2.5 py-1 text-[11px] font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 group-hover:bg-indigo-50 group-hover:text-indigo-700 dark:group-hover:bg-indigo-950/40 dark:group-hover:text-indigo-300 transition-colors"
+                  className="rounded-lg bg-zinc-100/80 px-2.5 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 group-hover:bg-indigo-50 group-hover:text-indigo-700 dark:group-hover:bg-indigo-950/40 dark:group-hover:text-indigo-300 transition-colors"
                 >
                   {s.skill.name}
                 </span>
               ))}
               {job.skills.length > 6 && (
-                <span className="rounded-lg bg-zinc-100 px-2 py-1 text-[10px] font-semibold text-zinc-500 dark:bg-zinc-800">
+                <span className="rounded-lg bg-zinc-100 px-2 py-1 text-xs font-semibold text-zinc-500 dark:bg-zinc-800">
                   +{job.skills.length - 6} more
                 </span>
               )}
@@ -119,7 +119,7 @@ export function JobCard({ job }: JobCardProps) {
               <div className="font-mono text-base sm:text-xl font-black text-zinc-900 dark:text-zinc-100">
                 {formatBudget()}
               </div>
-              <div className="text-[11px] text-zinc-400">
+              <div className="text-xs text-zinc-400">
                 {job.budgetType === "HOURLY" ? "Hourly rate" : "Milestone escrow"}
               </div>
             </div>

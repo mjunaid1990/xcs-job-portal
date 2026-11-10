@@ -5,7 +5,7 @@ import { ContractService } from "@/server/services/contract.service";
 import { PageHeader } from "@/components/ui/page-header";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
-import { UserCheck, Eye, Search, Briefcase } from "lucide-react";
+import { Eye, Search, Briefcase } from "lucide-react";
 
 import { formatContractRef } from "@/lib/format";
 
@@ -34,9 +34,6 @@ export default async function FreelancerContractsPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        badge="Active Engagements"
-        badgeIcon={UserCheck}
-        badgeVariant="success"
         title="Your Client Contracts"
         description="Submit milestone deliverables, view funded escrow balances, and track payments."
       />
@@ -89,7 +86,7 @@ export default async function FreelancerContractsPage() {
                         style={{ width: `${progressPct}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-bold text-zinc-500 whitespace-nowrap">
+                    <span className="text-xs font-semibold text-zinc-500 whitespace-nowrap">
                       {completedMilestones}/{c.milestones.length} ({progressPct}%)
                     </span>
                   </div>
@@ -100,7 +97,7 @@ export default async function FreelancerContractsPage() {
                     <span className="font-mono text-lg font-extrabold text-zinc-900 dark:text-zinc-100">
                       ${(Number(c.totalCents) / 100).toFixed(0)}
                     </span>
-                    <div className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+                    <div className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
                       Contract Value
                     </div>
                   </div>

@@ -50,7 +50,7 @@ export default async function FreelancerProfilePage() {
     completedCount === totalCount ? 100 : Math.round((completedCount / totalCount) * 100);
 
   return (
-    <div className="mx-auto max-w-4xl space-y-10">
+    <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">

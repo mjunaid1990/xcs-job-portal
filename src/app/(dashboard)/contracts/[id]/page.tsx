@@ -80,7 +80,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="space-y-6">
       {/* Top Breadcrumb & Navigation */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Link
@@ -188,7 +188,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                         <UserCheck className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                         <span>Client Review of Freelancer</span>
                       </div>
-                      <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+                      <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
                         {contract.client.name}
                       </span>
                     </div>
@@ -209,7 +209,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                           <span className="ml-1 text-xs font-bold text-zinc-800 dark:text-zinc-200">
                             {clientReview.rating}.0
                           </span>
-                          <span className="ml-auto text-[10px] text-zinc-400">
+                          <span className="ml-auto text-xs text-zinc-400">
                             {new Date(clientReview.createdAt).toLocaleDateString()}
                           </span>
                         </div>
@@ -218,7 +218,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                             &quot;{clientReview.comment}&quot;
                           </p>
                         ) : (
-                          <p className="text-[11px] text-zinc-400 italic">
+                          <p className="text-xs text-zinc-400 italic">
                             Client submitted a rating without written comments.
                           </p>
                         )}
@@ -248,7 +248,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                         <UserCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>Freelancer Review of Client</span>
                       </div>
-                      <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                      <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
                         {contract.freelancer.name}
                       </span>
                     </div>
@@ -269,7 +269,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                           <span className="ml-1 text-xs font-bold text-zinc-800 dark:text-zinc-200">
                             {freelancerReview.rating}.0
                           </span>
-                          <span className="ml-auto text-[10px] text-zinc-400">
+                          <span className="ml-auto text-xs text-zinc-400">
                             {new Date(freelancerReview.createdAt).toLocaleDateString()}
                           </span>
                         </div>
@@ -278,7 +278,7 @@ export default async function ContractRoomPage({ params }: ContractPageProps) {
                             &quot;{freelancerReview.comment}&quot;
                           </p>
                         ) : (
-                          <p className="text-[11px] text-zinc-400 italic">
+                          <p className="text-xs text-zinc-400 italic">
                             Freelancer submitted a rating without written comments.
                           </p>
                         )}

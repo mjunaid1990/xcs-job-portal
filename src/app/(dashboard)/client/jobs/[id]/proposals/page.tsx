@@ -8,7 +8,7 @@ import { ProposalComparisonMatrix } from "@/components/proposals/proposal-compar
 import { PageHeader } from "@/components/ui/page-header";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Briefcase, ArrowLeft, Calendar, DollarSign, UserCheck, HelpCircle } from "lucide-react";
+import { ArrowLeft, Calendar, DollarSign, UserCheck, HelpCircle } from "lucide-react";
 
 interface ProposalsPageProps {
   params: Promise<{ id: string }>;
@@ -46,9 +46,6 @@ export default async function ClientJobProposalsPage({ params }: ProposalsPagePr
       </Link>
 
       <PageHeader
-        badge="Candidate Review Desk"
-        badgeIcon={Briefcase}
-        badgeVariant="purple"
         title={`Proposals: ${job.title}`}
         description="Review candidate credentials, compare bids, message directly, and award milestone contracts."
       />
