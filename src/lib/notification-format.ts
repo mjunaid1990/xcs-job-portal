@@ -5,11 +5,19 @@ export interface FormattedNotification {
   category: "proposal" | "contract" | "payment" | "review" | "dispute" | "message" | "system";
 }
 
-export function formatNotification(type: string, rawPayload: unknown): FormattedNotification {
+export function formatNotification(
+  type: string,
+  rawPayload: unknown,
+  role?: string,
+): FormattedNotification {
   const payload =
     typeof rawPayload === "object" && rawPayload !== null
       ? (rawPayload as Record<string, unknown>)
       : {};
+
+  const isClient = role === "CLIENT";
+  const isFreelancer = role === "FREELANCER";
+  const isAdmin = role === "ADMIN";
 
   switch (type) {
     case "PROPOSAL_RECEIVED":
@@ -25,7 +33,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "New Proposal Received",
         message: `${freelancer} submitted a bid${bid} on "${job}".`,
-        href: jobId ? `/client/jobs/${jobId}/proposals` : undefined,
+        href: jobId ? `/client/jobs/${jobId}/proposals` : "/client/jobs",
         category: "proposal",
       };
     }
@@ -36,7 +44,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Proposal Accepted!",
         message: `Great news! Your proposal for "${job}" was accepted. Your contract is now active.`,
-        href: contractId ? `/contracts/${contractId}` : "/freelancer/contracts",
+        href: contractId ? `/contracts/${contractId}` : isClient ? "/client/contracts" : "/freelancer/contracts",
         category: "contract",
       };
     }
@@ -46,7 +54,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Proposal Shortlisted",
         message: `Your application for "${job}" has been shortlisted by the hiring team.`,
-        href: "/freelancer/proposals",
+        href: isClient ? "/client/jobs" : "/freelancer/proposals",
         category: "proposal",
       };
     }
@@ -57,7 +65,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Proposal Status Update",
         message: `The client has concluded review for "${job}". Thank you for your bid.`,
-        href: "/freelancer/proposals",
+        href: isClient ? "/client/jobs" : "/freelancer/proposals",
         category: "proposal",
       };
     }
@@ -70,7 +78,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "New Contract Offer",
         message: `${client} sent you a formal contract offer for "${job}".`,
-        href: contractId ? `/contracts/${contractId}` : "/freelancer/contracts",
+        href: contractId ? `/contracts/${contractId}` : isClient ? "/client/contracts" : "/freelancer/contracts",
         category: "contract",
       };
     }
@@ -89,7 +97,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Milestone Escrow Funded",
         message: `Escrow funds for "${milestone}"${amount} have been deposited and securely locked.`,
-        href: contractId ? `/contracts/${contractId}` : undefined,
+        href: contractId ? `/contracts/${contractId}` : isClient ? "/client/contracts" : "/freelancer/contracts",
         category: "payment",
       };
     }
@@ -100,7 +108,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Deliverable Submitted for Review",
         message: `Work deliverables for "${milestone}" have been submitted for your approval.`,
-        href: contractId ? `/contracts/${contractId}` : undefined,
+        href: contractId ? `/contracts/${contractId}` : "/client/contracts",
         category: "contract",
       };
     }
@@ -112,7 +120,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Milestone Revision Requested",
         message: `The client requested adjustments on "${milestone}"${reason}`,
-        href: contractId ? `/contracts/${contractId}` : undefined,
+        href: contractId ? `/contracts/${contractId}` : isClient ? "/client/contracts" : "/freelancer/contracts",
         category: "contract",
       };
     }
@@ -125,19 +133,19 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: isPartial ? "Partial Escrow Payment Released" : "Milestone Payment Released",
         message: `${isPartial ? "Partial payment" : "Full payment"} of $${payout} for "${milestone}" has been released to your balance.`,
-        href: contractId ? `/contracts/${contractId}` : "/freelancer/payouts",
+        href: contractId ? `/contracts/${contractId}` : isClient ? "/client/contracts" : "/freelancer/payouts",
         category: "payment",
       };
     }
 
     case "REVIEW_RECEIVED": {
-      const reviewer = String(payload.reviewerName ?? "A client");
+      const reviewer = String(payload.reviewerName ?? "A user");
       const rating = payload.rating ? `${payload.rating}-star ` : "";
       const contractId = payload.contractId ? String(payload.contractId) : undefined;
       return {
         title: "New Review Received",
         message: `${reviewer} left a ${rating}review on your completed contract.`,
-        href: contractId ? `/contracts/${contractId}` : "/freelancer/profile",
+        href: contractId ? `/contracts/${contractId}` : isClient ? "/client/profile" : "/freelancer/profile",
         category: "review",
       };
     }
@@ -148,7 +156,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Contract Dispute Filed",
         message: `A formal mediation request was filed${reason}. Escrow funds are safely held during review.`,
-        href: contractId ? `/contracts/${contractId}` : undefined,
+        href: contractId ? `/contracts/${contractId}` : isAdmin ? "/admin/disputes" : isClient ? "/client/contracts" : "/freelancer/contracts",
         category: "dispute",
       };
     }
@@ -159,7 +167,7 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
       return {
         title: "Dispute Resolved",
         message: `Dispute review has completed: ${resolution}`,
-        href: contractId ? `/contracts/${contractId}` : undefined,
+        href: contractId ? `/contracts/${contractId}` : isAdmin ? "/admin/disputes" : isClient ? "/client/contracts" : "/freelancer/contracts",
         category: "dispute",
       };
     }
@@ -191,10 +199,18 @@ export function formatNotification(type: string, rawPayload: unknown): Formatted
         payload.reason ||
         "You have a new update in your workspace.";
 
+      const fallbackHref = isClient
+        ? "/client"
+        : isFreelancer
+          ? "/freelancer"
+          : isAdmin
+            ? "/admin"
+            : "/client";
+
       return {
         title: readableType,
         message: String(textCandidate),
-        href: undefined,
+        href: fallbackHref,
         category: "system",
       };
     }

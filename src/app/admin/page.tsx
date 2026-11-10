@@ -5,6 +5,10 @@ import { prisma } from "@/server/db/prisma";
 import { DisputeResolver } from "@/components/admin/dispute-resolver";
 import { ReportStatusButton } from "@/components/admin/report-status-button";
 import {
+  DashboardAlertBanner,
+  type DashboardAlertItem,
+} from "@/components/layout/dashboard-alert-banner";
+import {
   Lock,
   TrendingUp,
   AlertCircle,
@@ -85,6 +89,32 @@ export default async function AdminDashboardPage() {
   const pctHeld = Math.min(100, Math.round((heldEscrow / safeTotal) * 100));
   const pctRefunded = Math.min(100, Math.round((refunded / safeTotal) * 100));
 
+  const alerts: DashboardAlertItem[] = [];
+
+  if (openDisputes.length > 0) {
+    alerts.push({
+      id: "admin-disputes",
+      type: "warning",
+      badge: "Arbitration Required",
+      title: `${openDisputes.length} Contested Dispute${openDisputes.length === 1 ? "" : "s"} Awaiting Ruling`,
+      message: "Contracts have contested milestone deliverables. Inspect communication logs and issue binding judicial distributions.",
+      actionLabel: "Arbitrate Disputes",
+      actionHref: "/admin/disputes",
+    });
+  }
+
+  if (pendingReports.length > 0) {
+    alerts.push({
+      id: "admin-reports",
+      type: "info",
+      badge: "Moderation",
+      title: `${pendingReports.length} Flagged User Report${pendingReports.length === 1 ? "" : "s"}`,
+      message: "Safety moderation reports submitted by community members require review.",
+      actionLabel: "Review Reports",
+      actionHref: "/admin/reports",
+    });
+  }
+
   return (
     <div className="space-y-8">
       {/* Top Welcome & Subtitle */}
@@ -109,17 +139,20 @@ export default async function AdminDashboardPage() {
             className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             <Scale className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Arbitration Desk</span>
+            <span>Disputes Desk</span>
           </Link>
           <Link
             href="/admin/ledger"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Receipt className="h-3.5 w-3.5" />
-            <span>Ledger Audit</span>
+            <span>Inspect Ledger</span>
           </Link>
         </div>
       </div>
+
+      {/* Actionable Admin Alert Banner */}
+      {alerts.length > 0 && <DashboardAlertBanner role="ADMIN" alerts={alerts} />}
 
       {/* Row 1: Tremor-Style High-Impact Metric Cards with Sparklines */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

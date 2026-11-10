@@ -406,22 +406,62 @@ export async function seedDatabase() {
   });
 
   // Also support @workwasl.com aliases
-  await upsertDemoUser({
+  const adminWorkwasl = await upsertDemoUser({
     email: "admin@workwasl.com",
     name: "WorkWasl Admin",
     roles: [UserRole.ADMIN],
   });
 
-  await upsertDemoUser({
+  const clientWorkwasl = await upsertDemoUser({
     email: "client@workwasl.com",
     name: "Ava Client",
     roles: [UserRole.CLIENT],
   });
 
-  await upsertDemoUser({
+  const freelancerWorkwasl = await upsertDemoUser({
     email: "freelancer@workwasl.com",
     name: "Noah Freelancer",
     roles: [UserRole.FREELANCER],
+  });
+
+  await prisma.clientProfile.upsert({
+    where: { userId: clientWorkwasl.id },
+    update: {
+      companyName: "Vanguard Digital Lab",
+      website: "https://vanguarddigital.io",
+      industry: "Fintech & Payments",
+      about: "Engineering verifiable escrow contracts and dual-persona talent marketplaces.",
+      paymentVerified: true,
+    },
+    create: {
+      userId: clientWorkwasl.id,
+      companyName: "Vanguard Digital Lab",
+      website: "https://vanguarddigital.io",
+      industry: "Fintech & Payments",
+      about: "Engineering verifiable escrow contracts and dual-persona talent marketplaces.",
+      paymentVerified: true,
+    },
+  });
+
+  await prisma.freelancerProfile.upsert({
+    where: { userId: freelancerWorkwasl.id },
+    update: {
+      headline: "Staff Full-Stack Engineer & Protocol Architect",
+      bio: "10+ years architecting zero-latency financial web applications and milestone escrow systems.",
+      hourlyRateCents: 9500,
+      currency: "USD",
+      availability: "AVAILABLE",
+      experienceLevel: "EXPERT",
+    },
+    create: {
+      userId: freelancerWorkwasl.id,
+      headline: "Staff Full-Stack Engineer & Protocol Architect",
+      bio: "10+ years architecting zero-latency financial web applications and milestone escrow systems.",
+      hourlyRateCents: 9500,
+      currency: "USD",
+      availability: "AVAILABLE",
+      experienceLevel: "EXPERT",
+    },
   });
 
   // Client Profiles with Enhanced Fields
@@ -1863,30 +1903,106 @@ export async function seedDatabase() {
   // IN-APP NOTIFICATIONS
   await prisma.notification.createMany({
     data: [
+      // Client 1 (client@worknest.dev)
+      {
+        userId: client1.id,
+        type: "NEW_PROPOSAL",
+        payload: {
+          jobId: job3.id,
+          jobTitle: job3.title,
+          freelancerName: "Noah Freelancer",
+          bidAmount: "1,200",
+          title: "New Proposal Received",
+        },
+      },
+      {
+        userId: client1.id,
+        type: "DELIVERABLE_SUBMITTED",
+        payload: {
+          contractId: contract1.id,
+          milestoneTitle: "Milestone 1: Escrow Protocol Implementation",
+          freelancerName: "Noah Freelancer",
+          title: "Deliverable Submitted for Review",
+        },
+      },
+      // Client WorkWasl (client@workwasl.com)
+      {
+        userId: clientWorkwasl.id,
+        type: "NEW_PROPOSAL",
+        payload: {
+          jobId: job3.id,
+          jobTitle: job3.title,
+          freelancerName: "Noah Freelancer",
+          bidAmount: "1,200",
+          title: "New Proposal Received",
+        },
+      },
+      {
+        userId: clientWorkwasl.id,
+        type: "DELIVERABLE_SUBMITTED",
+        payload: {
+          contractId: contract1.id,
+          milestoneTitle: "Milestone 1: Escrow Protocol Implementation",
+          freelancerName: "Noah Freelancer",
+          title: "Deliverable Submitted for Review",
+        },
+      },
+      // Freelancer 1 (freelancer@worknest.dev)
       {
         userId: freelancer1.id,
         type: "ESCROW_FUNDED",
         payload: {
           contractId: contract1.id,
           amount: "$500.00",
+          milestoneTitle: "Milestone 2: Security Audit & Testing",
           title: "Milestone 2 Funded into Escrow",
         },
       },
       {
-        userId: client1.id,
-        type: "NEW_PROPOSAL",
+        userId: freelancer1.id,
+        type: "PROPOSAL_SHORTLISTED",
         payload: {
-          jobId: job3.id,
-          freelancerName: "Noah Freelancer",
-          title: "New Proposal Received",
+          jobTitle: "Next.js 15 Full-Stack Marketplace Platform",
+          title: "Proposal Shortlisted",
         },
       },
+      // Freelancer WorkWasl (freelancer@workwasl.com)
+      {
+        userId: freelancerWorkwasl.id,
+        type: "ESCROW_FUNDED",
+        payload: {
+          contractId: contract1.id,
+          amount: "$500.00",
+          milestoneTitle: "Milestone 2: Security Audit & Testing",
+          title: "Milestone 2 Funded into Escrow",
+        },
+      },
+      {
+        userId: freelancerWorkwasl.id,
+        type: "PROPOSAL_SHORTLISTED",
+        payload: {
+          jobTitle: "Next.js 15 Full-Stack Marketplace Platform",
+          title: "Proposal Shortlisted",
+        },
+      },
+      // Admin (admin@worknest.dev)
       {
         userId: admin.id,
         type: "DISPUTE_OPENED",
         payload: {
           contractId: contract3.id,
           title: "New Dispute Awaiting Arbitration",
+          reason: "Webhook signature verification disagreement",
+        },
+      },
+      // Admin WorkWasl (admin@workwasl.com)
+      {
+        userId: adminWorkwasl.id,
+        type: "DISPUTE_OPENED",
+        payload: {
+          contractId: contract3.id,
+          title: "New Dispute Awaiting Arbitration",
+          reason: "Webhook signature verification disagreement",
         },
       },
     ],

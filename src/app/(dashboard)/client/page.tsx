@@ -3,6 +3,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/server/db/prisma";
 import { getJobUrl } from "@/lib/format";
+import { NotificationService } from "@/server/services/notification.service";
+import { formatNotification } from "@/lib/notification-format";
+import {
+  DashboardAlertBanner,
+  type DashboardAlertItem,
+} from "@/components/layout/dashboard-alert-banner";
 import {
   Briefcase,
   Plus,
@@ -65,6 +71,79 @@ export default async function ClientDashboardPage() {
   const totalProposalsToReview = activeJobs.reduce((acc, j) => acc + j._count.proposals, 0);
   const firstName = session.user.name?.split(" ")[0] ?? "Client";
 
+  // Fetch unread in-app notifications
+  const recentNotifs = await NotificationService.getUserNotifications(session.user.id, 5);
+  const unreadOnly = recentNotifs.filter((n) => !n.readAt);
+
+  // Compute pending milestone deliverables awaiting client signoff
+  const submittedMilestones: Array<{
+    id: string;
+    title: string;
+    contractId: string;
+    contractTitle: string;
+    freelancerName: string;
+  }> = [];
+
+  activeContracts.forEach((c) => {
+    c.milestones.forEach((m) => {
+      if (m.status === "SUBMITTED") {
+        submittedMilestones.push({
+          id: m.id,
+          title: m.title,
+          contractId: c.id,
+          contractTitle: c.job.title,
+          freelancerName: c.freelancer.name,
+        });
+      }
+    });
+  });
+
+  const alerts: DashboardAlertItem[] = [];
+
+  // 1. Deliverables ready for review (High Priority Action)
+  if (submittedMilestones.length > 0) {
+    const firstM = submittedMilestones[0];
+    alerts.push({
+      id: `deliverable-${firstM.id}`,
+      type: "action",
+      badge: "Action Required",
+      title: `Deliverable Ready for Review: ${firstM.title}`,
+      message: `${firstM.freelancerName} has submitted project deliverables for "${firstM.contractTitle}". Review work to release milestone escrow.`,
+      actionLabel: "Review & Release",
+      actionHref: `/contracts/${firstM.contractId}`,
+    });
+  }
+
+  // 2. Proposals awaiting review
+  const jobWithProposals = activeJobs.find((j) => j._count.proposals > 0);
+  if (jobWithProposals) {
+    alerts.push({
+      id: `proposals-${jobWithProposals.id}`,
+      type: "info",
+      badge: "Proposals",
+      title: `${jobWithProposals._count.proposals} New Proposal${jobWithProposals._count.proposals === 1 ? "" : "s"} on "${jobWithProposals.title}"`,
+      message: "Qualified specialists have submitted project bids. Review proposals, compare rates, and start conversations.",
+      actionLabel: "Review Proposals",
+      actionHref: `/client/jobs/${jobWithProposals.id}/proposals`,
+    });
+  }
+
+  // 3. Unread in-app alerts
+  unreadOnly.forEach((n) => {
+    const formatted = formatNotification(n.type, n.payload, "CLIENT");
+    if (!alerts.some((a) => a.title === formatted.title)) {
+      alerts.push({
+        id: `notif-${n.id}`,
+        type: formatted.category === "payment" ? "action" : "info",
+        badge: "Notification",
+        title: formatted.title,
+        message: formatted.message,
+        actionLabel: "View Details",
+        actionHref: formatted.href ?? "/client",
+      });
+    }
+  });
+
   return (
     <div className="space-y-8">
       {/* Natural Greeting Header */}
@@ -90,6 +169,9 @@ export default async function ClientDashboardPage() {
           </Link>
         </div>
       </div>
+
+      {/* Actionable Client Alert Notifications */}
+      {alerts.length > 0 && <DashboardAlertBanner role="CLIENT" alerts={alerts} />}
 
       {/* Clean KPI Metrics Strip */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

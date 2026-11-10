@@ -3,6 +3,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/server/db/prisma";
 import { getJobUrl } from "@/lib/format";
+import { NotificationService } from "@/server/services/notification.service";
+import { formatNotification } from "@/lib/notification-format";
+import {
+  DashboardAlertBanner,
+  type DashboardAlertItem,
+} from "@/components/layout/dashboard-alert-banner";
 import {
   Search,
   Briefcase,
@@ -85,6 +91,64 @@ export default async function FreelancerDashboardPage() {
   if (profile?.skills && profile.skills.length > 0) completenessScore += 10;
   completenessScore = Math.min(100, completenessScore);
 
+  // Fetch unread in-app notifications
+  const recentNotifs = await NotificationService.getUserNotifications(session.user.id, 5);
+  const unreadOnly = recentNotifs.filter((n) => !n.readAt);
+
+  const alerts: DashboardAlertItem[] = [];
+
+  // 1. Revision Requested Alerts
+  activeContracts.forEach((c) => {
+    c.milestones.forEach((m) => {
+      if (m.status === "REVISION_REQUESTED") {
+        alerts.push({
+          id: `revision-${m.id}`,
+          type: "warning",
+          badge: "Revision Requested",
+          title: `Action Required on "${m.title}"`,
+          message: `${c.client.name} requested changes on your deliverable for "${c.job.title}". View feedback and submit your revised milestone.`,
+          actionLabel: "View Feedback",
+          actionHref: `/contracts/${c.id}`,
+        });
+      }
+    });
+  });
+
+  // 2. Active Milestone Funded & Ready for Work
+  if (alerts.length === 0) {
+    activeContracts.forEach((c) => {
+      c.milestones.forEach((m) => {
+        if (m.status === "FUNDED") {
+          alerts.push({
+            id: `funded-${m.id}`,
+            type: "action",
+            badge: "In Progress",
+            title: `Escrow Secured for "${m.title}"`,
+            message: `Milestone escrow is funded on "${c.job.title}". Work deliverables can be submitted at any time.`,
+            actionLabel: "Open Workroom",
+            actionHref: `/contracts/${c.id}`,
+          });
+        }
+      });
+    });
+  }
+
+  // 3. Unread In-App Notifications
+  unreadOnly.forEach((n) => {
+    const formatted = formatNotification(n.type, n.payload, "FREELANCER");
+    if (!alerts.some((a) => a.title === formatted.title)) {
+      alerts.push({
+        id: `notif-${n.id}`,
+        type: formatted.category === "payment" ? "action" : "info",
+        badge: "Notification",
+        title: formatted.title,
+        message: formatted.message,
+        actionLabel: "View Details",
+        actionHref: formatted.href ?? "/freelancer",
+      });
+    }
+  });
+
   return (
     <div className="space-y-8">
       {/* Human, Natural Greeting Header */}
@@ -110,6 +174,9 @@ export default async function FreelancerDashboardPage() {
           </Link>
         </div>
       </div>
+
+      {/* Actionable Freelancer Alert Notifications */}
+      {alerts.length > 0 && <DashboardAlertBanner role="FREELANCER" alerts={alerts} />}
 
       {/* Clean KPI Summary Strip (Human, Minimal, High-Contrast) */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

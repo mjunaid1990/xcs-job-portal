@@ -42,6 +42,12 @@ export default async function NotificationsPage() {
     redirect("/login");
   }
 
+  const roles = session.user.roles ?? [];
+  const isClient = roles.includes("CLIENT");
+  const isFreelancer = roles.includes("FREELANCER");
+  const isAdmin = roles.includes("ADMIN");
+  const userRole = isClient ? "CLIENT" : isFreelancer ? "FREELANCER" : isAdmin ? "ADMIN" : undefined;
+
   const notifications = await NotificationService.getUserNotifications(session.user.id, 50);
   const hasUnread = notifications.some((n) => !n.readAt);
 
@@ -65,12 +71,20 @@ export default async function NotificationsPage() {
       <div className="rounded-2xl border border-zinc-200/80 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden">
         <div className="divide-y divide-zinc-100 dark:divide-zinc-800/80">
           {notifications.map((n) => {
-            const formatted = formatNotification(n.type, n.payload);
+            const formatted = formatNotification(n.type, n.payload, userRole);
             const isUnread = !n.readAt;
-            const hasLink = Boolean(formatted.href);
+            const targetHref =
+              formatted.href ||
+              (isClient ? "/client" : isFreelancer ? "/freelancer" : isAdmin ? "/admin" : "/client");
 
-            const content = (
-              <>
+            return (
+              <Link
+                key={n.id}
+                href={targetHref}
+                className={`group flex items-start justify-between gap-4 p-5 sm:p-6 transition hover:bg-zinc-50 dark:hover:bg-zinc-800/40 ${
+                  isUnread ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""
+                }`}
+              >
                 <div className="flex items-start gap-4 flex-1 min-w-0">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60 group-hover:scale-105 transition">
                     {getNotificationIcon(formatted.category)}
@@ -78,13 +92,7 @@ export default async function NotificationsPage() {
 
                   <div className="space-y-1 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2
-                        className={`font-bold text-sm text-zinc-900 dark:text-zinc-100 transition ${
-                          hasLink
-                            ? "group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
-                            : ""
-                        }`}
-                      >
+                      <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 transition group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
                         {formatted.title}
                       </h2>
                       {isUnread && (
@@ -110,37 +118,10 @@ export default async function NotificationsPage() {
                   </div>
                 </div>
 
-                {hasLink && (
-                  <div className="flex items-center self-center shrink-0 text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
-                    <ChevronRight className="h-4 w-4" />
-                  </div>
-                )}
-              </>
-            );
-
-            if (formatted.href) {
-              return (
-                <Link
-                  key={n.id}
-                  href={formatted.href}
-                  className={`group flex items-start justify-between gap-4 p-5 sm:p-6 transition hover:bg-zinc-50 dark:hover:bg-zinc-800/40 ${
-                    isUnread ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""
-                  }`}
-                >
-                  {content}
-                </Link>
-              );
-            }
-
-            return (
-              <div
-                key={n.id}
-                className={`flex items-start justify-between gap-4 p-5 sm:p-6 ${
-                  isUnread ? "bg-emerald-50/20 dark:bg-emerald-950/15" : ""
-                }`}
-              >
-                {content}
-              </div>
+                <div className="flex items-center self-center shrink-0 text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
+                  <ChevronRight className="h-4 w-4" />
+                </div>
+              </Link>
             );
           })}
 

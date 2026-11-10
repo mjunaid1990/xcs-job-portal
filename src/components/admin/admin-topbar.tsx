@@ -7,6 +7,10 @@ import { logoutAction } from "@/server/actions/auth.actions";
 import { SeedDatabaseButton } from "./seed-database-button";
 import { WorkWaslIcon } from "@/components/ui/workwasl-logo";
 import {
+  NotificationPopover,
+  type SerializedNotification,
+} from "@/components/layout/notification-popover";
+import {
   Menu,
   X,
   Search,
@@ -28,12 +32,16 @@ interface AdminTopbarProps {
   };
   openDisputesCount?: number;
   pendingReportsCount?: number;
+  unreadNotificationsCount?: number;
+  recentNotifications?: SerializedNotification[];
 }
 
 export function AdminTopbar({
   user,
   openDisputesCount = 0,
   pendingReportsCount = 0,
+  unreadNotificationsCount = 0,
+  recentNotifications = [],
 }: AdminTopbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -108,6 +116,11 @@ export function AdminTopbar({
           </div>
 
           <SeedDatabaseButton />
+
+          <NotificationPopover
+            initialNotifications={recentNotifications}
+            initialUnreadCount={unreadNotificationsCount}
+          />
 
           <div className="hidden md:flex items-center gap-2 pl-2 border-l border-zinc-200 dark:border-zinc-800">
             <Link

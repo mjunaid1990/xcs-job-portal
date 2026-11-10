@@ -1,6 +1,7 @@
 import { auth } from "@/server/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/server/db/prisma";
+import { NotificationService } from "@/server/services/notification.service";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { AdminTopbar } from "@/components/admin/admin-topbar";
 
@@ -16,14 +17,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect("/dashboard");
   }
 
-  // Fetch quick indicator badges for the sidebar
-  const [openDisputes, pendingReports] = await Promise.all([
+  // Fetch quick indicator badges and admin notifications
+  const [openDisputes, pendingReports, unreadNotifCount, recentNotifs] = await Promise.all([
     prisma.dispute.count({
       where: { status: { in: ["OPEN", "UNDER_REVIEW"] } },
     }),
     prisma.report.count({
       where: { status: "OPEN" },
     }),
+    NotificationService.getUnreadCount(session.user.id).catch(() => 0),
+    NotificationService.getRecentNotifications(session.user.id, 5).catch(() => []),
   ]);
 
   return (
@@ -41,6 +44,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           user={session.user}
           openDisputesCount={openDisputes}
           pendingReportsCount={pendingReports}
+          unreadNotificationsCount={unreadNotifCount}
+          recentNotifications={recentNotifs}
         />
 
         <main className="flex-1 p-5 sm:p-7 lg:p-9 max-w-[1600px] w-full mx-auto">{children}</main>

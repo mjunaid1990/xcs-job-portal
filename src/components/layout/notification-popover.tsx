@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useTransition } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { formatNotification } from "@/lib/notification-format";
 import {
   markNotificationReadAction,
@@ -74,12 +74,21 @@ export function NotificationPopover({
   initialUnreadCount = 0,
 }: NotificationPopoverProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(initialUnreadCount);
   const [notifications, setNotifications] =
     useState<SerializedNotification[]>(initialNotifications);
   const [isPending, startTransition] = useTransition();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const currentRole = pathname.startsWith("/client")
+    ? "CLIENT"
+    : pathname.startsWith("/freelancer")
+      ? "FREELANCER"
+      : pathname.startsWith("/admin")
+        ? "ADMIN"
+        : undefined;
 
   // Sync state if props change from server revalidation
   useEffect(() => {
@@ -123,10 +132,19 @@ export function NotificationPopover({
       });
     }
 
-    if (href) {
-      setIsOpen(false);
-      router.push(href);
-    }
+    // Default to the user's active dashboard if notification doesn't provide a deeper route
+    const targetHref =
+      href ||
+      (pathname.startsWith("/client")
+        ? "/client"
+        : pathname.startsWith("/freelancer")
+          ? "/freelancer"
+          : pathname.startsWith("/admin")
+            ? "/admin"
+            : "/client");
+
+    setIsOpen(false);
+    router.push(targetHref);
   };
 
   return (
@@ -182,7 +200,7 @@ export function NotificationPopover({
           <div className="max-h-[380px] divide-y divide-zinc-100 overflow-y-auto dark:divide-zinc-800/80">
             {notifications.length > 0 ? (
               notifications.slice(0, 5).map((n) => {
-                const formatted = formatNotification(n.type, n.payload);
+                const formatted = formatNotification(n.type, n.payload, currentRole);
                 const isUnread = !n.readAt;
                 const hasLink = Boolean(formatted.href);
 
@@ -191,11 +209,9 @@ export function NotificationPopover({
                     key={n.id}
                     type="button"
                     onClick={() => handleNotificationClick(n, formatted.href)}
-                    className={`w-full text-left flex items-start gap-3 p-3.5 sm:p-4 transition ${
-                      hasLink
-                        ? "cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                        : "cursor-default hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30"
-                    } ${isUnread ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""}`}
+                    className={`w-full text-left flex items-start gap-3 p-3.5 sm:p-4 transition cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 ${
+                      isUnread ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""
+                    }`}
                   >
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
                       {getNotificationIcon(formatted.category)}
